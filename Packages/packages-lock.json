@@ -1,5 +1,15 @@
 {
   "dependencies": {
+    "com.sheepycreations.ui-control": {
+      "version": "https://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@github.com/ChoripanAesthetic/UI_Control.git?path=/SheepyCreations",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.unity.inputsystem": "1.7.0",
+        "com.unity.textmeshpro": "3.0.6"
+      },
+      "hash": "67da13ef227a243a0f88060d6c3c2f8180133310"
+    },
     "com.unity.burst": {
       "version": "1.8.29",
       "depth": 2,
@@ -206,6 +216,14 @@
         "com.unity.settings-manager": "2.0.0"
       },
       "url": "https://packages.unity.com"
+    },
+    "com.unity.textmeshpro": {
+      "version": "5.0.0",
+      "depth": 1,
+      "source": "builtin",
+      "dependencies": {
+        "com.unity.ugui": "2.0.0"
+      }
     },
     "com.unity.ugui": {
       "version": "2.0.0",

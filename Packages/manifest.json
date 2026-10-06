@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "com.sheepycreations.ui-control": "https://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@github.com/ChoripanAesthetic/UI_Control.git?path=/SheepyCreations",
     "com.unity.feature.development": "1.0.2",
     "com.unity.ide.rider": "3.0.40",
     "com.unity.inputsystem": "1.19.0",
