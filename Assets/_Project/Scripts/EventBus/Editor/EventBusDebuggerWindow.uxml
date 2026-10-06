@@ -1,0 +1,17 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements">
+    <ui:Style src="EventBusDebuggerWindow.uss" />
+    <ui:VisualElement name="root" class="event-bus-debugger">
+        <ui:VisualElement name="toolbar" class="toolbar">
+            <ui:Toggle name="autoRefreshToggle" label="Auto Refresh" value="true" class="toolbar-toggle" />
+            <ui:Button name="clearAllBusesButton" text="Clear All Buses" />
+        </ui:VisualElement>
+        <ui:VisualElement name="tabBar" class="tab-bar">
+            <ui:Button name="subscriptionsTabButton" text="Subscriptions" class="tab-button tab-button--active" />
+            <ui:Button name="historyTabButton" text="History" class="tab-button" />
+        </ui:VisualElement>
+        <ui:Label name="playModeHintLabel" text="Enter Play Mode to see active EventBus subscriptions." class="play-mode-hint" />
+        <ui:ScrollView name="eventListScrollView" class="event-list" />
+        <ui:ScrollView name="eventHistoryScrollView" class="event-list" />
+        <ui:Label name="summaryLabel" class="summary-label" />
+    </ui:VisualElement>
+</ui:UXML>

@@ -1,0 +1,8 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/_Project/UI/DefaultStyleSheet.uss?fileID=7433441132597879392&amp;guid=92f105faae8cdfa41a5bffceba250712&amp;type=3#DefaultStyleSheet"/>
+    <ui:VisualElement name="comment-entry" class="comment-entry">
+        <ui:Label text="Usuario" name="username-label" class="user-label"/>
+        <ui:VisualElement class="separator"/>
+        <ui:Label text="Texto omg ola que tal como estas, o woao . que aaaaaaaaaaaa chao 123 asdfasdf" name="content-label" class="text-label"/>
+    </ui:VisualElement>
+</ui:UXML>

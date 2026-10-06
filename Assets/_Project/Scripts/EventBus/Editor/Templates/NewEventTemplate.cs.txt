@@ -1,0 +1,7 @@
+using SheepyCreations.EventBus;
+#ROOTNAMESPACEBEGIN#
+public struct #SCRIPTNAME# : IEvent
+{
+
+}
+#ROOTNAMESPACEEND#

@@ -1,0 +1,16 @@
+{
+    "name": "com.sheepycreations.eventbus",
+    "version": "1.0.0",
+    "displayName": "SheepyCreations EventBus",
+    "description": "A type-safe, decoupled event system for Unity, with an EventGroup for automatic cleanup and a UI Toolkit Visual Debugger.",
+    "unity": "2021.3",
+    "license": "MIT",
+    "author": {
+        "name": "SheepyCreations"
+    },
+    "keywords": [
+        "eventbus",
+        "events",
+        "messaging"
+    ]
+}

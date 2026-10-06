@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58cdb46f9eef631468e9df3816dd9566, type: 3}
+  m_Name: PanelSettings
+  m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.UIControlSettings
+  defaultPanelTypeName: SheepyCreations.UIControl.Runtime.UIDocumentPanel, SheepyCreations.UIControl.Runtime,
+    Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  defaultBehaviourTypeNames: []
+  defaultInteractionMode: 0
+  defaultStartHidden: 1
+  defaultScaleFactor: 0.5
+  defaultResolution: {x: 1920, y: 1080}
+  screenMatchMode: 0
+  matchWidthOrHeight: 0.5
+  defaultRenderMode: 0
+  defaultTransition: 0
+  defaultTransitionDuration: 0.2
+  defaultUIToolkitPanelSettings: {fileID: 11400000, guid: fec9bf6fa4770294a919da19c7dfd501, type: 2}
+  defaultUXMLTemplate: {fileID: 0}
+  prioritySlots:
+  - name: Background
+    sortingOrder: 0
+  - name: Default
+    sortingOrder: 10
+  - name: Foreground
+    sortingOrder: 20
+  - name: Overlay
+    sortingOrder: 30
+  sortingOrderOffset: 0

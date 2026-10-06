@@ -3,6 +3,10 @@
   <Project Path="Firebase.App.Internal.csproj" />
   <Project Path="Unity.XR.Interaction.Toolkit.Samples.StarterAssets.Editor.csproj" />
   <Project Path="Assembly-CSharp.csproj" />
+  <Project Path="SheepyCreations.EventBus.csproj" />
   <Project Path="Unity.XR.Interaction.Toolkit.Samples.ARStarterAssets.csproj" />
   <Project Path="Unity.XR.Interaction.Toolkit.Samples.ARStarterAssets.Editor.csproj" />
+  <Project Path="SheepyCreations.EventBus.Tests.Editor.csproj" />
+  <Project Path="SheepyCreations.EventBus.Editor.csproj" />
+  <Project Path="SheepyCreations.EventBus.Tests.Runtime.csproj" />
 </Solution>
