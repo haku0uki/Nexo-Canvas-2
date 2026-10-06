@@ -28,9 +28,13 @@ public class ARCanvasController : MonoBehaviour
 
     private void Update()
     {
-        if (trackedImage == null) return;
+        if (trackedImage == null)
+        {
+            Debug.Log("¡El trackedImage sigue siendo NULL!");
+            return;
+        }
 
-        BoardState desiredState = EvaluateDesiredState();
+    BoardState desiredState = EvaluateDesiredState();
 
         if (desiredState != currentState)
         {

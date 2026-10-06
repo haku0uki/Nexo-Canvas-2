@@ -16,4 +16,14 @@ MonoBehaviour:
   m_GuidHigh: 6644209494326916773
   m_DataStore:
     m_Storage: []
-  m_Images: []
+  m_Images:
+  - m_SerializedGuid:
+      m_GuidLow: 5220693319955058427
+      m_GuidHigh: 7120492948052400286
+    m_SerializedTextureGuid:
+      m_GuidLow: 5148903215200084994
+      m_GuidHigh: 16754092817013412571
+    m_Size: {x: 0.2, y: 0.2}
+    m_SpecifySize: 1
+    m_Name: imp-it1
+    m_Texture: {fileID: 2800000, guid: b4de240294314774db12026ca67e82e8, type: 3}
