@@ -1,7 +1,7 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/_Project/UI/DefaultStyleSheet.uss?fileID=7433441132597879392&amp;guid=92f105faae8cdfa41a5bffceba250712&amp;type=3#DefaultStyleSheet"/>
     <ui:VisualElement name="root" style="flex-grow: 1; aspect-ratio: 1;">
-        <ui:VisualElement name="background" style="flex-grow: 1; background-image: url(&quot;project://database/Assets/_Project/UI/Sprites/Post-It.png?fileID=2800000&amp;guid=4cd1c18faf454ac40bd9368bbea2a626&amp;type=3#Post-It&quot;); position: absolute; top: 0; right: 0; bottom: 0; left: 0;"/>
+        <ui:VisualElement name="background" style="flex-grow: 1; background-image: url(&quot;project://database/Assets/_Project/2D/post_it_amarillo.png?fileID=2800000&amp;guid=ae5465568c0e1594a9a7133281d5598b&amp;type=3#post_it_amarillo&quot;); position: absolute; top: 0; right: 0; bottom: 0; left: 0;"/>
         <ui:VisualElement name="elements-container" style="flex-grow: 1; margin-right: 10%; margin-top: 10%; margin-bottom: 10%; margin-left: 10%;">
             <ui:Label text="Label" name="username-label-postit" class="user-label"/>
             <ui:VisualElement class="separator"/>

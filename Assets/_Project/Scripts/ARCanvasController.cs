@@ -19,22 +19,20 @@ public class ARCanvasController : MonoBehaviour
 
     private void Awake()
     {
-        trackedImage = GetComponent<ARTrackedImage>();
-    }
-
-    private void OnEnable()
-    {
+        // Intentionally not fetched here: when this object is the ARTrackedImageManager's
+        // Tracked Image Prefab, AR Foundation attaches ARTrackedImage right after Instantiate --
+        // i.e. after this Awake already ran. See the lazy fetch in Update().
     }
 
     private void Update()
     {
         if (trackedImage == null)
         {
-            Debug.Log("¡El trackedImage sigue siendo NULL!");
-            return;
+            trackedImage = GetComponent<ARTrackedImage>();
+            if (trackedImage == null) return; // Not attached yet; retry next frame.
         }
 
-    BoardState desiredState = EvaluateDesiredState();
+        BoardState desiredState = EvaluateDesiredState();
 
         if (desiredState != currentState)
         {
@@ -83,10 +81,6 @@ public class ARCanvasController : MonoBehaviour
             case BoardState.Lost:
                 OnEnterLost();
                 break;
-
-                // case BoardState.Paused: OnEnterPaused(); break;
-                // case BoardState.Loading: OnEnterLoading(); break;
-                // case BoardState.Error: OnEnterError(); break;
         }
     }
 
@@ -105,7 +99,6 @@ public class ARCanvasController : MonoBehaviour
         HideBoard();
     }
 
-
     private void ShowBoard()
     {
         if (boardCanvas == null) return;
@@ -114,7 +107,7 @@ public class ARCanvasController : MonoBehaviour
         {
             boardCanvas.gameObject.SetActive(true);
         }
-        boardCanvas.StartListening();
+        boardCanvas.StartListening(); // Now a no-op if already listening -- see BoardCanvas.
     }
 
     private void HideBoard()
@@ -127,10 +120,8 @@ public class ARCanvasController : MonoBehaviour
         }
     }
 
-    /// <summary>Devuelve el estado actual del board.</summary>
     public BoardState GetCurrentState() => currentState;
 
-    /// <summary>True si el board está visible (Tracking o Limited).</summary>
     public bool IsBoardVisible()
         => currentState == BoardState.Tracking || currentState == BoardState.Limited;
 }

@@ -49,6 +49,7 @@ public class FirestoreService : MonoBehaviour
     public void EscucharPostIts(Action<List<PostItData>> OnPostItsUpdated)
     {
         if (postitsCollection == null) return;
+        if (realtimeListener != null) return; // Ya suscripto; BoardCanvas puede llamar esto mas de una vez.
 
         // Abrir el canal de escucha en tiempo real
         realtimeListener = postitsCollection.Listen(snapshot =>

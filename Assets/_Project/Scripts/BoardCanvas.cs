@@ -7,7 +7,7 @@ using UnityEngine;
 public class BoardCanvas : MonoBehaviour
 {
     [Header("Board area")]
-    [Tooltip("Size of the paper in scene units (same width and height as the Vuforia Image Target). Post-its must stay inside this rectangle.")]
+    [Tooltip("Size of the paper in scene units (same width and height as the tracked image). Post-its must stay inside this rectangle.")]
     [SerializeField] private Vector2 boardSize = new Vector2(0.297f, 0.21f);
 
     [Header("Entry prefabs by type")]
@@ -18,13 +18,15 @@ public class BoardCanvas : MonoBehaviour
     [SerializeField] private PromptSuggestion promptCanvasTemplate;
     [SerializeField] private List<Prompt_SO> promptList;
 
-    // Keyed by Firestore document id, not by position -- an entry keeps its identity even if moved.
     private readonly Dictionary<string, BaseCanvasEntry> entries = new Dictionary<string, BaseCanvasEntry>();
     private readonly List<PromptSuggestion> promptCanvases = new List<PromptSuggestion>();
 
-    // Called by ARCanvasController once the Vuforia target is found.
+    private bool isListening;
+
     public void StartListening()
     {
+        if (isListening) return;
+        isListening = true;
         FirestoreService.Instance.EscucharPostIts(OnPostItsUpdated);
     }
 
@@ -56,14 +58,12 @@ public class BoardCanvas : MonoBehaviour
         EventBus<EntryClickedEvent<PostItData>>.Raise(new EntryClickedEvent<PostItData>(data));
     }
 
-    // True when a local point lies inside the paper rectangle (x and z span the paper plane).
     public bool IsInsideBoard(Vector3 localPoint)
     {
         return Mathf.Abs(localPoint.x) <= boardSize.x * 0.5f
             && Mathf.Abs(localPoint.z) <= boardSize.y * 0.5f;
     }
 
-    // Draws the board rectangle in the Scene view so it can be aligned with the Image Target.
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.cyan;
