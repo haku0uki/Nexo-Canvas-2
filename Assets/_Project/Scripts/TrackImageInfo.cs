@@ -10,10 +10,18 @@ public class TrackImageInfo : MonoBehaviour
     ARTrackedImageManager m_TrackedImageManager;
 
     [System.Obsolete]
-    void OnEnable() => m_TrackedImageManager.trackedImagesChanged += OnChanged;
+    void OnEnable()
+    {
+        m_TrackedImageManager.trackedImagesChanged += OnChanged;
+        m_TapAction.action.Enable();
+    }
 
     [System.Obsolete]
-    void OnDisable() => m_TrackedImageManager.trackedImagesChanged -= OnChanged;
+    void OnDisable()
+    {
+        m_TrackedImageManager.trackedImagesChanged -= OnChanged;
+        m_TapAction.action.Disable();
+    }
 
     [System.Obsolete]
     void OnChanged(ARTrackedImagesChangedEventArgs eventArgs)

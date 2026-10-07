@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.XR.ARFoundation;
+using UnityEngine.XR.ARSubsystems;
 
 namespace SheepyCreations.ARDebugging
 {
@@ -37,6 +38,12 @@ namespace SheepyCreations.ARDebugging
                 $"subsystemRunning: {trackedImageManager.subsystem?.running}, " +
                 $"libraryCount: {trackedImageManager.referenceLibrary?.count}, " +
                 $"trackables: {trackedImageManager.trackables.count}");
+
+            for (int imageIndex = 0; imageIndex < trackedImageManager.referenceLibrary.count; imageIndex++)
+            {
+                XRReferenceImage referenceImage = trackedImageManager.referenceLibrary[imageIndex];
+                Debug.Log($"[ARDiagnostics] library image: {referenceImage.name}, size: {referenceImage.size}");
+            }
         }
     }
 }
