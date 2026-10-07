@@ -9,7 +9,7 @@ using UnityEngine.InputSystem;
 public class PostItPlacementTester : MonoBehaviour
 {
     [Header("References")]
-    [Tooltip("Board that owns the entries. Its transform defines the plane and the local space.")]
+    [Tooltip("Optional: leave empty with AR Foundation, since BoardCanvas only exists once the tracked image prefab is instantiated.")]
     [SerializeField] private BoardCanvas boardCanvas;
     [Tooltip("Leave empty to use Camera.main (the Vuforia AR camera).")]
     [SerializeField] private Camera arCamera;
@@ -31,10 +31,30 @@ public class PostItPlacementTester : MonoBehaviour
     private void Awake()
     {
         if (arCamera == null) arCamera = Camera.main;
+
+        if (boardCanvas == null)
+        {
+            boardCanvas = FindFirstObjectByType<BoardCanvas>();
+        }
+
+        if (arCamera == null)
+        {
+            arCamera = FindFirstObjectByType<Camera>();
+            if (arCamera == null)
+                Debug.LogError("[PostItPlacementTester] No AR camera found. Please assign one in the Inspector.");
+        }
     }
 
     private void Update()
     {
+        if (boardCanvas == null)
+        {
+            // BoardCanvas is instantiated at runtime (the ARTrackedImageManager's Tracked Image
+            // Prefab), so it won't exist to drag into the Inspector until the target is found.
+            boardCanvas = FindFirstObjectByType<BoardCanvas>();
+            if (boardCanvas == null) return; // Target not detected yet.
+        }
+
         if (!TryGetPointerDown(out Vector2 screenPosition)) return;
         if (requireBoardVisible && !boardCanvas.gameObject.activeInHierarchy) return;
         if (!TryGetLocalPoint(screenPosition, out Vector3 localPoint)) return;

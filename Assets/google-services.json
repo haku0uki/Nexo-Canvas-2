@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "623376075349",
+    "project_id": "nexo-canvas",
+    "storage_bucket": "nexo-canvas.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:623376075349:android:fe8b95824b9f1198e1e2dc",
+        "android_client_info": {
+          "package_name": "com.imp.nexocanvas"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDiQb-SGf6xObod7yEGrJp5KGP7r10yVZA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

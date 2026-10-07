@@ -3,6 +3,7 @@
     <ui:Template name="comment-entry" src="project://database/Assets/_Project/UI/comment-entry.uxml?fileID=9197481963319205126&amp;guid=433050bc0e167e44fbe652e9a4deb5e1&amp;type=3#comment-entry"/>
     <Style src="project://database/Assets/_Project/UI/DefaultStyleSheet.uss?fileID=7433441132597879392&amp;guid=92f105faae8cdfa41a5bffceba250712&amp;type=3#DefaultStyleSheet"/>
     <ui:VisualElement name="root" style="flex-grow: 1; align-items: center;">
+        <ui:VisualElement name="spacer" style="flex-grow: 1; min-height: 100px; min-width: 100%;"/>
         <ui:Instance template="Post-It" style="flex-grow: 1; min-width: 100%; min-height: 45%;"/>
         <ui:ScrollView name="comments-scrollview" style="flex-grow: 0; background-color: rgba(64, 64, 64, 0); min-height: 10%;">
             <ui:Instance template="comment-entry" name="comment-entry"/>
@@ -14,10 +15,10 @@
             <ui:Instance template="comment-entry" name="comment-entry"/>
             <ui:Instance template="comment-entry" name="comment-entry"/>
         </ui:ScrollView>
-        <ui:VisualElement name="comment-composer" class="comment-composer" style="flex-direction: row;">
-            <ui:TextField name="comment-input" multiline="false" placeholder-text="Escribe un comentario..." class="comment-input"/>
-            <ui:Button text="Publicar" name="publish-comment-button" class="publish-button"/>
+        <ui:VisualElement name="comment-composer" class="comment-composer" style="flex-direction: row; min-height: 150px; min-width: 100%; margin-right: 0; margin-left: 0; padding-left: 25px; padding-right: 25px; margin-bottom: 0; padding-bottom: 15px; padding-top: 10px;">
+            <ui:TextField name="comment-input" multiline="false" placeholder-text="Escribe un comentario..." class="comment-input" style="flex-shrink: 1; min-height: 80px;"/>
+            <ui:Button text="Publicar" name="publish-comment-button" class="publish-button" style="flex-shrink: 1; height: 80px; -unity-text-align: middle-right;"/>
         </ui:VisualElement>
-        <ui:Button text="" name="back-button" class="back-button"/>
+        <ui:Button text="" name="back-button" class="back-button" style="top: 2%; right: 2%;"/>
     </ui:VisualElement>
 </ui:UXML>
