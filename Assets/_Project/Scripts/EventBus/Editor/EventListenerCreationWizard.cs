@@ -19,7 +19,7 @@ namespace SheepyCreations.EventBus.Editor
         DropdownField eventTypeDropdown;
         Type[] availableEventTypes;
 
-        [MenuItem("Assets/Create/SheepyCreations/Event Listener", priority = 2)]
+        [MenuItem("Assets/Create/SheepyCreations/Eventbus/Event Listener", priority = 2)]
         public static void ShowWindow()
         {
             var window = GetWindow<EventListenerCreationWizard>(true, "New Event Listener");

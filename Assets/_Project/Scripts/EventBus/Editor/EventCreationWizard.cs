@@ -12,7 +12,7 @@ namespace SheepyCreations.EventBus.Editor
         const string TemplateAssetName = "NewEventTemplate";
         const string DefaultFileName = "NewEvent.cs";
 
-        [MenuItem("Assets/Create/SheepyCreations/Event", priority = 1)]
+        [MenuItem("Assets/Create/SheepyCreations/Eventbus/Event", priority = 1)]
         public static void CreateNewEvent()
         {
             string templatePath = FindTemplatePath();

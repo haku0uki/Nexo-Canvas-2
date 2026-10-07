@@ -31,18 +31,6 @@ public class PostItPlacementTester : MonoBehaviour
     private void Awake()
     {
         if (arCamera == null) arCamera = Camera.main;
-
-        if (boardCanvas == null)
-        {
-            boardCanvas = FindFirstObjectByType<BoardCanvas>();
-        }
-
-        if (arCamera == null)
-        {
-            arCamera = FindFirstObjectByType<Camera>();
-            if (arCamera == null)
-                Debug.LogError("[PostItPlacementTester] No AR camera found. Please assign one in the Inspector.");
-        }
     }
 
     private void Update()
