@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "623376075349",
+    "firebase_url": "https://nexo-canvas-default-rtdb.firebaseio.com/",
     "project_id": "nexo-canvas",
     "storage_bucket": "nexo-canvas.firebasestorage.app"
   },
