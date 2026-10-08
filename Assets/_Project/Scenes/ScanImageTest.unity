@@ -166,6 +166,9 @@ GameObject:
   - component: {fileID: 99561440}
   - component: {fileID: 99561439}
   - component: {fileID: 99561438}
+  - component: {fileID: 99561443}
+  - component: {fileID: 99561442}
+  - component: {fileID: 99561444}
   m_Layer: 0
   m_Name: Post-It Details Panel
   m_TagString: Untagged
@@ -334,9 +337,59 @@ MonoBehaviour:
   contentLabel: {fileID: 99561439}
   commentEntryAsset: {fileID: 9197481963319205126, guid: 433050bc0e167e44fbe652e9a4deb5e1, type: 3}
   commentsContainerName: comments-scrollview
-  commentInput: {fileID: 0}
-  publishButton: {fileID: 0}
-  backButton: {fileID: 0}
+  commentInput: {fileID: 99561443}
+  publishButton: {fileID: 99561442}
+  backButton: {fileID: 99561444}
+--- !u!114 &99561442
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 99561434}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c21dfdd449275ba4fb48dcd83efe6cac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.ButtonBridge
+  targetElementName: publish-comment-button
+  onClick:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &99561443
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 99561434}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8173f1ba0f2ffd34a8ffa8d0759d5229, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.TextFieldBridge
+  targetElementName: comment-input
+  overrideInitialValue: 0
+  initialValue: 
+  onValueChanged:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &99561444
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 99561434}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c21dfdd449275ba4fb48dcd83efe6cac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.ButtonBridge
+  targetElementName: back-button
+  onClick:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &335039838
 GameObject:
   m_ObjectHideFlags: 0
