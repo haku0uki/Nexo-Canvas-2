@@ -334,9 +334,9 @@ MonoBehaviour:
   contentLabel: {fileID: 99561439}
   commentEntryAsset: {fileID: 9197481963319205126, guid: 433050bc0e167e44fbe652e9a4deb5e1, type: 3}
   commentsContainerName: comments-scrollview
-  commentInputName: comment-input
-  publishButtonName: publish-comment-button
-  backButtonName: back-button
+  commentInput: {fileID: 0}
+  publishButton: {fileID: 0}
+  backButton: {fileID: 0}
 --- !u!1 &335039838
 GameObject:
   m_ObjectHideFlags: 0
@@ -727,11 +727,12 @@ MonoBehaviour:
   arCamera: {fileID: 335039844}
   placementPreview: {fileID: 1477883016}
   hudPanel: {fileID: 2141101810}
-  addButtonName: add-postit-button
+  hud: {fileID: 2141101812}
   composerPanel: {fileID: 1321535695}
   textInputName: postit-text-input
-  confirmButtonName: confirm-postit-button
-  cancelButtonName: cancel-postit-button
+  confirmButton: {fileID: 1321535699}
+  cancelButton: {fileID: 1321535698}
+  detailPanel: {fileID: 0}
   surfaceOffset: 0.01
 --- !u!1 &1028204674
 GameObject:
@@ -1345,6 +1346,8 @@ GameObject:
   - component: {fileID: 1321535697}
   - component: {fileID: 1321535696}
   - component: {fileID: 1321535695}
+  - component: {fileID: 1321535699}
+  - component: {fileID: 1321535698}
   m_Layer: 0
   m_Name: Composer Panel
   m_TagString: Untagged
@@ -1437,6 +1440,38 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1845594305}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1321535698
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1321535694}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c21dfdd449275ba4fb48dcd83efe6cac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.ButtonBridge
+  targetElementName: cancel-postit-button
+  onClick:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &1321535699
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1321535694}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c21dfdd449275ba4fb48dcd83efe6cac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.ButtonBridge
+  targetElementName: confirm-postit-button
+  onClick:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1477883012
 GameObject:
   m_ObjectHideFlags: 0
@@ -1908,6 +1943,60 @@ MonoBehaviour:
   m_ShadowLayerMask: 1
   m_RenderingLayers: 1
   m_ShadowRenderingLayers: 1
+--- !u!1 &2079716514
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2079716516}
+  - component: {fileID: 2079716515}
+  m_Layer: 0
+  m_Name: PanelInputConfiguration
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2079716515
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2079716514}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 19106, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.dll::UnityEngine.UIElements.PanelInputConfiguration
+  m_Settings:
+    m_ProcessWorldSpaceInput: 1
+    m_InteractionLayers:
+      serializedVersion: 2
+      m_Bits: 1073741875
+    m_MaxInteractionDistance: Infinity
+    m_DefaultEventCameraIsMainCamera: 1
+    m_EventCameras: []
+    m_PanelInputRedirection: 0
+    m_AutoCreatePanelComponents: 1
+--- !u!4 &2079716516
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2079716514}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2141101807
 GameObject:
   m_ObjectHideFlags: 0
@@ -1919,6 +2008,8 @@ GameObject:
   - component: {fileID: 2141101808}
   - component: {fileID: 2141101809}
   - component: {fileID: 2141101810}
+  - component: {fileID: 2141101812}
+  - component: {fileID: 2141101811}
   m_Layer: 0
   m_Name: HUD panel
   m_TagString: Untagged
@@ -2010,7 +2101,36 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   targetDocument: {fileID: 2141101809}
-  blocksRaycastsOnEmptyArea: 1
+  blocksRaycastsOnEmptyArea: 0
+--- !u!114 &2141101811
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2141101807}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c21dfdd449275ba4fb48dcd83efe6cac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.ButtonBridge
+  targetElementName: add-postit-button
+  onClick:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &2141101812
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2141101807}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 476cf627e19587d4298d276c4c0f6099, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HUD
+  addPostItButton: {fileID: 2141101811}
 --- !u!1001 &8632095057549132635
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2086,3 +2206,4 @@ SceneRoots:
   - {fileID: 1260940611}
   - {fileID: 796252392}
   - {fileID: 8632095057549132635}
+  - {fileID: 2079716516}

@@ -4,28 +4,54 @@ using UnityEngine.UIElements;
 
 public class TextCanvasEntry : BaseCanvasEntry
 {
-    [SerializeField] private UIDocumentPanel panel; // Was UIPanel -- needs RootVisualElement for the click.
+    [SerializeField] private UIDocumentPanel panel;
     [SerializeField] private LabelTextBridge usernameLabel;
     [SerializeField] private LabelTextBridge contentLabel;
 
-    private bool clickRegistered;
+    private VisualElement clickRoot;
+    private bool pendingPresentation;
 
     public override void Populate(PostItData data)
     {
         base.Populate(data);
-        if (usernameLabel != null) usernameLabel.SetText(data.authorId);
-        if (contentLabel != null) contentLabel.SetText(data.contenido);
-        if (panel != null) panel.Show();
-
-        RegisterClickOnce();
+        pendingPresentation = true;
+        TryPresentData();
     }
 
-    // The document root may not exist yet on the first Populate call, so this keeps retrying
-    // (cheap: it only runs until it succeeds once) instead of assuming Awake-time readiness.
-    private void RegisterClickOnce()
+    private void Update()
     {
-        if (clickRegistered || panel == null || panel.RootVisualElement == null) return;
-        panel.RootVisualElement.RegisterCallback<ClickEvent>(_ => RaiseClicked());
-        clickRegistered = true;
+        if (pendingPresentation) TryPresentData();
+    }
+
+    private void TryPresentData()
+    {
+        if (Data == null || panel == null || !panel.IsInitialized) return;
+        VisualElement root = panel.RootVisualElement;
+        if (root == null || root.panel == null) return;
+        if (usernameLabel != null && !usernameLabel.IsBound) return;
+        if (contentLabel != null && !contentLabel.IsBound) return;
+
+        if (usernameLabel != null) usernameLabel.SetText(Data.authorId);
+        if (contentLabel != null) contentLabel.SetText(Data.contenido);
+        panel.Show();
+
+        if (clickRoot != root)
+        {
+            if (clickRoot != null) clickRoot.UnregisterCallback<ClickEvent>(OnEntryClick);
+            clickRoot = root;
+            clickRoot.RegisterCallback<ClickEvent>(OnEntryClick);
+        }
+
+        pendingPresentation = false;
+    }
+
+    private void OnEntryClick(ClickEvent evt)
+    {
+        RaiseClicked();
+    }
+
+    private void OnDestroy()
+    {
+        if (clickRoot != null) clickRoot.UnregisterCallback<ClickEvent>(OnEntryClick);
     }
 }

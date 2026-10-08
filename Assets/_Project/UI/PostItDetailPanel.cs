@@ -16,19 +16,19 @@ public class PostItDetailPanel : MonoBehaviour
     [Header("Comments")]
     [Tooltip("UXML template for a single comment row (matches CommentEntry's constructor).")]
     [SerializeField] private VisualTreeAsset commentEntryAsset;
+    [Tooltip("No bridge type exists for a generic container, so this is still resolved by name.")]
     [SerializeField] private string commentsContainerName = "comments-scrollview";
-    [SerializeField] private string commentInputName = "comment-input";
-    [SerializeField] private string publishButtonName = "publish-comment-button";
-    [SerializeField] private string backButtonName = "back-button";
+    [SerializeField] private TextFieldBridge commentInput;
+    [SerializeField] private ButtonBridge publishButton;
+    [SerializeField] private ButtonBridge backButton;
 
     private VisualElement commentsContainer;
-    private TextField commentInput;
-    private Button publishButton;
-    private Button backButton;
-    private bool elementsResolved;
-
     private readonly Dictionary<string, CommentEntry> comments = new Dictionary<string, CommentEntry>();
     private string currentPostItId;
+
+    // Set by PostItCreationFlow for the whole placement flow, so tapping an existing post-it
+    // doesn't open its detail while a new one is being placed.
+    public bool IsOpeningBlocked { get; set; }
 
     private EventGroup eventGroup;
 
@@ -40,11 +40,17 @@ public class PostItDetailPanel : MonoBehaviour
     private void OnEnable()
     {
         eventGroup.Subscribe<EntryClickedEvent<PostItData>>(OnEntryClicked);
+
+        if (publishButton != null) publishButton.Clicked += PublishComment;
+        if (backButton != null) backButton.Clicked += Close;
     }
 
     private void OnDisable()
     {
         eventGroup.Clear();
+
+        if (publishButton != null) publishButton.Clicked -= PublishComment;
+        if (backButton != null) backButton.Clicked -= Close;
     }
 
     private void OnEntryClicked(EntryClickedEvent<PostItData> evt)
@@ -54,10 +60,11 @@ public class PostItDetailPanel : MonoBehaviour
 
     public void Open(PostItData postIt)
     {
-        // Resolve elements FIRST: the UXML ships 8 preview comment-entry instances (UI Builder
-        // authoring aid), so Close() needs a valid commentsContainer reference to actually clear
-        // them on this very first call -- otherwise they'd render alongside the real Firestore data.
-        ResolveElements();
+        if (IsOpeningBlocked) return;
+
+        // commentsContainer has no bridge type, so it's the only element still resolved by name;
+        // doing it before Close() lets the first Open() clear the 8 UI Builder preview rows too.
+        ResolveCommentsContainer();
         Close(); // Also handles the case where a different post-it's detail was already open.
 
         currentPostItId = postIt.id;
@@ -65,7 +72,7 @@ public class PostItDetailPanel : MonoBehaviour
         if (contentLabel != null) contentLabel.SetText(postIt.contenido);
 
         FirestoreService.Instance.EscucharComentarios(postIt.id, OnCommentsUpdated);
-        if (panel != null) panel.Show();
+        if (panel != null) panel.ShowIsolatedViaController();
     }
 
     public void Close()
@@ -98,7 +105,7 @@ public class PostItDetailPanel : MonoBehaviour
     {
         if (currentPostItId == null || commentInput == null) return;
 
-        string texto = commentInput.value?.Trim();
+        string texto = commentInput.Value?.Trim();
         if (string.IsNullOrEmpty(texto)) return;
 
         string autorId = AuthManager.Instance.CurrentUser != null
@@ -106,24 +113,12 @@ public class PostItDetailPanel : MonoBehaviour
             : "anonimo";
 
         FirestoreService.Instance.PublicarComentario(currentPostItId, autorId, texto);
-        commentInput.value = string.Empty;
+        commentInput.SetValue(string.Empty);
     }
 
-    // The document root may not exist on the very first Open() call, so this resolves lazily
-    // and only once -- same pattern used for the click registration in TextCanvasEntry.
-    private void ResolveElements()
+    private void ResolveCommentsContainer()
     {
-        if (elementsResolved || panel == null || panel.RootVisualElement == null) return;
-
+        if (commentsContainer != null || panel == null || panel.RootVisualElement == null) return;
         panel.TryGetElement(commentsContainerName, out commentsContainer);
-        panel.TryGetElement(commentInputName, out commentInput);
-
-        if (panel.TryGetElement(publishButtonName, out publishButton))
-            publishButton.clicked += PublishComment;
-
-        if (panel.TryGetElement(backButtonName, out backButton))
-            backButton.clicked += Close;
-
-        elementsResolved = true;
     }
 }

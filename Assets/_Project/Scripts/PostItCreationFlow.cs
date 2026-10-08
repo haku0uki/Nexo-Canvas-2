@@ -1,8 +1,10 @@
+using System;
 using UnityEngine;
 using UnityEngine.UIElements;
 using SheepyCreations.UIControl.Runtime;
-using IngameDebugConsole;
 
+// Real "add a post-it" flow: Idle -> SelectingPosition (tap the board) -> Writing (type text) -> publish.
+// Do NOT run this at the same time as PostItPlacementTester; see that file's header.
 public class PostItCreationFlow : MonoBehaviour
 {
     private enum FlowState { Idle, SelectingPosition, Writing }
@@ -15,38 +17,48 @@ public class PostItCreationFlow : MonoBehaviour
     [Tooltip("Optional: shown while selecting a position, moved to the current tap point.")]
     [SerializeField] private Transform placementPreview;
 
-    [Header("UI -- adjust names to your UXML")]
-    [Tooltip("Panel holding the 'Agregar nota' button. Shown while the board is tracked.")]
+    [Header("HUD -- shown only while the board is tracked and nothing else is in progress")]
     [SerializeField] private UIDocumentPanel hudPanel;
-    [SerializeField] private string addButtonName = "add-postit-button";
-    [Tooltip("Panel with the text input and confirm/cancel buttons. Hidden until a position is picked.")]
+    [SerializeField] private HUD hud;
+
+    [Header("Composer -- shown while writing the post-it text")]
     [SerializeField] private UIDocumentPanel composerPanel;
+    [Tooltip("Resolved by name instead of through a TextFieldBridge so the field can be focused (opens the on-screen keyboard).")]
     [SerializeField] private string textInputName = "postit-text-input";
-    [SerializeField] private string confirmButtonName = "confirm-postit-button";
-    [SerializeField] private string cancelButtonName = "cancel-postit-button";
+    [SerializeField] private ButtonBridge confirmButton;
+    [SerializeField] private ButtonBridge cancelButton;
+
+    [Header("Detail panel")]
+    [Tooltip("Blocked from opening during the whole flow, so tapping an existing post-it while placing a new one doesn't open its detail.")]
+    [SerializeField] private PostItDetailPanel detailPanel;
 
     [Header("Behaviour")]
     [SerializeField] private float surfaceOffset = 0.01f;
 
-    private Button addButton;
     private TextField textInput;
-    private Button confirmButton;
-    private Button cancelButton;
-    private bool elementsResolved;
-
     private FlowState state = FlowState.Idle;
     private Vector3 selectedLocalPoint;
+    private bool hudCurrentlyShown;
 
     private void Awake()
     {
         if (arCamera == null) arCamera = Camera.main;
-
-        DebugLogConsole.AddCommand("print_references_state", "Prints the current state of references in PostItCreationFlow.", PrintReferencesState);
     }
 
-    private void OnDestroy()
+    private void OnEnable()
     {
-        DebugLogConsole.RemoveCommand("print_references_state");
+        if (hud != null) hud.AddPostItRequested += BeginPlacement;
+        if (confirmButton != null) confirmButton.Clicked += ConfirmPlacement;
+        if (cancelButton != null) cancelButton.Clicked += CancelPlacement;
+    }
+
+    private void OnDisable()
+    {
+        if (hud != null) hud.AddPostItRequested -= BeginPlacement;
+        if (confirmButton != null) confirmButton.Clicked -= ConfirmPlacement;
+        if (cancelButton != null) cancelButton.Clicked -= CancelPlacement;
+
+        SetDetailPanelBlocked(false); // Never leave the detail panel blocked if this component is disabled mid-flow.
     }
 
     private void Update()
@@ -56,8 +68,7 @@ public class PostItCreationFlow : MonoBehaviour
             boardCanvas = FindFirstObjectByType<BoardCanvas>();
         }
 
-        ResolveElements();
-        UpdateAddButtonAvailability();
+        UpdateHudVisibility();
 
         if (state == FlowState.SelectingPosition)
         {
@@ -65,47 +76,30 @@ public class PostItCreationFlow : MonoBehaviour
         }
     }
 
-    // Same lazy-resolve pattern used elsewhere: the document root may not exist on the first frame.
-    private void ResolveElements()
+    // The HUD only makes sense while the board is tracked and nothing else is in progress.
+    private void UpdateHudVisibility()
     {
-        if (elementsResolved) return;
-        if (hudPanel == null || hudPanel.RootVisualElement == null) return;
-        if (composerPanel == null || composerPanel.RootVisualElement == null) return;
+        if (hudPanel == null || !hudPanel.IsInitialized) return;
 
-        if (hudPanel.TryGetElement(addButtonName, out addButton))
-            addButton.clicked += BeginPlacement;
+        bool shouldShow = boardCanvas != null && boardCanvas.gameObject.activeInHierarchy && state == FlowState.Idle;
+        if (shouldShow == hudCurrentlyShown) return;
 
-        composerPanel.TryGetElement(textInputName, out textInput);
-
-        if (composerPanel.TryGetElement(confirmButtonName, out confirmButton))
-            confirmButton.clicked += ConfirmPlacement;
-
-        if (composerPanel.TryGetElement(cancelButtonName, out cancelButton))
-            cancelButton.clicked += CancelPlacement;
-
-        composerPanel.Hide();
-        elementsResolved = true;
-    }
-
-    private void UpdateAddButtonAvailability()
-    {
-        if (addButton == null) return;
-        bool boardVisible = boardCanvas != null && boardCanvas.gameObject.activeInHierarchy;
-        addButton.SetEnabled(boardVisible && state == FlowState.Idle);
+        hudCurrentlyShown = shouldShow;
+        if (shouldShow) ShowFlowPanel(hudPanel); else HideFlowPanel(hudPanel);
     }
 
     private void BeginPlacement()
     {
-        print("BeginPlacement called");
-        if (state != FlowState.Idle || boardCanvas == null) { print("Cannot begin placement: " + state + " / " + boardCanvas); return; }
+        if (state != FlowState.Idle || boardCanvas == null) return;
         state = FlowState.SelectingPosition;
+        SetDetailPanelBlocked(true);
         if (placementPreview != null) placementPreview.gameObject.SetActive(true);
     }
 
     private void HandlePositionSelection()
     {
         if (!PointerInput.TryGetPointerDown(out Vector2 screenPosition)) return;
-        if (IsPointerOverUI(screenPosition)) return; // A tap on the HUD must never count as a board tap.
+        if (IsPointerOverUI(screenPosition)) return; // A tap on UI controls must never count as a board tap.
         if (!BoardRaycaster.TryGetLocalPoint(boardCanvas, arCamera, screenPosition, surfaceOffset, out Vector3 localPoint)) return;
         if (!boardCanvas.IsInsideBoard(localPoint)) return; // Ignore taps outside the paper; keep selecting.
 
@@ -119,14 +113,17 @@ public class PostItCreationFlow : MonoBehaviour
     private void BeginWriting()
     {
         state = FlowState.Writing;
+        ResolveTextInput();
         if (textInput != null) textInput.value = string.Empty;
-        composerPanel.Show();
+
+        ShowFlowPanel(composerPanel, () =>
+        {
+            if (state == FlowState.Writing) textInput?.Focus();
+        });
     }
 
     private void ConfirmPlacement()
     {
-        print("ConfirmPlacement called");
-        print("TextInput value: " + (textInput != null ? textInput.value : "null"));
         string texto = textInput != null ? textInput.value?.Trim() : null;
         if (string.IsNullOrEmpty(texto)) return; // Nothing to publish; stay in Writing.
 
@@ -146,8 +143,42 @@ public class PostItCreationFlow : MonoBehaviour
     private void ReturnToIdle()
     {
         state = FlowState.Idle;
+        SetDetailPanelBlocked(false);
         if (placementPreview != null) placementPreview.gameObject.SetActive(false);
-        composerPanel.Hide();
+        HideFlowPanel(composerPanel); // The HUD comes back on its own via UpdateHudVisibility.
+    }
+
+    private void SetDetailPanelBlocked(bool blocked)
+    {
+        if (detailPanel != null) detailPanel.IsOpeningBlocked = blocked;
+    }
+
+    private void ResolveTextInput()
+    {
+        if (textInput != null || composerPanel == null) return;
+        composerPanel.TryGetElement(textInputName, out textInput);
+    }
+
+    // Route visibility through the owner so controller rules and events stay consistent.
+    // Standalone panels still work without an extra Inspector reference.
+    private static void ShowFlowPanel(UIPanel panel, Action onComplete = null)
+    {
+        if (panel == null) return;
+
+        if (panel.HasController)
+            panel.Controller.ShowPanel(panel, onComplete: onComplete);
+        else
+            panel.Show(onComplete);
+    }
+
+    private static void HideFlowPanel(UIPanel panel, Action onComplete = null)
+    {
+        if (panel == null) return;
+
+        if (panel.HasController)
+            panel.Controller.HidePanel(panel, fadeDurationSeconds: 0f, onComplete: onComplete);
+        else
+            panel.Hide(0f, onComplete);
     }
 
     private bool IsPointerOverUI(Vector2 screenPosition)
@@ -167,8 +198,8 @@ public class PostItCreationFlow : MonoBehaviour
         Vector2 panelPosition = RuntimePanelUtils.ScreenToPanel(root.panel, uiScreenPosition);
         VisualElement picked = root.panel.Pick(panelPosition);
 
-        // Documents can share a panel. Only this document's controls should block placement;
-        // transparent full-screen containers must allow taps on the AR board.
+        // Documents can share a panel, and a visible UIDocumentPanel root can pick the whole screen,
+        // so only actual controls block placement; empty areas must let the tap reach the AR board.
         if (picked == null || (picked != root && !root.Contains(picked))) return false;
 
         for (VisualElement element = picked; element != null; element = element.parent)
@@ -178,15 +209,5 @@ public class PostItCreationFlow : MonoBehaviour
         }
 
         return false;
-    }
-
-    private void PrintReferencesState()
-    {
-        Debug.Log(
-            "References state: " +
-            "placementPreview: " + placementPreview + " \n " +
-            "textInput: " + textInput + " \n " +
-            "composerPanel: " + composerPanel
-        );
     }
 }
