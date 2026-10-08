@@ -3,10 +3,14 @@ using Firebase;
 using Firebase.Auth;
 using Firebase.Extensions;
 using System;
+using UnityEngine.SceneManagement;
 
 public class AuthManager : MonoBehaviour
 {
     public static AuthManager Instance { get; private set; }
+
+    [Header("Scene Settings")]
+    [SerializeField] private string mainScene = "NexoCanvasScene";
 
     // Eventos para que UIManager y FirestoreService reaccionen al instante
     public event Action OnFirebaseInitialized;
@@ -77,17 +81,28 @@ public class AuthManager : MonoBehaviour
         auth.CreateUserWithEmailAndPasswordAsync(email, password).ContinueWithOnMainThread(task => {
             if (task.IsFaulted)
             {
-                Debug.LogError("Error al registrar: " + task.Exception);
+                // Interceptar el error específico de Firebase para evitar la alerta roja en consola
+                var firebaseEx = task.Exception?.Flatten().InnerException as FirebaseException;
+                if (firebaseEx != null)
+                {
+                    AuthError errorCode = (AuthError)firebaseEx.ErrorCode;
+                    if (errorCode == AuthError.EmailAlreadyInUse)
+                    {
+                        Debug.LogWarning("<b>[Aviso]</b> Este correo ya está registrado. Por favor, selecciona la opción de iniciar sesión.");
+                        return;
+                    }
+                }
+
+                Debug.LogError("Error inesperado al registrar: " + task.Exception);
                 return;
             }
 
             FirebaseUser user = task.Result.User;
             Debug.Log($"<color=green>¡Cuenta creada! Enviando verificación a {user.Email}</color>");
 
-            // Enviar correo de verificación automático al Outlook del alumno
             user.SendEmailVerificationAsync().ContinueWithOnMainThread(verifyTask => {
                 Debug.Log("Correo de verificación enviado. Revisa tu bandeja de entrada de la universidad.");
-                SignOut(); // Forzar cierre de sesión hasta que haga clic en el link
+                SignOut();
             });
         });
     }
@@ -115,6 +130,8 @@ public class AuthManager : MonoBehaviour
             {
                 Debug.Log($"<color=green>Sesión iniciada con éxito: {user.Email}</color>");
                 OnUserLoggedIn?.Invoke(user);
+
+                LoadMainScene();
             }
             else
             {
@@ -122,6 +139,51 @@ public class AuthManager : MonoBehaviour
                 SignOut();
             }
         });
+    }
+
+    public void ReenviarCorreoVerificacion(string email, string password)
+    {
+        if (!ValidarCorreoInstitucional(email))
+        {
+            Debug.LogError("Operación rechazada: El correo no pertenece a la universidad.");
+            return;
+        }
+
+        Debug.Log("Iniciando sesión silenciosa para reenviar correo de verificación...");
+        auth.SignInWithEmailAndPasswordAsync(email, password).ContinueWithOnMainThread(task => {
+            if (task.IsFaulted)
+            {
+                Debug.LogError("No se pudo iniciar sesión para reenviar el correo: " + task.Exception);
+                return;
+            }
+
+            FirebaseUser user = task.Result.User;
+
+            // Enviar el correo de verificación nuevamente
+            user.SendEmailVerificationAsync().ContinueWithOnMainThread(verifyTask => {
+                if (verifyTask.IsCompletedSuccessfully)
+                {
+                    Debug.Log("<color=yellow><b>[Auth]</b> Enlace de verificación reenviado con éxito a tu Outlook.</color>");
+                }
+                else
+                {
+                    Debug.LogError("Error al reenviar el correo de verificación: " + verifyTask.Exception);
+                }
+                SignOut(); // Cerrar sesión inmediatamente por seguridad
+            });
+        });
+    }
+
+    private void LoadMainScene()
+    {
+        if (!string.IsNullOrEmpty(mainScene))
+        {
+            SceneManager.LoadScene(mainScene);
+        }
+        else
+        {
+            Debug.LogError("El nombre de la escena principal está vacío en el AuthManager.");
+        }
     }
 
     public void SignOut()
