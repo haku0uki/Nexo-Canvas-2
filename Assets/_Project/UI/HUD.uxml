@@ -1,6 +1,6 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/_Project/UI/DefaultStyleSheet.uss?fileID=7433441132597879392&amp;guid=92f105faae8cdfa41a5bffceba250712&amp;type=3#DefaultStyleSheet"/>
-    <ui:VisualElement name="root" style="flex-grow: 1; align-items: center; justify-content: flex-end; transition-duration: 0.2s;">
+    <ui:VisualElement name="root" picking-mode="Ignore" style="flex-grow: 1; align-items: center; justify-content: flex-end; transition-duration: 0.2s;">
         <ui:VisualElement style="min-width: 100%; min-height: 25%; justify-content: flex-end; margin-bottom: 0; margin-right: 0; padding-bottom: 5%; padding-right: 5%; padding-left: 5%;">
             <ui:Button text="&#10;" icon-image="project://database/Assets/_Project/2D/A%C3%B1adir%20post%20it%20boton.png?fileID=2092526396&amp;guid=34fc6c635135e1149a79d5cd71c84618&amp;type=3#Añadir post it boton_0" name="add-postit-button" style="background-color: rgba(188, 188, 188, 0); border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0;"/>
         </ui:VisualElement>

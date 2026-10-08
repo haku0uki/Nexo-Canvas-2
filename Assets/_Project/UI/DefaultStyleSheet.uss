@@ -48,6 +48,10 @@
     top: 2%;
     right: 2%;
     transition-duration: 0.2s;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
 }
 
 .back-button:hover {
