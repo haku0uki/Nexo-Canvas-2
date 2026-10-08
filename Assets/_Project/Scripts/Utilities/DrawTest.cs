@@ -89,16 +89,12 @@ public class DrawTest : MonoBehaviour
         // --------------------------------------------------------
         // TOGGLE ERASER
         // --------------------------------------------------------
-
         if (Input.GetKeyDown(KeyCode.E))
         {
             ToggleEraser();
         }
-
-
         // --------------------------------------------------------
         // MOUSE DOWN
-        // --------------------------------------------------------
 
         if (Input.GetMouseButtonDown(0))
         {
@@ -112,33 +108,19 @@ public class DrawTest : MonoBehaviour
             }
         }
 
-
         // --------------------------------------------------------
         // ERASER
-        // --------------------------------------------------------
 
-        if (
-            Input.GetMouseButton(0) &&
-            eraserMode
-        )
+        if (Input.GetMouseButton(0) && eraserMode)
         {
-            Vector3 mouseWorldPosition =
-                GetMouseWorldPosition();
-
-            Vector3 mouseLocalPosition =
-                WorldToDrawingLocal(
-                    mouseWorldPosition
-                );
-
-            EraseAtPosition(
-                mouseLocalPosition
-            );
+            if (TryGetDrawingLocalPosition(out Vector3 mouseLocalPosition))
+            {
+                EraseAtPosition(mouseLocalPosition);
+            }
         }
-
 
         // --------------------------------------------------------
         // MOUSE UP
-        // --------------------------------------------------------
 
         if (Input.GetMouseButtonUp(0))
         {
@@ -266,14 +248,15 @@ public class DrawTest : MonoBehaviour
 
         while (Input.GetMouseButton(0))
         {
-            Vector3 mouseWorldPosition =
-                GetMouseWorldPosition();
+            Vector3 mouseLocalPosition;
 
-
-            Vector3 mouseLocalPosition =
-                WorldToDrawingLocal(
-                    mouseWorldPosition
-                );
+            if (!TryGetDrawingLocalPosition(
+                out mouseLocalPosition
+            ))
+            {
+                yield return null;
+                continue;
+            }
 
 
             // ----------------------------------------------------
@@ -576,34 +559,58 @@ public class DrawTest : MonoBehaviour
 
     // ============================================================
     // COORDINATE CONVERSION
-    private Vector3 GetMouseWorldPosition()
+    private bool TryGetDrawingLocalPosition(
+        out Vector3 localPosition
+    )
     {
+        localPosition = Vector3.zero;
+
         if (Camera.main == null)
         {
             Debug.LogError(
                 "DrawTest: No hay Main Camera."
             );
 
-            return Vector3.zero;
+            return false;
         }
 
-        Vector3 mousePosition =
-            Input.mousePosition;
+        if (drawingContainer == null)
+        {
+            Debug.LogError(
+                "DrawTest: No hay Drawing Container."
+            );
 
-        mousePosition.z =
-            10f;
+            return false;
+        }
 
-        return Camera.main.ScreenToWorldPoint(
-            mousePosition
-        );
-    }
-    private Vector3 WorldToDrawingLocal(
-        Vector3 worldPosition
-    )
-    {
-        return drawingContainer.InverseTransformPoint(
-            worldPosition
-        );
+        Ray ray =
+            Camera.main.ScreenPointToRay(
+                Input.mousePosition
+            );
+
+        Plane drawingPlane =
+            new Plane(
+                drawingContainer.forward,
+                drawingContainer.position
+            );
+
+        if (!drawingPlane.Raycast(
+            ray,
+            out float distance
+        ))
+        {
+            return false;
+        }
+
+        Vector3 worldPosition =
+            ray.GetPoint(distance);
+
+        localPosition =
+            drawingContainer.InverseTransformPoint(
+                worldPosition
+            );
+
+        return true;
     }
 
     // ============================================================
