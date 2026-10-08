@@ -2,7 +2,7 @@
     <ui:Template name="Post-It" src="project://database/Assets/_Project/UI/TextEntry.uxml?fileID=9197481963319205126&amp;guid=b5e02bd02d12aa14fa37217220083dfb&amp;type=3#TextEntry"/>
     <ui:Template name="comment-entry" src="project://database/Assets/_Project/UI/comment-entry.uxml?fileID=9197481963319205126&amp;guid=433050bc0e167e44fbe652e9a4deb5e1&amp;type=3#comment-entry"/>
     <Style src="project://database/Assets/_Project/UI/DefaultStyleSheet.uss?fileID=7433441132597879392&amp;guid=92f105faae8cdfa41a5bffceba250712&amp;type=3#DefaultStyleSheet"/>
-    <ui:VisualElement name="root" class="details-root">
+    <ui:VisualElement name="root" class="details-root" style="background-image: url(&quot;project://database/Assets/_Project/2D/Fondo_nexo_canvas.png?fileID=2800000&amp;guid=974d1778c201b884ea9a35525b90d664&amp;type=3#Fondo_nexo_canvas&quot;); -unity-background-image-tint-color: rgba(67, 67, 67, 0.52);">
         <ui:VisualElement name="spacer" class="details-spacer"/>
         <ui:Instance template="Post-It" class="details-postit"/>
         <ui:ScrollView name="comments-scrollview" class="details-comments">

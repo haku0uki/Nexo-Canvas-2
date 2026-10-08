@@ -274,10 +274,10 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 99561435}
+      - m_Target: {fileID: 2141101810}
         m_TargetAssemblyTypeName: SheepyCreations.UIControl.Runtime.UIDocumentPanel,
           SheepyCreations.UIControl.Runtime
-        m_MethodName: Hide
+        m_MethodName: ShowIsolatedViaController
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1614,6 +1614,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a96feecaf5c506949934da83002320ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AuthManager
+  mainScene: NexoCanvasScene
 --- !u!4 &1730594300
 Transform:
   m_ObjectHideFlags: 0
