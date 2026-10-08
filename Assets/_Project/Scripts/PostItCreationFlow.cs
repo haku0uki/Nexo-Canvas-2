@@ -146,6 +146,7 @@ public class PostItCreationFlow : MonoBehaviour
         SetDetailPanelBlocked(false);
         if (placementPreview != null) placementPreview.gameObject.SetActive(false);
         HideFlowPanel(composerPanel); // The HUD comes back on its own via UpdateHudVisibility.
+        hudPanel.ShowIsolatedViaController();
     }
 
     private void SetDetailPanelBlocked(bool blocked)
