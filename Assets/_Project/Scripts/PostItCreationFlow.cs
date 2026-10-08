@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UIElements;
 using SheepyCreations.UIControl.Runtime;
+using IngameDebugConsole;
 
 public class PostItCreationFlow : MonoBehaviour
 {
@@ -39,6 +40,13 @@ public class PostItCreationFlow : MonoBehaviour
     private void Awake()
     {
         if (arCamera == null) arCamera = Camera.main;
+
+        DebugLogConsole.AddCommand("print_references_state", "Prints the current state of references in PostItCreationFlow.", PrintReferencesState);
+    }
+
+    private void OnDestroy()
+    {
+        DebugLogConsole.RemoveCommand("print_references_state");
     }
 
     private void Update()
@@ -88,7 +96,8 @@ public class PostItCreationFlow : MonoBehaviour
 
     private void BeginPlacement()
     {
-        if (state != FlowState.Idle || boardCanvas == null) return;
+        print("BeginPlacement called");
+        if (state != FlowState.Idle || boardCanvas == null) { print("Cannot begin placement: " + state + " / " + boardCanvas); return; }
         state = FlowState.SelectingPosition;
         if (placementPreview != null) placementPreview.gameObject.SetActive(true);
     }
@@ -116,6 +125,8 @@ public class PostItCreationFlow : MonoBehaviour
 
     private void ConfirmPlacement()
     {
+        print("ConfirmPlacement called");
+        print("TextInput value: " + (textInput != null ? textInput.value : "null"));
         string texto = textInput != null ? textInput.value?.Trim() : null;
         if (string.IsNullOrEmpty(texto)) return; // Nothing to publish; stay in Writing.
 
@@ -148,7 +159,34 @@ public class PostItCreationFlow : MonoBehaviour
     {
         if (uiPanel == null || uiPanel.RootVisualElement == null) return false;
 
-        Vector2 panelPosition = RuntimePanelUtils.ScreenToPanel(uiPanel.RootVisualElement.panel, screenPosition);
-        return uiPanel.RootVisualElement.panel.Pick(panelPosition) != null;
+        VisualElement root = uiPanel.RootVisualElement;
+        if (root.panel == null || root.resolvedStyle.display == DisplayStyle.None) return false;
+
+        // PointerInput uses bottom-left screen coordinates; UI Toolkit uses top-left.
+        Vector2 uiScreenPosition = new Vector2(screenPosition.x, Screen.height - screenPosition.y);
+        Vector2 panelPosition = RuntimePanelUtils.ScreenToPanel(root.panel, uiScreenPosition);
+        VisualElement picked = root.panel.Pick(panelPosition);
+
+        // Documents can share a panel. Only this document's controls should block placement;
+        // transparent full-screen containers must allow taps on the AR board.
+        if (picked == null || (picked != root && !root.Contains(picked))) return false;
+
+        for (VisualElement element = picked; element != null; element = element.parent)
+        {
+            if (element is Button || element is TextField) return true;
+            if (element == root) break;
+        }
+
+        return false;
+    }
+
+    private void PrintReferencesState()
+    {
+        Debug.Log(
+            "References state: " +
+            "placementPreview: " + placementPreview + " \n " +
+            "textInput: " + textInput + " \n " +
+            "composerPanel: " + composerPanel
+        );
     }
 }

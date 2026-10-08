@@ -92,7 +92,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BoardCanvas
   boardSize: {x: 3, y: 2}
   textEntryPrefab: {fileID: 4207078919818142271, guid: 213b27148fd8699419a739ca5d9560c4, type: 3}
-  drawingEntryPrefab: {fileID: 0}
+  drawingEntryPrefab: {fileID: 7799454695240137590, guid: 644d408463c48b34090bead306f70e0d, type: 3}
   promptCanvasTemplate: {fileID: 671575496755714750, guid: 490a33ba443fcd74282110e8c26760f4, type: 3}
   promptList:
   - {fileID: 11400000, guid: 199e45fc9448eb04eae9a19eaa60c222, type: 2}
