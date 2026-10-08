@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6731772083478555578}
   - component: {fileID: 5131534752832327772}
-  - component: {fileID: 6764974870298758674}
   m_Layer: 0
   m_Name: ARCanvas
   m_TagString: Untagged
@@ -47,26 +46,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ARCanvasController
   boardCanvas: {fileID: 9172438229383770118}
---- !u!114 &6764974870298758674
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5780063104596774396}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5d1521fd41311ce4489eddb9126de56c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PostItPlacementTester
-  boardCanvas: {fileID: 9172438229383770118}
-  arCamera: {fileID: 0}
-  hitMarker: {fileID: 0}
-  testAuthorId: test_user_unity
-  testText: Test post-it
-  surfaceOffset: 0.01
-  requireBoardVisible: 0
-  publishToFirestore: 0
 --- !u!1 &5912626958685606820
 GameObject:
   m_ObjectHideFlags: 0

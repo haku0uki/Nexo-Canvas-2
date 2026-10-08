@@ -111,3 +111,18 @@
     color: rgb(0, 0, 0);
     -unity-font-style: bold;
 }
+
+.unity-button {
+    scale: 1 1;
+    transition-duration: 0.2s;
+}
+
+.unity-button:hover {
+    scale: 1.1 1.1 1.1;
+    transition-duration: 0.2s;
+}
+
+.unity-button:active {
+    scale: 0.9 0.9 0.9;
+    transition-duration: 0.1s;
+}

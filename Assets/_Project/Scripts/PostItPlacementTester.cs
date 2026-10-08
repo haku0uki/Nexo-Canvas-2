@@ -1,17 +1,15 @@
 using UnityEngine;
-#if ENABLE_INPUT_SYSTEM
-using UnityEngine.InputSystem;
-#endif
 
 // Temporary test tool: tap (or click) on the board plane to publish a text post-it at that spot.
 // No UI involved -- the text comes from the Inspector.
-// Attach this to an object that is always active (NOT a child of the board, which starts disabled).
+// Do NOT run this at the same time as PostItCreationFlow: both read raw taps each frame and
+// would fight over the same tap. Keep this for quick dev testing in a scene without the real UI.
 public class PostItPlacementTester : MonoBehaviour
 {
     [Header("References")]
     [Tooltip("Optional: leave empty with AR Foundation, since BoardCanvas only exists once the tracked image prefab is instantiated.")]
     [SerializeField] private BoardCanvas boardCanvas;
-    [Tooltip("Leave empty to use Camera.main (the Vuforia AR camera).")]
+    [Tooltip("Leave empty to use Camera.main (the AR camera).")]
     [SerializeField] private Camera arCamera;
     [Tooltip("Optional object moved to the last tapped point, for visual feedback.")]
     [SerializeField] private Transform hitMarker;
@@ -37,15 +35,13 @@ public class PostItPlacementTester : MonoBehaviour
     {
         if (boardCanvas == null)
         {
-            // BoardCanvas is instantiated at runtime (the ARTrackedImageManager's Tracked Image
-            // Prefab), so it won't exist to drag into the Inspector until the target is found.
             boardCanvas = FindFirstObjectByType<BoardCanvas>();
             if (boardCanvas == null) return; // Target not detected yet.
         }
 
-        if (!TryGetPointerDown(out Vector2 screenPosition)) return;
+        if (!PointerInput.TryGetPointerDown(out Vector2 screenPosition)) return;
         if (requireBoardVisible && !boardCanvas.gameObject.activeInHierarchy) return;
-        if (!TryGetLocalPoint(screenPosition, out Vector3 localPoint)) return;
+        if (!BoardRaycaster.TryGetLocalPoint(boardCanvas, arCamera, screenPosition, surfaceOffset, out Vector3 localPoint)) return;
         if (!boardCanvas.IsInsideBoard(localPoint)) return; // Ignore taps outside the paper.
 
         Debug.Log($"[PostItPlacementTester] Local point on board: {localPoint}");
@@ -64,45 +60,5 @@ public class PostItPlacementTester : MonoBehaviour
         }
 
         FirestoreService.Instance.PublicarPostIt(testAuthorId, "texto", testText, localPoint);
-    }
-
-    // Casts a ray through the screen point and intersects it with the board plane (pure math, no collider needed).
-    private bool TryGetLocalPoint(Vector2 screenPosition, out Vector3 localPoint)
-    {
-        Transform boardTransform = boardCanvas.transform;
-        Plane boardPlane = new Plane(boardTransform.up, boardTransform.position);
-        Ray ray = arCamera.ScreenPointToRay(screenPosition);
-
-        if (boardPlane.Raycast(ray, out float distance))
-        {
-            Vector3 worldPoint = ray.GetPoint(distance);
-            localPoint = boardTransform.InverseTransformPoint(worldPoint);
-            localPoint.y += surfaceOffset;
-            return true;
-        }
-
-        localPoint = default;
-        return false;
-    }
-
-    // Works with either input backend; a touch counts as a pointer press on mobile.
-    private bool TryGetPointerDown(out Vector2 screenPosition)
-    {
-#if ENABLE_INPUT_SYSTEM
-        Pointer pointer = Pointer.current;
-        if (pointer != null && pointer.press.wasPressedThisFrame)
-        {
-            screenPosition = pointer.position.ReadValue();
-            return true;
-        }
-#else
-        if (Input.GetMouseButtonDown(0))
-        {
-            screenPosition = Input.mousePosition;
-            return true;
-        }
-#endif
-        screenPosition = default;
-        return false;
     }
 }
