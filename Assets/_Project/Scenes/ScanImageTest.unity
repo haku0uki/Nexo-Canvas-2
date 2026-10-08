@@ -743,7 +743,7 @@ GameObject:
   - component: {fileID: 796252392}
   - component: {fileID: 796252393}
   m_Layer: 0
-  m_Name: PostItPlacementTester
+  m_Name: PostItPlacement
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -785,7 +785,7 @@ MonoBehaviour:
   textInputName: postit-text-input
   confirmButton: {fileID: 1321535699}
   cancelButton: {fileID: 1321535698}
-  detailPanel: {fileID: 0}
+  detailPanel: {fileID: 99561441}
   surfaceOffset: 0.01
 --- !u!1 &1028204674
 GameObject:
