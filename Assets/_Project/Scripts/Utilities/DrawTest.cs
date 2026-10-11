@@ -1,6 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class DrawTest : MonoBehaviour
 {
@@ -8,15 +8,32 @@ public class DrawTest : MonoBehaviour
     // REFERENCES
     // ============================================================
 
-    [Header("LINE PREFAB")]
-    public GameObject linePrefab;
-
-    [Header("DRAWING CONTAINER")]
+    [Header("UI DOCUMENT")]
     [Tooltip(
-        "Debe estar ubicado en el centro del lienzo. " +
-        "Los puntos se guardar�n relativos a este Transform."
+        "Si está vacío se busca en este mismo GameObject."
     )]
-    public Transform drawingContainer;
+    [SerializeField] private UIDocument uiDocument;
+
+    [Tooltip(
+        "Nombre del VisualElement del UXML dentro del cual " +
+        "se crea la superficie de dibujo."
+    )]
+    [SerializeField] private string drawingAreaName = "drawing-area";
+
+
+    // ============================================================
+    // CANVAS
+    // ============================================================
+
+    [Header("CANVAS")]
+    [Tooltip(
+        "Ancho del lienzo en unidades de dibujo. " +
+        "Brush, goma y distancia mínima se expresan en estas " +
+        "unidades, así el dibujo se ve igual en cualquier " +
+        "resolución."
+    )]
+    [Min(0.1f)]
+    [SerializeField] private float canvasWidthUnits = 10f;
 
 
     // ============================================================
@@ -35,7 +52,7 @@ public class DrawTest : MonoBehaviour
 
     [Header("POINT FILTERING")]
     [Tooltip(
-        "Distancia m�nima entre puntos consecutivos."
+        "Distancia mínima entre puntos consecutivos."
     )]
     public float minPointDistance = 0.02f;
 
@@ -70,10 +87,14 @@ public class DrawTest : MonoBehaviour
     // INTERNAL STATE
     // ============================================================
 
-    private Coroutine drawing;
+    private DrawingData currentDrawing =
+        new DrawingData();
 
-    private List<LineRenderer> lines =
-        new List<LineRenderer>();
+    private DrawingSurface surface;
+
+    private StrokeData currentStroke;
+
+    private Vector2 lastPoint;
 
     private bool eraserMode = false;
 
@@ -84,54 +105,159 @@ public class DrawTest : MonoBehaviour
     // UNITY
     // ============================================================
 
-    private void Update()
+    private void OnEnable()
     {
-        // --------------------------------------------------------
-        // TOGGLE ERASER
-        // --------------------------------------------------------
-        if (Input.GetKeyDown(KeyCode.E))
+        TryAttachSurface(false);
+    }
+
+
+    private void Start()
+    {
+        // Si el UXML aún no estaba listo en OnEnable.
+        if (surface == null)
+            TryAttachSurface(true);
+    }
+
+
+    private void OnDisable()
+    {
+        DetachSurface();
+    }
+
+
+    // ============================================================
+    // SURFACE
+    // ============================================================
+
+    private void TryAttachSurface(bool logErrors)
+    {
+        if (surface != null)
+            return;
+
+        if (uiDocument == null)
+            uiDocument = GetComponent<UIDocument>();
+
+        if (uiDocument == null)
         {
-            ToggleEraser();
+            if (logErrors)
+                Debug.LogError(
+                    "DrawTest: No hay UIDocument asignado."
+                );
+
+            return;
         }
-        // --------------------------------------------------------
-        // MOUSE DOWN
 
-        if (Input.GetMouseButtonDown(0))
+        VisualElement root =
+            uiDocument.rootVisualElement;
+
+        if (root == null)
+            return;
+
+        VisualElement area =
+            root.Q<VisualElement>(drawingAreaName);
+
+        if (area == null)
         {
-            if (eraserMode)
-            {
-                StartErase();
-            }
-            else
-            {
-                StartLine();
-            }
+            if (logErrors)
+                Debug.LogError(
+                    "DrawTest: No se encontró el elemento '" +
+                    drawingAreaName + "' en el UXML."
+                );
+
+            return;
         }
 
-        // --------------------------------------------------------
-        // ERASER
+        surface = new DrawingSurface();
 
-        if (Input.GetMouseButton(0) && eraserMode)
+        surface.UnitsWidth = canvasWidthUnits;
+
+        // Ocupa todo el área.
+        surface.style.position = Position.Absolute;
+        surface.style.left = 0;
+        surface.style.top = 0;
+        surface.style.right = 0;
+        surface.style.bottom = 0;
+
+        surface.StrokeStarted += OnStrokeStarted;
+        surface.StrokeMoved += OnStrokeMoved;
+        surface.StrokeEnded += OnStrokeEnded;
+
+        area.Add(surface);
+
+        surface.SetDrawing(currentDrawing);
+
+        Debug.Log(
+            "DrawTest: superficie de dibujo conectada."
+        );
+    }
+
+
+    private void DetachSurface()
+    {
+        if (surface == null)
+            return;
+
+        surface.StrokeStarted -= OnStrokeStarted;
+        surface.StrokeMoved -= OnStrokeMoved;
+        surface.StrokeEnded -= OnStrokeEnded;
+
+        surface.RemoveFromHierarchy();
+
+        surface = null;
+
+        currentStroke = null;
+        eraserActionStarted = false;
+    }
+
+
+    private void RefreshSurface()
+    {
+        if (surface != null)
+            surface.Refresh();
+    }
+
+
+    // ============================================================
+    // INPUT CALLBACKS (posiciones en unidades de dibujo)
+    // ============================================================
+
+    private void OnStrokeStarted(Vector2 position)
+    {
+        if (eraserMode)
         {
-            if (TryGetDrawingLocalPosition(out Vector3 mouseLocalPosition))
-            {
-                EraseAtPosition(mouseLocalPosition);
-            }
+            StartErase();
+
+            EraseAtPosition(position);
         }
-
-        // --------------------------------------------------------
-        // MOUSE UP
-
-        if (Input.GetMouseButtonUp(0))
+        else
         {
-            if (eraserMode)
-            {
-                FinishErase();
-            }
-            else
-            {
-                FinishLine();
-            }
+            StartLine(position);
+        }
+    }
+
+
+    private void OnStrokeMoved(Vector2 position)
+    {
+        if (eraserMode)
+        {
+            EraseAtPosition(position);
+        }
+        else
+        {
+            ContinueLine(position);
+        }
+    }
+
+
+    private void OnStrokeEnded()
+    {
+        if (eraserMode)
+        {
+            FinishErase();
+        }
+        else
+        {
+            FinishLine();
         }
     }
 
@@ -140,159 +266,57 @@ public class DrawTest : MonoBehaviour
     // DRAWING
     // ============================================================
 
-    private void StartLine()
+    private void StartLine(Vector2 position)
     {
         SaveUndoState();
 
-        drawing =
-            StartCoroutine(
-                DrawLine()
-            );
+        currentStroke = new StrokeData();
+
+        currentStroke.width = brushWidth;
+
+        currentStroke.colorHex =
+            ColorUtility.ToHtmlStringRGBA(brushColor);
+
+        currentStroke.points.Add(
+            new Vector2Serialized(position.x, position.y)
+        );
+
+        currentDrawing.strokes.Add(currentStroke);
+
+        lastPoint = position;
+
+        RefreshSurface();
+    }
+
+
+    private void ContinueLine(Vector2 position)
+    {
+        if (currentStroke == null)
+            return;
+
+        // ----------------------------------------------------
+        // MINIMUM POINT DISTANCE
+        // ----------------------------------------------------
+
+        if (Vector2.Distance(position, lastPoint) <
+            minPointDistance)
+        {
+            return;
+        }
+
+        currentStroke.points.Add(
+            new Vector2Serialized(position.x, position.y)
+        );
+
+        lastPoint = position;
+
+        RefreshSurface();
     }
 
 
     private void FinishLine()
     {
-        if (drawing != null)
-        {
-            StopCoroutine(drawing);
-
-            drawing = null;
-        }
-    }
-
-
-    private IEnumerator DrawLine()
-    {
-        if (linePrefab == null)
-        {
-            Debug.LogError(
-                "DrawTest: No hay Line Prefab asignado."
-            );
-
-            yield break;
-        }
-
-
-        if (drawingContainer == null)
-        {
-            Debug.LogError(
-                "DrawTest: No hay Drawing Container asignado."
-            );
-
-            yield break;
-        }
-
-
-        // --------------------------------------------------------
-        // CREATE LINE
-        // --------------------------------------------------------
-
-        GameObject lineObject =
-            Instantiate(
-                linePrefab,
-                drawingContainer
-            );
-
-
-        LineRenderer line =
-            lineObject.GetComponent<LineRenderer>();
-
-
-        if (line == null)
-        {
-            Debug.LogError(
-                "DrawTest: El Line Prefab no tiene LineRenderer."
-            );
-
-            Destroy(lineObject);
-
-            yield break;
-        }
-
-
-        // --------------------------------------------------------
-        // CONFIGURE
-        // --------------------------------------------------------
-
-        line.useWorldSpace = false;
-
-        line.startWidth =
-            brushWidth;
-
-        line.endWidth =
-            brushWidth;
-
-        line.startColor =
-            brushColor;
-
-        line.endColor =
-            brushColor;
-
-        line.positionCount = 0;
-
-
-        lines.Add(line);
-
-
-        // --------------------------------------------------------
-        // DRAW
-        // --------------------------------------------------------
-
-        Vector3 lastPoint =
-            Vector3.zero;
-
-        bool hasLastPoint =
-            false;
-
-
-        while (Input.GetMouseButton(0))
-        {
-            Vector3 mouseLocalPosition;
-
-            if (!TryGetDrawingLocalPosition(
-                out mouseLocalPosition
-            ))
-            {
-                yield return null;
-                continue;
-            }
-
-
-            // ----------------------------------------------------
-            // MINIMUM POINT DISTANCE
-            // ----------------------------------------------------
-
-            if (
-                !hasLastPoint ||
-                Vector3.Distance(
-                    mouseLocalPosition,
-                    lastPoint
-                ) >= minPointDistance
-            )
-            {
-                line.positionCount++;
-
-
-                line.SetPosition(
-                    line.positionCount - 1,
-                    mouseLocalPosition
-                );
-
-
-                lastPoint =
-                    mouseLocalPosition;
-
-                hasLastPoint =
-                    true;
-            }
-
-
-            yield return null;
-        }
-
-
-        drawing = null;
+        currentStroke = null;
     }
 
 
@@ -312,354 +336,198 @@ public class DrawTest : MonoBehaviour
     }
 
 
-    private void EraseAtPosition(
-        Vector3 mousePosition
-    )
+    private void EraseAtPosition(Vector2 position)
     {
-        List<LineRenderer> currentLines =
-            new List<LineRenderer>(lines);
+        List<StrokeData> result =
+            new List<StrokeData>();
 
+        bool anyHit = false;
 
-        foreach (
-            LineRenderer line
-            in currentLines
-        )
+        foreach (StrokeData stroke in currentDrawing.strokes)
         {
-            if (line == null)
-                continue;
-
-
-            int pointCount =
-                line.positionCount;
-
-
-            if (pointCount < 2)
-                continue;
-
-
-            // ----------------------------------------------------
-            // CHECK SEGMENTS
-            // ----------------------------------------------------
-
-            for (
-                int i = 0;
-                i < pointCount - 1;
-                i++
-            )
+            if (stroke == null ||
+                stroke.points == null ||
+                stroke.points.Count == 0)
             {
-                Vector3 pointA =
-                    line.GetPosition(i);
+                continue;
+            }
 
-                Vector3 pointB =
-                    line.GetPosition(i + 1);
+            List<StrokeData> pieces =
+                new List<StrokeData>();
 
+            if (SplitStrokeByEraser(stroke, position, pieces))
+            {
+                anyHit = true;
 
-                float distance =
-                    DistancePointToSegment(
-                        mousePosition,
-                        pointA,
-                        pointB
-                    );
-
-
-                if (
-                    distance <=
-                    eraserRadius
-                )
-                {
-                    // Una pasada completa de goma
-                    // cuenta como una acci�n.
-                    if (!eraserActionStarted)
-                    {
-                        SaveUndoState();
-
-                        eraserActionStarted =
-                            true;
-                    }
-
-
-                    SplitLine(
-                        line,
-                        i
-                    );
-
-
-                    break;
-                }
+                result.AddRange(pieces);
+            }
+            else
+            {
+                result.Add(stroke);
             }
         }
+
+        if (!anyHit)
+            return;
+
+        // Una pasada completa de goma cuenta como una acción.
+        // (currentDrawing aún no fue modificado.)
+        if (!eraserActionStarted)
+        {
+            SaveUndoState();
+
+            eraserActionStarted = true;
+        }
+
+        currentDrawing.strokes = result;
+
+        RefreshSurface();
     }
 
 
     // ============================================================
-    // SPLIT LINE
+    // SPLIT STROKE
     // ============================================================
 
-    private void SplitLine(
-        LineRenderer line,
-        int segmentIndex
+    /// <summary>
+    /// Quita los segmentos que toca la goma y devuelve los
+    /// trozos restantes en 'output'. Devuelve false si la goma
+    /// no tocó el trazo.
+    /// </summary>
+    private bool SplitStrokeByEraser(
+        StrokeData stroke,
+        Vector2 eraserPosition,
+        List<StrokeData> output
     )
     {
-        int pointCount =
-            line.positionCount;
+        List<Vector2Serialized> points = stroke.points;
 
-
-        List<Vector3> firstPart =
-            new List<Vector3>();
-
-        List<Vector3> secondPart =
-            new List<Vector3>();
-
-
-        // --------------------------------------------------------
-        // FIRST PART
-        // --------------------------------------------------------
-
-        for (
-            int i = 0;
-            i <= segmentIndex;
-            i++
-        )
+        // Punto suelto (toque simple).
+        if (points.Count == 1)
         {
-            firstPart.Add(
-                line.GetPosition(i)
-            );
+            return Vector2.Distance(
+                ToVector2(points[0]),
+                eraserPosition
+            ) <= eraserRadius;
         }
 
+        List<StrokeData> parts =
+            new List<StrokeData>();
 
-        // --------------------------------------------------------
-        // SECOND PART
-        // --------------------------------------------------------
+        List<Vector2Serialized> part =
+            new List<Vector2Serialized> { points[0] };
 
-        for (
-            int i = segmentIndex + 1;
-            i < pointCount;
-            i++
-        )
+        bool hit = false;
+
+        for (int i = 0; i < points.Count - 1; i++)
         {
-            secondPart.Add(
-                line.GetPosition(i)
-            );
+            float distance =
+                DistancePointToSegment(
+                    eraserPosition,
+                    ToVector2(points[i]),
+                    ToVector2(points[i + 1])
+                );
+
+            if (distance <= eraserRadius)
+            {
+                hit = true;
+
+                AddPart(parts, part, stroke);
+
+                part =
+                    new List<Vector2Serialized>
+                    {
+                        points[i + 1]
+                    };
+            }
+            else
+            {
+                part.Add(points[i + 1]);
+            }
         }
 
-        // --------------------------------------------------------
-        // STYLE
-
-        float width =
-            line.startWidth;
-
-        Color color =
-            line.startColor;
-
-        // --------------------------------------------------------
-        // REMOVE ORIGINAL
-
-        lines.Remove(line);
-
-        Destroy(
-            line.gameObject
-        );
-
-        // --------------------------------------------------------
-        // CREATE FIRST PART
-
-        if (firstPart.Count >= 2)
-        {
-            CreateLine(
-                firstPart,
-                width,
-                color
-            );
-        }
-
-        // --------------------------------------------------------
-        // CREATE SECOND PART
-
-        if (secondPart.Count >= 2)
-        {
-            CreateLine(
-                secondPart,
-                width,
-                color
-            );
-        }
-    }
-
-    // ============================================================
-    // CREATE LINE
-    private void CreateLine(
-        List<Vector3> points,
-        float width,
-        Color color
-    )
-    {
-        if (
-            points == null ||
-            points.Count < 2
-        )
-        {
-            return;
-        }
-
-        if (linePrefab == null)
-        {
-            Debug.LogError(
-                "DrawTest: No hay Line Prefab asignado."
-            );
-            return;
-        }
-
-        if (drawingContainer == null)
-        {
-            Debug.LogError(
-                "DrawTest: No hay Drawing Container asignado."
-            );
-            return;
-        }
-
-        GameObject lineObject =
-            Instantiate(
-                linePrefab,
-                drawingContainer
-            );
-
-        LineRenderer line =
-            lineObject.GetComponent<LineRenderer>();
-
-        if (line == null)
-        {
-            Destroy(lineObject);
-
-            return;
-        }
-
-        line.useWorldSpace = false;
-
-        line.startWidth =
-            width;
-
-        line.endWidth =
-            width;
-
-        line.startColor =
-            color;
-
-        line.endColor =
-            color;
-
-        line.positionCount =
-            points.Count;
-
-        line.SetPositions(
-            points.ToArray()
-        );
-
-        lines.Add(line);
-    }
-
-    // ============================================================
-    // COORDINATE CONVERSION
-    private bool TryGetDrawingLocalPosition(
-        out Vector3 localPosition
-    )
-    {
-        localPosition = Vector3.zero;
-
-        if (Camera.main == null)
-        {
-            Debug.LogError(
-                "DrawTest: No hay Main Camera."
-            );
-
+        if (!hit)
             return false;
-        }
 
-        if (drawingContainer == null)
-        {
-            Debug.LogError(
-                "DrawTest: No hay Drawing Container."
-            );
+        AddPart(parts, part, stroke);
 
-            return false;
-        }
-
-        Ray ray =
-            Camera.main.ScreenPointToRay(
-                Input.mousePosition
-            );
-
-        Plane drawingPlane =
-            new Plane(
-                drawingContainer.forward,
-                drawingContainer.position
-            );
-
-        if (!drawingPlane.Raycast(
-            ray,
-            out float distance
-        ))
-        {
-            return false;
-        }
-
-        Vector3 worldPosition =
-            ray.GetPoint(distance);
-
-        localPosition =
-            drawingContainer.InverseTransformPoint(
-                worldPosition
-            );
+        output.AddRange(parts);
 
         return true;
     }
 
-    // ============================================================
-    // POINT -> SEGMENT DISTANCE
-    private float DistancePointToSegment(
-        Vector3 point,
-        Vector3 segmentStart,
-        Vector3 segmentEnd
+
+    private void AddPart(
+        List<StrokeData> parts,
+        List<Vector2Serialized> points,
+        StrokeData style
     )
     {
-        Vector3 segment =
+        if (points.Count < 2)
+            return;
+
+        StrokeData stroke = new StrokeData();
+
+        stroke.width = style.width;
+        stroke.colorHex = style.colorHex;
+        stroke.points = points;
+
+        parts.Add(stroke);
+    }
+
+
+    // ============================================================
+    // POINT -> SEGMENT DISTANCE
+    // ============================================================
+
+    private float DistancePointToSegment(
+        Vector2 point,
+        Vector2 segmentStart,
+        Vector2 segmentEnd
+    )
+    {
+        Vector2 segment =
             segmentEnd - segmentStart;
 
         float segmentLengthSquared =
             segment.sqrMagnitude;
 
-        if (
-            segmentLengthSquared ==
-            0f
-        )
+        if (segmentLengthSquared == 0f)
         {
-            return Vector3.Distance(
+            return Vector2.Distance(
                 point,
                 segmentStart
             );
         }
 
         float t =
-            Vector3.Dot(
+            Vector2.Dot(
                 point - segmentStart,
                 segment
             )
             / segmentLengthSquared;
 
-        t =
-            Mathf.Clamp01(t);
+        t = Mathf.Clamp01(t);
 
-        Vector3 closestPoint =
-            segmentStart +
-            segment * t;
+        Vector2 closestPoint =
+            segmentStart + segment * t;
 
-        return Vector3.Distance(
+        return Vector2.Distance(
             point,
             closestPoint
         );
     }
 
+
+    private static Vector2 ToVector2(Vector2Serialized p)
+    {
+        return new Vector2(p.x, p.y);
+    }
+
+
     // ============================================================
     // UNDO
+    // ============================================================
 
     public void Undo()
     {
@@ -675,13 +543,8 @@ public class DrawTest : MonoBehaviour
         // --------------------------------------------------------
         // CURRENT -> REDO
 
-        DrawingData currentState =
-            GetDrawingData();
-
         redoHistory.Add(
-            CloneDrawingData(
-                currentState
-            )
+            CloneDrawingData(currentDrawing)
         );
 
         // --------------------------------------------------------
@@ -693,20 +556,18 @@ public class DrawTest : MonoBehaviour
         DrawingData previousState =
             undoHistory[lastIndex];
 
-        undoHistory.RemoveAt(
-            lastIndex
-        );
+        undoHistory.RemoveAt(lastIndex);
 
         // --------------------------------------------------------
         // RESTORE
 
-        LoadDrawingDataInternal(
-            previousState
-        );
+        LoadDrawingDataInternal(previousState);
     }
+
 
     // ============================================================
     // REDO
+    // ============================================================
 
     public void Redo()
     {
@@ -718,16 +579,12 @@ public class DrawTest : MonoBehaviour
 
             return;
         }
+
         // --------------------------------------------------------
         // CURRENT -> UNDO
 
-        DrawingData currentState =
-            GetDrawingData();
-
         undoHistory.Add(
-            CloneDrawingData(
-                currentState
-            )
+            CloneDrawingData(currentDrawing)
         );
 
         LimitUndoHistory();
@@ -738,47 +595,38 @@ public class DrawTest : MonoBehaviour
         int lastIndex =
             redoHistory.Count - 1;
 
-
         DrawingData nextState =
             redoHistory[lastIndex];
 
-
-        redoHistory.RemoveAt(
-            lastIndex
-        );
-
+        redoHistory.RemoveAt(lastIndex);
 
         // --------------------------------------------------------
         // RESTORE
-        // --------------------------------------------------------
 
-        LoadDrawingDataInternal(
-            nextState
-        );
+        LoadDrawingDataInternal(nextState);
     }
+
+
     // ============================================================
     // SAVE UNDO STATE
+    // ============================================================
 
     private void SaveUndoState()
     {
-        DrawingData currentState =
-            GetDrawingData();
+        undoHistory.Add(
+            CloneDrawingData(currentDrawing)
+        );
 
-
-        DrawingData copy =
-            CloneDrawingData(
-                currentState
-            );
-
-        undoHistory.Add(copy);
-
-        // Una acci�n nueva invalida Redo.
+        // Una acción nueva invalida Redo.
         redoHistory.Clear();
 
         LimitUndoHistory();
     }
+
+
     // ============================================================
     // LIMIT HISTORY
+    // ============================================================
 
     private void LimitUndoHistory()
     {
@@ -789,17 +637,17 @@ public class DrawTest : MonoBehaviour
             return;
         }
 
-        while (
-            undoHistory.Count >
-            maxUndoSteps
-        )
+        while (undoHistory.Count > maxUndoSteps)
         {
             undoHistory.RemoveAt(0);
         }
     }
 
+
     // ============================================================
     // CLONE DRAWING DATA
+    // ============================================================
+
     private DrawingData CloneDrawingData(
         DrawingData source
     )
@@ -808,105 +656,34 @@ public class DrawTest : MonoBehaviour
             return new DrawingData();
 
         string json =
-            DrawingSerializer.Serialize(
-                source
-            );
+            DrawingSerializer.Serialize(source);
 
-        return DrawingSerializer.Deserialize(
-            json
-        );
+        DrawingData copy =
+            DrawingSerializer.Deserialize(json);
+
+        return copy ?? new DrawingData();
     }
+
 
     // ============================================================
     // GET DRAWING DATA
+    // ============================================================
+
+    /// <summary>
+    /// Devuelve el dibujo actual (referencia viva, no copia).
+    /// </summary>
     public DrawingData GetDrawingData()
     {
-        DrawingData drawing =
-            new DrawingData();
-
-
-        foreach (
-            LineRenderer line
-            in lines
-        )
-        {
-            if (line == null)
-                continue;
-
-            StrokeData stroke =
-                LineToStrokeData(
-                    line
-                );
-
-            if (
-                stroke.points != null &&
-                stroke.points.Count >= 2
-            )
-            {
-                drawing.strokes.Add(
-                    stroke
-                );
-            }
-        }
-
-        return drawing;
+        return currentDrawing;
     }
 
 
-    // ============================================================
-    // LINE -> STROKE DATA
-    // ============================================================
-
-    private StrokeData LineToStrokeData(
-        LineRenderer line
-    )
+    public bool HasDrawing()
     {
-        StrokeData stroke =
-            new StrokeData();
-
-
-        // --------------------------------------------------------
-        // WIDTH
-        // --------------------------------------------------------
-
-        stroke.width =
-            line.startWidth;
-
-
-        // --------------------------------------------------------
-        // COLOR -> HEX
-        // --------------------------------------------------------
-
-        stroke.colorHex =
-            ColorUtility.ToHtmlStringRGBA(
-                line.startColor
-            );
-
-
-        // --------------------------------------------------------
-        // POINTS
-        // --------------------------------------------------------
-
-        for (
-            int i = 0;
-            i < line.positionCount;
-            i++
-        )
-        {
-            Vector3 position =
-                line.GetPosition(i);
-
-
-            stroke.points.Add(
-                new Vector2Serialized(
-                    position.x,
-                    position.y
-                )
-            );
-        }
-
-
-        return stroke;
+        return
+            currentDrawing != null &&
+            currentDrawing.strokes != null &&
+            currentDrawing.strokes.Count > 0;
     }
 
 
@@ -914,28 +691,25 @@ public class DrawTest : MonoBehaviour
     // LOAD DRAWING DATA
     // ============================================================
 
-    public void LoadDrawingData(
-        DrawingData data
-    )
+    public void LoadDrawingData(DrawingData data)
     {
         if (data == null)
         {
             Debug.LogWarning(
-                "DrawTest: LoadDrawingData recibi� null."
+                "DrawTest: LoadDrawingData recibió null."
             );
 
             return;
         }
 
-
         // Un dibujo cargado desde fuera
-        // comienza una nueva sesi�n de edici�n.
+        // comienza una nueva sesión de edición.
         undoHistory.Clear();
         redoHistory.Clear();
 
-
+        // Se copia para no modificar el objeto original.
         LoadDrawingDataInternal(
-            data
+            CloneDrawingData(data)
         );
     }
 
@@ -944,174 +718,30 @@ public class DrawTest : MonoBehaviour
     // INTERNAL LOAD
     // ============================================================
 
-    private void LoadDrawingDataInternal(
-        DrawingData data
-    )
+    private void LoadDrawingDataInternal(DrawingData data)
     {
-        ClearDrawingVisualOnly();
+        currentStroke = null;
 
+        eraserActionStarted = false;
 
-        if (data == null)
-            return;
+        currentDrawing =
+            data ?? new DrawingData();
 
-
-        foreach (
-            StrokeData stroke
-            in data.strokes
-        )
+        if (currentDrawing.strokes == null)
         {
-            if (stroke == null)
-                continue;
-
-
-            if (
-                stroke.points == null ||
-                stroke.points.Count < 2
-            )
-            {
-                continue;
-            }
-
-
-            CreateLineFromStroke(
-                stroke
-            );
-        }
-    }
-
-
-    // ============================================================
-    // STROKE -> LINE
-    // ============================================================
-
-    private void CreateLineFromStroke(
-        StrokeData stroke
-    )
-    {
-        if (
-            stroke == null ||
-            stroke.points == null ||
-            stroke.points.Count < 2
-        )
-        {
-            return;
+            currentDrawing.strokes =
+                new List<StrokeData>();
         }
 
+        currentDrawing.strokes.RemoveAll(
+            s =>
+                s == null ||
+                s.points == null ||
+                s.points.Count == 0
+        );
 
-        if (linePrefab == null)
-        {
-            Debug.LogError(
-                "DrawTest: No hay Line Prefab asignado."
-            );
-
-            return;
-        }
-
-
-        if (drawingContainer == null)
-        {
-            Debug.LogError(
-                "DrawTest: No hay Drawing Container."
-            );
-
-            return;
-        }
-
-
-        GameObject lineObject =
-            Instantiate(
-                linePrefab,
-                drawingContainer
-            );
-
-
-        LineRenderer line =
-            lineObject.GetComponent<LineRenderer>();
-
-
-        if (line == null)
-        {
-            Destroy(lineObject);
-
-            return;
-        }
-
-
-        line.useWorldSpace = false;
-
-
-        // --------------------------------------------------------
-        // WIDTH
-        // --------------------------------------------------------
-
-        line.startWidth =
-            stroke.width;
-
-        line.endWidth =
-            stroke.width;
-
-
-        // --------------------------------------------------------
-        // HEX -> COLOR
-        // --------------------------------------------------------
-
-        Color color;
-
-
-        if (
-            !ColorUtility.TryParseHtmlString(
-                "#" + stroke.colorHex,
-                out color
-            )
-        )
-        {
-            Debug.LogWarning(
-                "DrawTest: No se pudo interpretar el color " +
-                stroke.colorHex
-            );
-
-            color =
-                Color.black;
-        }
-
-
-        line.startColor =
-            color;
-
-        line.endColor =
-            color;
-
-
-        // --------------------------------------------------------
-        // POINTS
-        // --------------------------------------------------------
-
-        line.positionCount =
-            stroke.points.Count;
-
-
-        for (
-            int i = 0;
-            i < stroke.points.Count;
-            i++
-        )
-        {
-            Vector2Serialized point =
-                stroke.points[i];
-
-
-            line.SetPosition(
-                i,
-                new Vector3(
-                    point.x,
-                    point.y,
-                    0f
-                )
-            );
-        }
-
-
-        lines.Add(line);
+        if (surface != null)
+            surface.SetDrawing(currentDrawing);
     }
 
 
@@ -1123,35 +753,7 @@ public class DrawTest : MonoBehaviour
     {
         SaveUndoState();
 
-        ClearDrawingVisualOnly();
-    }
-
-
-    private void ClearDrawingVisualOnly()
-    {
-        if (drawing != null)
-        {
-            StopCoroutine(drawing);
-
-            drawing = null;
-        }
-
-
-        foreach (
-            LineRenderer line
-            in lines
-        )
-        {
-            if (line != null)
-            {
-                Destroy(
-                    line.gameObject
-                );
-            }
-        }
-
-
-        lines.Clear();
+        LoadDrawingDataInternal(new DrawingData());
     }
 
 
@@ -1159,39 +761,27 @@ public class DrawTest : MonoBehaviour
     // BRUSH SETTINGS
     // ============================================================
 
-    public void SetBrushWidth(
-        float width
-    )
+    public void SetBrushWidth(float width)
     {
         brushWidth =
-            Mathf.Max(
-                0f,
-                width
-            );
+            Mathf.Max(0f, width);
     }
 
 
-    public void SetBrushColor(
-        Color color
-    )
+    public void SetBrushColor(Color color)
     {
-        brushColor =
-            color;
+        brushColor = color;
     }
+
 
     // ============================================================
     // ERASER SETTINGS
     // ============================================================
 
-    public void SetEraserRadius(
-        float radius
-    )
+    public void SetEraserRadius(float radius)
     {
         eraserRadius =
-            Mathf.Max(
-                0f,
-                radius
-            );
+            Mathf.Max(0f, radius);
     }
 
 
@@ -1199,20 +789,21 @@ public class DrawTest : MonoBehaviour
     // ERASER MODE
     // ============================================================
 
-    public void SetEraserMode(
-        bool enabled
-    )
+    public bool IsEraserMode()
     {
-        eraserMode =
-            enabled;
+        return eraserMode;
+    }
+
+
+    public void SetEraserMode(bool enabled)
+    {
+        eraserMode = enabled;
     }
 
 
     public void ToggleEraser()
     {
-        eraserMode =
-            !eraserMode;
-
+        eraserMode = !eraserMode;
 
         Debug.Log(
             eraserMode
@@ -1242,12 +833,13 @@ public class DrawTest : MonoBehaviour
         );
     }
 
+
     // ============================================================
     // FIRESTORE
     // ============================================================
 
     /// <summary>
-    /// Publica el dibujo completo como un �nico PostIt
+    /// Publica el dibujo completo como un único PostIt
     /// de tipo "dibujo".
     /// </summary>
     public void PublicarDibujoEnFirestore(
@@ -1264,9 +856,7 @@ public class DrawTest : MonoBehaviour
             return;
         }
 
-        string json = GetDrawingJson();
-
-        if (string.IsNullOrEmpty(json))
+        if (!HasDrawing())
         {
             Debug.LogWarning(
                 "DrawTest: No hay dibujo para publicar."
@@ -1278,7 +868,7 @@ public class DrawTest : MonoBehaviour
         FirestoreService.Instance.PublicarPostIt(
             authorId,
             "dibujo",
-            json,
+            GetDrawingJson(),
             posRelativa
         );
 
@@ -1287,11 +877,10 @@ public class DrawTest : MonoBehaviour
         );
     }
 
+
     // ============================================================
     // FIRESTORE - TEST
     // ============================================================
-
-
 
     [Header("FIRESTORE TEST")]
     [SerializeField]
@@ -1301,40 +890,12 @@ public class DrawTest : MonoBehaviour
     private Vector3 testPosition = Vector3.zero;
 
 
-
     [ContextMenu("Publicar dibujo en Firestore")]
     public void PublicarDibujoTest()
     {
-        if (FirestoreService.Instance == null)
-        {
-            Debug.LogError(
-                "DrawTest: No existe FirestoreService en la escena."
-            );
-
-            return;
-        }
-
-        string json = GetDrawingJson();
-
-        if (string.IsNullOrEmpty(json))
-        {
-            Debug.LogWarning(
-                "DrawTest: No hay dibujo para publicar."
-            );
-
-            return;
-        }
-
-        FirestoreService.Instance.PublicarPostIt(
+        PublicarDibujoEnFirestore(
             testAuthorId,
-            "dibujo",
-            json,
             testPosition
         );
-
-        Debug.Log(
-            "DrawTest: dibujo enviado a Firestore."
-        );
     }
-
 }

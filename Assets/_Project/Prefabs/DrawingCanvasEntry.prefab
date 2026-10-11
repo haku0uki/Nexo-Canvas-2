@@ -91,9 +91,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6206632201be2d49801546ef316c8c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DrawingRenderer
-  linePrefab: {fileID: 1761355496237886678, guid: 045ea1e6694a89243b2a8d04e2f1d338, type: 3}
-  scale: 1
-  centerDrawing: 1
+  uiDocument: {fileID: 5325520802600071614}
+  containerName: drawing-view
+  canvasWidthUnits: 10
+  fitDrawing: 1
+  padding: 8
 --- !u!1 &6648620653618874702
 GameObject:
   m_ObjectHideFlags: 0
@@ -108,7 +110,7 @@ GameObject:
   - component: {fileID: 7202657785922999577}
   - component: {fileID: 2930434747002557534}
   m_Layer: 0
-  m_Name: TextEntryPanel
+  m_Name: DrawRenderPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -143,7 +145,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.dll::UnityEngine.UIElements.UIDocument
   m_PanelSettings: {fileID: 11400000, guid: 23f85d4d04f085b4a969360fb5e0048d, type: 2}
   m_ParentUI: {fileID: 0}
-  sourceAsset: {fileID: 9197481963319205126, guid: b5e02bd02d12aa14fa37217220083dfb, type: 3}
+  sourceAsset: {fileID: 9197481963319205126, guid: 15120bb5ec8abb64fb3fe27a80a9aac3, type: 3}
   m_SortingOrder: 0
   m_Position: 0
   m_WorldSpaceSizeMode: 1
@@ -173,7 +175,7 @@ MonoBehaviour:
   startHidden: 1
   persistence: 0
   panelCloseMode: 0
-  panelName: TextEntryPanel
+  panelName: DrawRenderPanel
   panelId: 
   definition: {fileID: 0}
   suppressEventsOnInitialVisualState: 0
