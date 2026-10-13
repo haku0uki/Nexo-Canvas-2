@@ -79,9 +79,13 @@ public class FirestoreService : MonoBehaviour
     }
 
     // 2. Publicar un nuevo post-it (Texto o Dibujo) con su posicion local
-    public void PublicarPostIt(string autorId, string tipo, string contenido, Vector3 posRelativa)
+    public bool PublicarPostIt(string autorId, string tipo, string contenido, Vector3 posRelativa)
     {
-        if (postitsCollection == null) return;
+        if (postitsCollection == null)
+        {
+            Debug.LogWarning("FirestoreService: Firestore todavía no está inicializado, no se publicó el post-it.");
+            return false;
+        }
 
         var datosPostit = new Dictionary<string, object> {
             { "authorId", autorId },
@@ -95,7 +99,13 @@ public class FirestoreService : MonoBehaviour
             { "timestamp", FieldValue.ServerTimestamp }
         };
 
-        postitsCollection.AddAsync(datosPostit);
+        postitsCollection.AddAsync(datosPostit).ContinueWithOnMainThread(task =>
+        {
+            if (task.IsFaulted || task.IsCanceled)
+                Debug.LogError("FirestoreService: error al publicar el post-it: " + task.Exception);
+        });
+
+        return true;
     }
 
     // 3. Mover un post-it existente (Solo actualiza el campo de coordenadas en la nube)
@@ -169,6 +179,65 @@ public class FirestoreService : MonoBehaviour
         };
 
         coleccionComentarios.AddAsync(datosComentario);
+    }
+
+    // 6. Obtener un post-it puntual por el id de su documento (una sola lectura, sin listener)
+    public void ObtenerPostIt(string postItId, Action<PostItData> onResult)
+    {
+        if (postitsCollection == null)
+        {
+            Debug.LogWarning("FirestoreService: Firestore todavía no está inicializado.");
+            onResult?.Invoke(null);
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(postItId))
+        {
+            Debug.LogWarning("FirestoreService: el id del post-it está vacío.");
+            onResult?.Invoke(null);
+            return;
+        }
+
+        postitsCollection.Document(postItId.Trim()).GetSnapshotAsync().ContinueWithOnMainThread(task =>
+        {
+            if (task.IsFaulted || task.IsCanceled)
+            {
+                Debug.LogError("FirestoreService: error al leer el post-it: " + task.Exception);
+                onResult?.Invoke(null);
+                return;
+            }
+
+            DocumentSnapshot doc = task.Result;
+
+            if (!doc.Exists)
+            {
+                Debug.LogWarning("FirestoreService: no existe un post-it con id '" + postItId + "'.");
+                onResult?.Invoke(null);
+                return;
+            }
+
+            PostItData data = new PostItData();
+            data.id = doc.Id;
+
+            string authorId, tipo, contenido;
+            doc.TryGetValue("authorId", out authorId);
+            doc.TryGetValue("tipo", out tipo);
+            doc.TryGetValue("contenido", out contenido);
+
+            data.authorId = authorId;
+            data.tipo = tipo;
+            data.contenido = contenido;
+
+            Dictionary<string, object> pos;
+            if (doc.TryGetValue("posicionRelativa", out pos) && pos != null)
+            {
+                if (pos.ContainsKey("x")) data.posX = Convert.ToSingle(pos["x"]);
+                if (pos.ContainsKey("y")) data.posY = Convert.ToSingle(pos["y"]);
+                if (pos.ContainsKey("z")) data.posZ = Convert.ToSingle(pos["z"]);
+            }
+
+            onResult?.Invoke(data);
+        });
     }
 
     private void OnDestroy()

@@ -39,6 +39,20 @@ public class DrawingRenderer : MonoBehaviour
     [SerializeField]
     private float padding = 8f;
 
+    [Header("TEST")]
+    [Tooltip(
+        "Id del documento en la colección 'postits' de Firestore."
+    )]
+    [SerializeField]
+    private string testPostItId;
+
+    [Tooltip(
+        "Alternativa sin red: pega aquí el campo 'contenido'."
+    )]
+    [TextArea(5, 15)]
+    [SerializeField]
+    private string testJson;
+
     private DrawingSurface surface;
 
     private DrawingData currentDrawing;
@@ -57,6 +71,20 @@ public class DrawingRenderer : MonoBehaviour
     private void OnDisable()
     {
         Detach();
+    }
+
+
+    // Cuando BoardCanvas instancia el prefab y llama a SetDrawing en el
+    // mismo frame, el UIDocument puede no tener todavía su árbol listo.
+    // Mientras haya un dibujo pendiente, se reintenta cada frame (en
+    // silencio) hasta conectarlo.
+    private void Update()
+    {
+        if (surface != null || currentDrawing == null)
+            return;
+
+        if (TryAttach(false))
+            surface.SetDrawing(currentDrawing);
     }
 
 
@@ -121,10 +149,149 @@ public class DrawingRenderer : MonoBehaviour
 
 
     // ============================================================
+    // TEST
+    // ============================================================
+
+    /// <summary>
+    /// Descarga un post-it de Firestore por su id y muestra
+    /// su dibujo.
+    /// </summary>
+    public void LoadFromPostIt(string postItId)
+    {
+        if (FirestoreService.Instance == null)
+        {
+            Debug.LogError(
+                "DrawingRenderer: No existe FirestoreService en la escena."
+            );
+
+            return;
+        }
+
+        FirestoreService.Instance.ObtenerPostIt(
+            postItId,
+            data =>
+            {
+                if (data == null)
+                    return;
+
+                if (data.tipo != "dibujo")
+                {
+                    Debug.LogWarning(
+                        "DrawingRenderer: El post-it '" +
+                        data.id +
+                        "' es de tipo '" +
+                        data.tipo +
+                        "', no de dibujo."
+                    );
+
+                    return;
+                }
+
+                DrawingData drawing =
+                    DrawingSerializer.Deserialize(data.contenido);
+
+                if (
+                    drawing == null ||
+                    drawing.strokes == null ||
+                    drawing.strokes.Count == 0
+                )
+                {
+                    Debug.LogWarning(
+                        "DrawingRenderer: El post-it '" +
+                        data.id +
+                        "' no tiene trazos."
+                    );
+
+                    return;
+                }
+
+                Debug.Log(
+                    "DrawingRenderer: Mostrando " +
+                    drawing.strokes.Count +
+                    " trazos del post-it " +
+                    data.id +
+                    "."
+                );
+
+                SetDrawing(drawing);
+            }
+        );
+    }
+
+
+    [ContextMenu("Cargar post-it por id")]
+    private void LoadTestPostIt()
+    {
+        if (!Application.isPlaying)
+        {
+            Debug.LogWarning(
+                "DrawingRenderer: Entra en Play para probar el dibujo."
+            );
+
+            return;
+        }
+
+        LoadFromPostIt(testPostItId);
+    }
+
+
+    [ContextMenu("Mostrar JSON de prueba")]
+    private void ShowTestJson()
+    {
+        if (!Application.isPlaying)
+        {
+            Debug.LogWarning(
+                "DrawingRenderer: Entra en Play para probar el dibujo."
+            );
+
+            return;
+        }
+
+        DrawingData drawing;
+
+        try
+        {
+            drawing =
+                DrawingSerializer.Deserialize(testJson);
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError(
+                "DrawingRenderer: El JSON de prueba no es válido.\n" +
+                e.Message
+            );
+
+            return;
+        }
+
+        if (
+            drawing == null ||
+            drawing.strokes == null ||
+            drawing.strokes.Count == 0
+        )
+        {
+            Debug.LogWarning(
+                "DrawingRenderer: El JSON de prueba no tiene trazos."
+            );
+
+            return;
+        }
+
+        Debug.Log(
+            "DrawingRenderer: Mostrando " +
+            drawing.strokes.Count +
+            " trazos."
+        );
+
+        SetDrawing(drawing);
+    }
+
+
+    // ============================================================
     // INTERNAL
     // ============================================================
 
-    private bool TryAttach()
+    private bool TryAttach(bool logIfMissing = true)
     {
         if (surface != null)
             return true;
@@ -146,10 +313,11 @@ public class DrawingRenderer : MonoBehaviour
 
         if (container == null)
         {
-            Debug.LogWarning(
-                "DrawingRenderer: No se encontró el elemento '" +
-                containerName + "' en el UXML."
-            );
+            if (logIfMissing)
+                Debug.LogWarning(
+                    "DrawingRenderer: No se encontró el elemento '" +
+                    containerName + "' en el UXML."
+                );
 
             return false;
         }

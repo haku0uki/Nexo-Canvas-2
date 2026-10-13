@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UIElements;
 
 public class DrawEntry : MonoBehaviour
@@ -8,6 +9,31 @@ public class DrawEntry : MonoBehaviour
 
     [Header("UI DOCUMENT")]
     [SerializeField] private UIDocument uiDocument;
+
+    [Header("PUBLISH")]
+    [Tooltip(
+        "Solo para probar en el Editor cuando no hay sesión iniciada. " +
+        "En el juego se usa el usuario autenticado."
+    )]
+    [SerializeField] private string editorTestAuthorId = "test-user";
+
+    [Tooltip(
+        "Posición relativa del post-it en el tablero."
+    )]
+    [SerializeField] private Vector3 postItPosition = Vector3.zero;
+
+    [Header("EVENTS")]
+    [Tooltip(
+        "Se invoca después de publicar. " +
+        "Conéctalo para volver al HUD."
+    )]
+    public UnityEvent onPublished;
+
+    [Tooltip(
+        "Se invoca al cancelar. " +
+        "Conéctalo para volver al HUD."
+    )]
+    public UnityEvent onCancelled;
 
     private Slider brushSizeSlider;
     private Slider eraserSizeSlider;
@@ -34,6 +60,54 @@ public class DrawEntry : MonoBehaviour
     private void OnEnable()
     {
         Initialize();
+    }
+
+
+    // ============================================================
+    // PUBLIC API
+    // ============================================================
+
+    /// <summary>
+    /// Define dónde queda el post-it en el tablero.
+    /// Llamar antes de mostrar el panel.
+    /// </summary>
+    public void Configure(Vector3 newPostItPosition)
+    {
+        postItPosition = newPostItPosition;
+    }
+
+
+    // ============================================================
+    // AUTHOR
+    // ============================================================
+
+    private bool TryGetAuthorId(out string id)
+    {
+        id = null;
+
+        if (
+            AuthManager.Instance != null &&
+            AuthManager.Instance.CurrentUser != null
+        )
+        {
+            id = AuthManager.Instance.CurrentUser.UserId;
+
+            return !string.IsNullOrEmpty(id);
+        }
+
+#if UNITY_EDITOR
+        // Permite probar la escena sin pasar por el login.
+        Debug.LogWarning(
+            "DrawEntry: No hay sesión iniciada, " +
+            "se usa el autor de prueba."
+        );
+
+        id = editorTestAuthorId;
+
+        return true;
+#else
+        return false;
+#endif
     }
 
 
@@ -350,6 +424,11 @@ public class DrawEntry : MonoBehaviour
         drawTest.SetBrushColor(
             color
         );
+
+        // Elegir un color vuelve al modo pincel.
+        drawTest.SetEraserMode(
+            false
+        );
     }
 
 
@@ -405,15 +484,57 @@ public class DrawEntry : MonoBehaviour
         if (drawTest == null)
             return;
 
-        string json =
-            drawTest.GetDrawingJson();
+        if (!drawTest.HasDrawing())
+        {
+            Debug.LogWarning(
+                "DrawEntry: No hay nada dibujado para publicar."
+            );
+
+            return;
+        }
+
+        if (FirestoreService.Instance == null)
+        {
+            Debug.LogError(
+                "DrawEntry: No existe FirestoreService en la escena."
+            );
+
+            return;
+        }
+
+        string id;
+
+        if (!TryGetAuthorId(out id))
+        {
+            Debug.LogError(
+                "DrawEntry: No hay un usuario autenticado."
+            );
+
+            return;
+        }
+
+        bool sent =
+            FirestoreService.Instance.PublicarPostIt(
+                id,
+                "dibujo",
+                drawTest.GetDrawingJson(),
+                postItPosition
+            );
+
+        // Si Firestore aún no está listo, el dibujo se conserva.
+        if (!sent)
+            return;
 
         Debug.Log(
-            "DrawEntry: Dibujo generado.\n" +
-            json
+            "DrawEntry: Dibujo publicado en Firestore."
         );
 
-        // Firestore lo conectamos después.
+        // Deja el lienzo limpio para el próximo dibujo.
+        drawTest.LoadDrawingData(
+            new DrawingData()
+        );
+
+        onPublished?.Invoke();
     }
 
 
@@ -427,7 +548,14 @@ public class DrawEntry : MonoBehaviour
             "DrawEntry: Cancelar."
         );
 
-        // Lo conectamos después al flujo de creación.
+        if (drawTest != null)
+        {
+            drawTest.LoadDrawingData(
+                new DrawingData()
+            );
+        }
+
+        onCancelled?.Invoke();
     }
 
 

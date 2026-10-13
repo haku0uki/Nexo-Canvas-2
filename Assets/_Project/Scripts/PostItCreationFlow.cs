@@ -3,11 +3,15 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using SheepyCreations.UIControl.Runtime;
 
-// Real "add a post-it" flow: Idle -> SelectingPosition (tap the board) -> Writing (type text) -> publish.
+// Real "add a post-it" flow:
+//   Idle -> SelectingPosition (tap the board) -> Writing (type text)  -> publish   [text]
+//   Idle -> SelectingPosition (tap the board) -> Drawing (draw panel) -> publish   [drawing]
 // Do NOT run this at the same time as PostItPlacementTester; see that file's header.
 public class PostItCreationFlow : MonoBehaviour
 {
-    private enum FlowState { Idle, SelectingPosition, Writing }
+    private enum FlowState { Idle, SelectingPosition, Writing, Drawing }
+
+    private enum PostItKind { Text, Drawing }
 
     [Header("References")]
     [Tooltip("Optional: leave empty with AR Foundation, since BoardCanvas only exists once the tracked image prefab is instantiated.")]
@@ -20,6 +24,8 @@ public class PostItCreationFlow : MonoBehaviour
     [Header("HUD -- shown only while the board is tracked and nothing else is in progress")]
     [SerializeField] private UIDocumentPanel hudPanel;
     [SerializeField] private HUD hud;
+    [Tooltip("ButtonBridge on the HUD panel targeting the 'add-drawing-button' element of the HUD UXML.")]
+    [SerializeField] private ButtonBridge addDrawingButton;
 
     [Header("Composer -- shown while writing the post-it text")]
     [SerializeField] private UIDocumentPanel composerPanel;
@@ -27,6 +33,12 @@ public class PostItCreationFlow : MonoBehaviour
     [SerializeField] private string textInputName = "postit-text-input";
     [SerializeField] private ButtonBridge confirmButton;
     [SerializeField] private ButtonBridge cancelButton;
+
+    [Header("Drawing -- shown while drawing the post-it")]
+    [Tooltip("The DrawEntryPanel (UIDocumentPanel on the same object as DrawEntry).")]
+    [SerializeField] private UIDocumentPanel drawPanel;
+    [Tooltip("Publishes the drawing itself; this flow only gives it the board position and listens for Published / Cancelled.")]
+    [SerializeField] private DrawEntry drawEntry;
 
     [Header("Detail panel")]
     [Tooltip("Blocked from opening during the whole flow, so tapping an existing post-it while placing a new one doesn't open its detail.")]
@@ -37,6 +49,7 @@ public class PostItCreationFlow : MonoBehaviour
 
     private TextField textInput;
     private FlowState state = FlowState.Idle;
+    private PostItKind pendingKind = PostItKind.Text;
     private Vector3 selectedLocalPoint;
     private bool hudCurrentlyShown;
 
@@ -47,16 +60,30 @@ public class PostItCreationFlow : MonoBehaviour
 
     private void OnEnable()
     {
-        if (hud != null) hud.AddPostItRequested += BeginPlacement;
+        if (hud != null) hud.AddPostItRequested += BeginTextPlacement;
+        if (addDrawingButton != null) addDrawingButton.Clicked += BeginDrawingPlacement;
         if (confirmButton != null) confirmButton.Clicked += ConfirmPlacement;
         if (cancelButton != null) cancelButton.Clicked += CancelPlacement;
+
+        if (drawEntry != null)
+        {
+            drawEntry.onPublished.AddListener(OnDrawingFinished);
+            drawEntry.onCancelled.AddListener(OnDrawingFinished);
+        }
     }
 
     private void OnDisable()
     {
-        if (hud != null) hud.AddPostItRequested -= BeginPlacement;
+        if (hud != null) hud.AddPostItRequested -= BeginTextPlacement;
+        if (addDrawingButton != null) addDrawingButton.Clicked -= BeginDrawingPlacement;
         if (confirmButton != null) confirmButton.Clicked -= ConfirmPlacement;
         if (cancelButton != null) cancelButton.Clicked -= CancelPlacement;
+
+        if (drawEntry != null)
+        {
+            drawEntry.onPublished.RemoveListener(OnDrawingFinished);
+            drawEntry.onCancelled.RemoveListener(OnDrawingFinished);
+        }
 
         SetDetailPanelBlocked(false); // Never leave the detail panel blocked if this component is disabled mid-flow.
     }
@@ -88,9 +115,15 @@ public class PostItCreationFlow : MonoBehaviour
         if (shouldShow) ShowFlowPanel(hudPanel); else HideFlowPanel(hudPanel);
     }
 
-    private void BeginPlacement()
+    // Both HUD buttons start the same placement step; only what happens after the tap differs.
+    private void BeginTextPlacement() => BeginPlacement(PostItKind.Text);
+
+    private void BeginDrawingPlacement() => BeginPlacement(PostItKind.Drawing);
+
+    private void BeginPlacement(PostItKind kind)
     {
         if (state != FlowState.Idle || boardCanvas == null) return;
+        pendingKind = kind;
         state = FlowState.SelectingPosition;
         SetDetailPanelBlocked(true);
         if (placementPreview != null) placementPreview.gameObject.SetActive(true);
@@ -107,7 +140,7 @@ public class PostItCreationFlow : MonoBehaviour
         if (placementPreview != null)
             placementPreview.position = boardCanvas.transform.TransformPoint(localPoint);
 
-        BeginWriting();
+        if (pendingKind == PostItKind.Drawing) BeginDrawing(); else BeginWriting();
     }
 
     private void BeginWriting()
@@ -120,6 +153,27 @@ public class PostItCreationFlow : MonoBehaviour
         {
             if (state == FlowState.Writing) textInput?.Focus();
         });
+    }
+
+    private void BeginDrawing()
+    {
+        if (drawEntry == null || drawPanel == null)
+        {
+            Debug.LogError("PostItCreationFlow: Draw Entry / Draw Panel are not assigned.");
+            ReturnToIdle();
+            return;
+        }
+
+        state = FlowState.Drawing;
+        drawEntry.Configure(selectedLocalPoint); // DrawEntry publishes the post-it at this board position.
+        ShowFlowPanel(drawPanel);
+    }
+
+    // DrawEntry already published (or cancelled) by itself; the flow only has to close the panel.
+    private void OnDrawingFinished()
+    {
+        if (state != FlowState.Drawing) return;
+        ReturnToIdle();
     }
 
     private void ConfirmPlacement()
@@ -146,6 +200,7 @@ public class PostItCreationFlow : MonoBehaviour
         SetDetailPanelBlocked(false);
         if (placementPreview != null) placementPreview.gameObject.SetActive(false);
         HideFlowPanel(composerPanel); // The HUD comes back on its own via UpdateHudVisibility.
+        HideFlowPanel(drawPanel);
         hudPanel.ShowIsolatedViaController();
     }
 
@@ -184,7 +239,9 @@ public class PostItCreationFlow : MonoBehaviour
 
     private bool IsPointerOverUI(Vector2 screenPosition)
     {
-        return PanelContainsPoint(hudPanel, screenPosition) || PanelContainsPoint(composerPanel, screenPosition);
+        return PanelContainsPoint(hudPanel, screenPosition)
+            || PanelContainsPoint(composerPanel, screenPosition)
+            || PanelContainsPoint(drawPanel, screenPosition);
     }
 
     private bool PanelContainsPoint(UIDocumentPanel uiPanel, Vector2 screenPosition)

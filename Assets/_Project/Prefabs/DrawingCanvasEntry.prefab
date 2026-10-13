@@ -46,6 +46,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49b2c858e54bb4a47aaabc06a989156f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DrawingCanvasEntry
+  panel: {fileID: 2651362040357246222}
+  usernameLabel: {fileID: 7202657785922999577}
+  contentLabel: {fileID: 0}
   drawingRenderer: {fileID: 2809849229890571680}
 --- !u!1 &2951113391391269545
 GameObject:
@@ -96,6 +99,8 @@ MonoBehaviour:
   canvasWidthUnits: 10
   fitDrawing: 1
   padding: 8
+  testPostItId: 
+  testJson: 
 --- !u!1 &6648620653618874702
 GameObject:
   m_ObjectHideFlags: 0
@@ -108,7 +113,6 @@ GameObject:
   - component: {fileID: 5325520802600071614}
   - component: {fileID: 2651362040357246222}
   - component: {fileID: 7202657785922999577}
-  - component: {fileID: 2930434747002557534}
   m_Layer: 0
   m_Name: DrawRenderPanel
   m_TagString: Untagged
@@ -216,18 +220,3 @@ MonoBehaviour:
   targetElementName: username-label-postit
   overrideInitialValue: 1
   initialValue: Usuario
---- !u!114 &2930434747002557534
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6648620653618874702}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 111e034da0efe6f4f8247690407bf89d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.LabelTextBridge
-  targetElementName: content-label-postit
-  overrideInitialValue: 1
-  initialValue: Contenido omg 123
