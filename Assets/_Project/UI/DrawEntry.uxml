@@ -1,4 +1,4 @@
-﻿<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/_Project/UI/DefaultStyleSheet.uss?fileID=7433441132597879392&amp;guid=92f105faae8cdfa41a5bffceba250712&amp;type=3#DefaultStyleSheet"/>
     <ui:VisualElement name="root" class="draw-entry-root">
         <ui:VisualElement name="background" class="post-it-amarillo" style="bottom: 778px; right: -585px; width: 100%; top: 8%; height: 58%; aspect-ratio: auto;">
@@ -28,4 +28,5 @@
             <ui:Button name="cancel-button" text="Cancelar" class="cancel-button"/>
         </ui:VisualElement>
     </ui:VisualElement>
+    <ui:Button text="" name="back-button" class="back-button"/>
 </ui:UXML>
