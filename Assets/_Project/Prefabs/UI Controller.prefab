@@ -1,0 +1,742 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1036083895687957060
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6235364157187200637}
+  - component: {fileID: 3168243366308579934}
+  - component: {fileID: 3451893166534952564}
+  - component: {fileID: 6695903130002349266}
+  - component: {fileID: 682245663932005421}
+  - component: {fileID: 2981851038343012746}
+  - component: {fileID: 4487286392715288066}
+  m_Layer: 0
+  m_Name: Post-It Details Panel
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6235364157187200637
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1036083895687957060}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6366715202211226945}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3168243366308579934
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1036083895687957060}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.dll::UnityEngine.UIElements.UIDocument
+  m_PanelSettings: {fileID: 11400000, guid: fec9bf6fa4770294a919da19c7dfd501, type: 2}
+  m_ParentUI: {fileID: 0}
+  sourceAsset: {fileID: 9197481963319205126, guid: 3028f0c7d842170428f0185a057667f8, type: 3}
+  m_SortingOrder: 0
+  m_Position: 0
+  m_WorldSpaceSizeMode: 1
+  m_WorldSpaceWidth: 1920
+  m_WorldSpaceHeight: 1080
+  m_PivotReferenceSize: 0
+  m_Pivot: 0
+  m_WorldSpaceCollider: {fileID: 0}
+--- !u!114 &3451893166534952564
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1036083895687957060}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9dfb9f5942acaac4d91e8307ec2eecda, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.UIDocumentPanel
+  ownership: 0
+  explicitController: {fileID: 0}
+  controllerKey: 
+  panelOrder: 2147483647
+  panelPriorityName: 
+  panelInteractionMode: 0
+  startHidden: 1
+  persistence: 0
+  panelCloseMode: 0
+  panelName: Post-It Details Panel
+  panelId: 
+  definition: {fileID: 0}
+  suppressEventsOnInitialVisualState: 0
+  transition: 1
+  transitionDuration: 0.2
+  blockingScope: 0
+  blockedPanels: []
+  allowedPanels: []
+  onEarlyPanelShowed:
+    m_PersistentCalls:
+      m_Calls: []
+  onPanelShowed:
+    m_PersistentCalls:
+      m_Calls: []
+  onEarlyPanelHidden:
+    m_PersistentCalls:
+      m_Calls: []
+  onPanelHidden:
+    m_PersistentCalls:
+      m_Calls: []
+  onPanelInitialized:
+    m_PersistentCalls:
+      m_Calls: []
+  targetDocument: {fileID: 3168243366308579934}
+  blocksRaycastsOnEmptyArea: 1
+--- !u!114 &6695903130002349266
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1036083895687957060}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69f715cb3d747a44a9b62795defb49e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PostItDetailPanel
+  panel: {fileID: 3451893166534952564}
+  authorLabel: {fileID: 682245663932005421}
+  contentLabel: {fileID: 2981851038343012746}
+  commentEntryAsset: {fileID: 9197481963319205126, guid: 433050bc0e167e44fbe652e9a4deb5e1, type: 3}
+  commentsContainerName: comments-scrollview
+  commentInput: {fileID: 0}
+  publishButton: {fileID: 0}
+  backButton: {fileID: 0}
+--- !u!114 &682245663932005421
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1036083895687957060}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 111e034da0efe6f4f8247690407bf89d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.LabelTextBridge
+  targetElementName: username-label-postit
+  overrideInitialValue: 0
+  initialValue: 
+--- !u!114 &2981851038343012746
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1036083895687957060}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 111e034da0efe6f4f8247690407bf89d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.LabelTextBridge
+  targetElementName: content-label-postit
+  overrideInitialValue: 0
+  initialValue: 
+--- !u!114 &4487286392715288066
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1036083895687957060}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c21dfdd449275ba4fb48dcd83efe6cac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.ButtonBridge
+  targetElementName: back-button
+  onClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5884519097426197703}
+        m_TargetAssemblyTypeName: SheepyCreations.UIControl.Runtime.UIDocumentPanel,
+          SheepyCreations.UIControl.Runtime
+        m_MethodName: ShowIsolatedViaController
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!1 &3026753735900230139
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5354446624812325869}
+  - component: {fileID: 3718578383100498039}
+  - component: {fileID: 6220163249794791825}
+  - component: {fileID: 9178127005120889622}
+  - component: {fileID: 7358077751160053849}
+  m_Layer: 0
+  m_Name: Composer Panel
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5354446624812325869
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3026753735900230139}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6366715202211226945}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3718578383100498039
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3026753735900230139}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.dll::UnityEngine.UIElements.UIDocument
+  m_PanelSettings: {fileID: 11400000, guid: fec9bf6fa4770294a919da19c7dfd501, type: 2}
+  m_ParentUI: {fileID: 0}
+  sourceAsset: {fileID: 9197481963319205126, guid: e7692788a6a3dd643be1a7b5767f9b1e, type: 3}
+  m_SortingOrder: 0
+  m_Position: 0
+  m_WorldSpaceSizeMode: 1
+  m_WorldSpaceWidth: 1920
+  m_WorldSpaceHeight: 1080
+  m_PivotReferenceSize: 0
+  m_Pivot: 0
+  m_WorldSpaceCollider: {fileID: 0}
+--- !u!114 &6220163249794791825
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3026753735900230139}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9dfb9f5942acaac4d91e8307ec2eecda, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.UIDocumentPanel
+  ownership: 0
+  explicitController: {fileID: 0}
+  controllerKey: 
+  panelOrder: 2147483647
+  panelPriorityName: 
+  panelInteractionMode: 0
+  startHidden: 1
+  persistence: 0
+  panelCloseMode: 0
+  panelName: Composer Panel
+  panelId: 
+  definition: {fileID: 0}
+  suppressEventsOnInitialVisualState: 0
+  transition: 0
+  transitionDuration: 0.2
+  blockingScope: 0
+  blockedPanels: []
+  allowedPanels: []
+  onEarlyPanelShowed:
+    m_PersistentCalls:
+      m_Calls: []
+  onPanelShowed:
+    m_PersistentCalls:
+      m_Calls: []
+  onEarlyPanelHidden:
+    m_PersistentCalls:
+      m_Calls: []
+  onPanelHidden:
+    m_PersistentCalls:
+      m_Calls: []
+  onPanelInitialized:
+    m_PersistentCalls:
+      m_Calls: []
+  targetDocument: {fileID: 3718578383100498039}
+  blocksRaycastsOnEmptyArea: 1
+--- !u!114 &9178127005120889622
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3026753735900230139}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c21dfdd449275ba4fb48dcd83efe6cac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.ButtonBridge
+  targetElementName: confirm-postit-button
+  onClick:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &7358077751160053849
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3026753735900230139}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c21dfdd449275ba4fb48dcd83efe6cac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.ButtonBridge
+  targetElementName: cancel-postit-button
+  onClick:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!1 &4014213275639423545
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3869922479560621127}
+  - component: {fileID: 6046052650816970869}
+  - component: {fileID: 5884519097426197703}
+  - component: {fileID: 6934075215876988497}
+  - component: {fileID: 2957805217573817550}
+  m_Layer: 0
+  m_Name: HUD panel
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3869922479560621127
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4014213275639423545}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6366715202211226945}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6046052650816970869
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4014213275639423545}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.dll::UnityEngine.UIElements.UIDocument
+  m_PanelSettings: {fileID: 11400000, guid: fec9bf6fa4770294a919da19c7dfd501, type: 2}
+  m_ParentUI: {fileID: 0}
+  sourceAsset: {fileID: 9197481963319205126, guid: b850ea5191fe8f146b6959bcea17195a, type: 3}
+  m_SortingOrder: 0
+  m_Position: 0
+  m_WorldSpaceSizeMode: 1
+  m_WorldSpaceWidth: 1920
+  m_WorldSpaceHeight: 1080
+  m_PivotReferenceSize: 0
+  m_Pivot: 0
+  m_WorldSpaceCollider: {fileID: 0}
+--- !u!114 &5884519097426197703
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4014213275639423545}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9dfb9f5942acaac4d91e8307ec2eecda, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.UIDocumentPanel
+  ownership: 0
+  explicitController: {fileID: 0}
+  controllerKey: 
+  panelOrder: 2147483647
+  panelPriorityName: 
+  panelInteractionMode: 0
+  startHidden: 1
+  persistence: 0
+  panelCloseMode: 0
+  panelName: HUD panel
+  panelId: 
+  definition: {fileID: 0}
+  suppressEventsOnInitialVisualState: 0
+  transition: 1
+  transitionDuration: 0.1
+  blockingScope: 0
+  blockedPanels: []
+  allowedPanels: []
+  onEarlyPanelShowed:
+    m_PersistentCalls:
+      m_Calls: []
+  onPanelShowed:
+    m_PersistentCalls:
+      m_Calls: []
+  onEarlyPanelHidden:
+    m_PersistentCalls:
+      m_Calls: []
+  onPanelHidden:
+    m_PersistentCalls:
+      m_Calls: []
+  onPanelInitialized:
+    m_PersistentCalls:
+      m_Calls: []
+  targetDocument: {fileID: 6046052650816970869}
+  blocksRaycastsOnEmptyArea: 0
+--- !u!114 &6934075215876988497
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4014213275639423545}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 476cf627e19587d4298d276c4c0f6099, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HUD
+  addPostItButton: {fileID: 2957805217573817550}
+--- !u!114 &2957805217573817550
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4014213275639423545}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c21dfdd449275ba4fb48dcd83efe6cac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.ButtonBridge
+  targetElementName: add-postit-button
+  onClick:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!1 &5325943946582358193
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6366715202211226945}
+  - component: {fileID: 8710886186796338184}
+  - component: {fileID: 3092849244702499121}
+  - component: {fileID: 4329278444410375752}
+  m_Layer: 0
+  m_Name: UI Controller
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6366715202211226945
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5325943946582358193}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 6235364157187200637}
+  - {fileID: 3869922479560621127}
+  - {fileID: 5354446624812325869}
+  - {fileID: 5067386342709596924}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8710886186796338184
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5325943946582358193}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 367fbcf750d97e54dbb059f9a98849ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.UIController
+  controllerKey: 
+  navigationParent: {fileID: 0}
+  inheritServices: 0
+  isolationMode: 0
+  handlesGlobalCloseInput: 1
+  initializeOnStart: 1
+  childPanels:
+  - {fileID: 3451893166534952564}
+  - {fileID: 5884519097426197703}
+  - {fileID: 6220163249794791825}
+  - {fileID: 6544054786074969715}
+  inspectorReferences: []
+  showInitialPanelOnInitialize: 1
+  initialPanel: {fileID: 5884519097426197703}
+  onAnyPanelShown:
+    m_PersistentCalls:
+      m_Calls: []
+  onAnyPanelHidden:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &3092849244702499121
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5325943946582358193}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cea8c1b6c943852448bbb2fe0029ee78, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.PanelBlockingModule
+--- !u!114 &4329278444410375752
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5325943946582358193}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b9406a58f1775d46aa3ecae8c1deba7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.NavigationHistoryModule
+  goBackInput:
+    m_UseReference: 0
+    m_Action:
+      m_Name: Go Back Input
+      m_Type: 0
+      m_ExpectedControlType: 
+      m_Id: 5417b21b-3e61-454a-9600-c7dec22e1069
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings: []
+      m_Flags: 0
+    m_Reference: {fileID: 0}
+  goBackKey: 0
+  onHistoryEmpty:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!1 &6795011105327758453
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5067386342709596924}
+  - component: {fileID: 7745314002671660418}
+  - component: {fileID: 6544054786074969715}
+  - component: {fileID: 9138215598524686990}
+  - component: {fileID: 8450021091169534892}
+  - component: {fileID: 9126923283329957399}
+  - component: {fileID: 8250925282327782475}
+  m_Layer: 0
+  m_Name: DrawEntryPanel
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5067386342709596924
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6795011105327758453}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6366715202211226945}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7745314002671660418
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6795011105327758453}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.dll::UnityEngine.UIElements.UIDocument
+  m_PanelSettings: {fileID: 11400000, guid: fec9bf6fa4770294a919da19c7dfd501, type: 2}
+  m_ParentUI: {fileID: 0}
+  sourceAsset: {fileID: 9197481963319205126, guid: a523193f27b98a44bad8f535e9b627e0, type: 3}
+  m_SortingOrder: 0
+  m_Position: 0
+  m_WorldSpaceSizeMode: 1
+  m_WorldSpaceWidth: 1920
+  m_WorldSpaceHeight: 1080
+  m_PivotReferenceSize: 0
+  m_Pivot: 0
+  m_WorldSpaceCollider: {fileID: 0}
+--- !u!114 &6544054786074969715
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6795011105327758453}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9dfb9f5942acaac4d91e8307ec2eecda, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.UIDocumentPanel
+  ownership: 0
+  explicitController: {fileID: 0}
+  controllerKey: 
+  panelOrder: 2147483647
+  panelPriorityName: 
+  panelInteractionMode: 0
+  startHidden: 1
+  persistence: 0
+  panelCloseMode: 0
+  panelName: DrawEntryPanel
+  panelId: 
+  definition: {fileID: 0}
+  suppressEventsOnInitialVisualState: 0
+  transition: 0
+  transitionDuration: 0.2
+  blockingScope: 0
+  blockedPanels: []
+  allowedPanels: []
+  onEarlyPanelShowed:
+    m_PersistentCalls:
+      m_Calls: []
+  onPanelShowed:
+    m_PersistentCalls:
+      m_Calls: []
+  onEarlyPanelHidden:
+    m_PersistentCalls:
+      m_Calls: []
+  onPanelHidden:
+    m_PersistentCalls:
+      m_Calls: []
+  onPanelInitialized:
+    m_PersistentCalls:
+      m_Calls: []
+  targetDocument: {fileID: 7745314002671660418}
+  blocksRaycastsOnEmptyArea: 1
+--- !u!114 &9138215598524686990
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6795011105327758453}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 111e034da0efe6f4f8247690407bf89d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.LabelTextBridge
+  targetElementName: username-label-postit
+  overrideInitialValue: 1
+  initialValue: Usuario
+--- !u!114 &8450021091169534892
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6795011105327758453}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 111e034da0efe6f4f8247690407bf89d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.LabelTextBridge
+  targetElementName: content-label-postit
+  overrideInitialValue: 1
+  initialValue: Contenido omg 123
+--- !u!114 &9126923283329957399
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6795011105327758453}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 696c2bc6fc5bed54ca731a259afe2006, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DrawEntry
+  drawTest: {fileID: 8250925282327782475}
+  uiDocument: {fileID: 0}
+--- !u!114 &8250925282327782475
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6795011105327758453}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7a2e3f8e83876d4ba8e485cee64fc74, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DrawTest
+  uiDocument: {fileID: 0}
+  drawingAreaName: drawing-area
+  canvasWidthUnits: 10
+  brushWidth: 0.05
+  brushColor: {r: 0, g: 0, b: 0, a: 1}
+  minPointDistance: 0.02
+  eraserRadius: 0.15
+  maxUndoSteps: 30
+  testAuthorId: test-user
+  testPosition: {x: 0, y: 0, z: 0}

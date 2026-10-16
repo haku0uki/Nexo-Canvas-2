@@ -166,9 +166,6 @@ GameObject:
   - component: {fileID: 99561440}
   - component: {fileID: 99561439}
   - component: {fileID: 99561438}
-  - component: {fileID: 99561443}
-  - component: {fileID: 99561442}
-  - component: {fileID: 99561444}
   m_Layer: 0
   m_Name: Post-It Details Panel
   m_TagString: Untagged
@@ -337,59 +334,57 @@ MonoBehaviour:
   contentLabel: {fileID: 99561439}
   commentEntryAsset: {fileID: 9197481963319205126, guid: 433050bc0e167e44fbe652e9a4deb5e1, type: 3}
   commentsContainerName: comments-scrollview
-  commentInput: {fileID: 99561443}
-  publishButton: {fileID: 99561442}
-  backButton: {fileID: 99561444}
---- !u!114 &99561442
+  commentInput: {fileID: 0}
+  publishButton: {fileID: 0}
+  backButton: {fileID: 0}
+--- !u!1 &139788665
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 139788667}
+  - component: {fileID: 139788666}
+  m_Layer: 0
+  m_Name: DrawingCanvasEntry
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &139788666
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 99561434}
+  m_GameObject: {fileID: 139788665}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c21dfdd449275ba4fb48dcd83efe6cac, type: 3}
+  m_Script: {fileID: 11500000, guid: 49b2c858e54bb4a47aaabc06a989156f, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.ButtonBridge
-  targetElementName: publish-comment-button
-  onClick:
-    m_PersistentCalls:
-      m_Calls: []
---- !u!114 &99561443
-MonoBehaviour:
+  m_EditorClassIdentifier: Assembly-CSharp::DrawingCanvasEntry
+  panel: {fileID: 0}
+  usernameLabel: {fileID: 0}
+  contentLabel: {fileID: 0}
+  drawingRenderer: {fileID: 1470295766}
+--- !u!4 &139788667
+Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 99561434}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8173f1ba0f2ffd34a8ffa8d0759d5229, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.TextFieldBridge
-  targetElementName: comment-input
-  overrideInitialValue: 0
-  initialValue: 
-  onValueChanged:
-    m_PersistentCalls:
-      m_Calls: []
---- !u!114 &99561444
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 99561434}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c21dfdd449275ba4fb48dcd83efe6cac, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.ButtonBridge
-  targetElementName: back-button
-  onClick:
-    m_PersistentCalls:
-      m_Calls: []
+  m_GameObject: {fileID: 139788665}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 427.3364, y: 201.05287, z: 473.06595}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &335039838
 GameObject:
   m_ObjectHideFlags: 0
@@ -743,7 +738,7 @@ GameObject:
   - component: {fileID: 796252392}
   - component: {fileID: 796252393}
   m_Layer: 0
-  m_Name: PostItPlacement
+  m_Name: PostItPlacementTester
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -780,13 +775,65 @@ MonoBehaviour:
   arCamera: {fileID: 335039844}
   placementPreview: {fileID: 1477883016}
   hudPanel: {fileID: 2141101810}
-  hud: {fileID: 2141101812}
+  hud: {fileID: 1294188444}
+  addDrawingButton: {fileID: 1294188442}
   composerPanel: {fileID: 1321535695}
   textInputName: postit-text-input
   confirmButton: {fileID: 1321535699}
   cancelButton: {fileID: 1321535698}
+  drawPanel: {fileID: 1123912167}
+  drawEntry: {fileID: 1123912164}
   detailPanel: {fileID: 99561441}
   surfaceOffset: 0.01
+--- !u!1 &936949340
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 936949342}
+  - component: {fileID: 936949341}
+  m_Layer: 0
+  m_Name: BoardCanvas
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!114 &936949341
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 936949340}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 194f5c4160c3d2d48b1c213aaeba96cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BoardCanvas
+  boardSize: {x: 0.297, y: 0.21}
+  textEntryPrefab: {fileID: 0}
+  drawingEntryPrefab: {fileID: 0}
+  promptCanvasTemplate: {fileID: 0}
+  promptList: []
+--- !u!4 &936949342
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 936949340}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1028204674
 GameObject:
   m_ObjectHideFlags: 0
@@ -999,6 +1046,282 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1123912161
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1123912162}
+  - component: {fileID: 1123912168}
+  - component: {fileID: 1123912167}
+  - component: {fileID: 1123912164}
+  - component: {fileID: 1123912163}
+  - component: {fileID: 1123912171}
+  - component: {fileID: 1123912170}
+  - component: {fileID: 1123912169}
+  m_Layer: 0
+  m_Name: DrawEntryPanel
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1123912162
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1123912161}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1845594305}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1123912163
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1123912161}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7a2e3f8e83876d4ba8e485cee64fc74, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DrawTest
+  uiDocument: {fileID: 1123912168}
+  drawingAreaName: drawing-area
+  canvasWidthUnits: 10
+  brushWidth: 0.05
+  brushColor: {r: 0, g: 0, b: 0, a: 1}
+  minPointDistance: 0.02
+  eraserRadius: 0.15
+  maxUndoSteps: 30
+  testAuthorId: test-user
+  testPosition: {x: 0, y: 0, z: 0}
+--- !u!114 &1123912164
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1123912161}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 696c2bc6fc5bed54ca731a259afe2006, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DrawEntry
+  drawTest: {fileID: 1123912163}
+  uiDocument: {fileID: 1123912168}
+  editorTestAuthorId: test-user
+  postItPosition: {x: 0, y: 0, z: 0}
+  onPublished:
+    m_PersistentCalls:
+      m_Calls: []
+  onCancelled:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &1123912167
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1123912161}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9dfb9f5942acaac4d91e8307ec2eecda, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.UIDocumentPanel
+  ownership: 0
+  explicitController: {fileID: 0}
+  controllerKey: 
+  panelOrder: 2147483647
+  panelPriorityName: 
+  panelInteractionMode: 0
+  startHidden: 1
+  persistence: 0
+  panelCloseMode: 0
+  panelName: DrawEntryPanel
+  panelId: 
+  definition: {fileID: 0}
+  suppressEventsOnInitialVisualState: 0
+  transition: 0
+  transitionDuration: 0.2
+  blockingScope: 0
+  blockedPanels: []
+  allowedPanels: []
+  onEarlyPanelShowed:
+    m_PersistentCalls:
+      m_Calls: []
+  onPanelShowed:
+    m_PersistentCalls:
+      m_Calls: []
+  onEarlyPanelHidden:
+    m_PersistentCalls:
+      m_Calls: []
+  onPanelHidden:
+    m_PersistentCalls:
+      m_Calls: []
+  onPanelInitialized:
+    m_PersistentCalls:
+      m_Calls: []
+  targetDocument: {fileID: 1123912168}
+  blocksRaycastsOnEmptyArea: 1
+--- !u!114 &1123912168
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1123912161}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.dll::UnityEngine.UIElements.UIDocument
+  m_PanelSettings: {fileID: 11400000, guid: fec9bf6fa4770294a919da19c7dfd501, type: 2}
+  m_ParentUI: {fileID: 0}
+  sourceAsset: {fileID: 9197481963319205126, guid: a523193f27b98a44bad8f535e9b627e0, type: 3}
+  m_SortingOrder: 0
+  m_Position: 0
+  m_WorldSpaceSizeMode: 1
+  m_WorldSpaceWidth: 1920
+  m_WorldSpaceHeight: 1080
+  m_PivotReferenceSize: 0
+  m_Pivot: 0
+  m_WorldSpaceCollider: {fileID: 0}
+--- !u!114 &1123912169
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1123912161}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c21dfdd449275ba4fb48dcd83efe6cac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.ButtonBridge
+  targetElementName: cancel-button
+  onClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2141101810}
+        m_TargetAssemblyTypeName: SheepyCreations.UIControl.Runtime.UIDocumentPanel,
+          SheepyCreations.UIControl.Runtime
+        m_MethodName: ShowIsolated
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1123912163}
+        m_TargetAssemblyTypeName: DrawTest, Assembly-CSharp
+        m_MethodName: ClearDrawing
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &1123912170
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1123912161}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c21dfdd449275ba4fb48dcd83efe6cac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.ButtonBridge
+  targetElementName: publish-button
+  onClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1123912163}
+        m_TargetAssemblyTypeName: DrawTest, Assembly-CSharp
+        m_MethodName: PublicarDibujoTest
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 2141101810}
+        m_TargetAssemblyTypeName: SheepyCreations.UIControl.Runtime.UIDocumentPanel,
+          SheepyCreations.UIControl.Runtime
+        m_MethodName: ShowIsolated
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &1123912171
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1123912161}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c21dfdd449275ba4fb48dcd83efe6cac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.ButtonBridge
+  targetElementName: back-button
+  onClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1123912167}
+        m_TargetAssemblyTypeName: SheepyCreations.UIControl.Runtime.UIDocumentPanel,
+          SheepyCreations.UIControl.Runtime
+        m_MethodName: Hide
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 2141101810}
+        m_TargetAssemblyTypeName: SheepyCreations.UIControl.Runtime.UIDocumentPanel,
+          SheepyCreations.UIControl.Runtime
+        m_MethodName: ShowIsolated
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1001 &1260940611
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1045,7 +1368,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 22400762, guid: 67117722a812a2e46ab8cb8eafbf5f5e, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.00005340576
+      value: -0.00011062622
       objectReference: {fileID: 0}
     - target: {fileID: 22426080, guid: 67117722a812a2e46ab8cb8eafbf5f5e, type: 3}
       propertyPath: m_AnchorMax.x
@@ -1388,6 +1711,183 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 67117722a812a2e46ab8cb8eafbf5f5e, type: 3}
+--- !u!1 &1294188438
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1294188439}
+  - component: {fileID: 1294188441}
+  - component: {fileID: 1294188440}
+  - component: {fileID: 1294188444}
+  - component: {fileID: 1294188443}
+  - component: {fileID: 1294188442}
+  m_Layer: 0
+  m_Name: Post-It Type Selection
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1294188439
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1294188438}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1845594305}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1294188440
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1294188438}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9dfb9f5942acaac4d91e8307ec2eecda, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.UIDocumentPanel
+  ownership: 0
+  explicitController: {fileID: 0}
+  controllerKey: 
+  panelOrder: 2147483647
+  panelPriorityName: 
+  panelInteractionMode: 0
+  startHidden: 1
+  persistence: 0
+  panelCloseMode: 0
+  panelName: Post-It Type Selection
+  panelId: 
+  definition: {fileID: 0}
+  suppressEventsOnInitialVisualState: 0
+  transition: 0
+  transitionDuration: 0.2
+  blockingScope: 0
+  blockedPanels: []
+  allowedPanels: []
+  onEarlyPanelShowed:
+    m_PersistentCalls:
+      m_Calls: []
+  onPanelShowed:
+    m_PersistentCalls:
+      m_Calls: []
+  onEarlyPanelHidden:
+    m_PersistentCalls:
+      m_Calls: []
+  onPanelHidden:
+    m_PersistentCalls:
+      m_Calls: []
+  onPanelInitialized:
+    m_PersistentCalls:
+      m_Calls: []
+  targetDocument: {fileID: 1294188441}
+  blocksRaycastsOnEmptyArea: 1
+--- !u!114 &1294188441
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1294188438}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.dll::UnityEngine.UIElements.UIDocument
+  m_PanelSettings: {fileID: 11400000, guid: fec9bf6fa4770294a919da19c7dfd501, type: 2}
+  m_ParentUI: {fileID: 0}
+  sourceAsset: {fileID: 9197481963319205126, guid: 6107de22b5880544aba19113f945215f, type: 3}
+  m_SortingOrder: 0
+  m_Position: 0
+  m_WorldSpaceSizeMode: 1
+  m_WorldSpaceWidth: 1920
+  m_WorldSpaceHeight: 1080
+  m_PivotReferenceSize: 0
+  m_Pivot: 0
+  m_WorldSpaceCollider: {fileID: 0}
+--- !u!114 &1294188442
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1294188438}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c21dfdd449275ba4fb48dcd83efe6cac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.ButtonBridge
+  targetElementName: Dibuja
+  onClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1294188440}
+        m_TargetAssemblyTypeName: SheepyCreations.UIControl.Runtime.UIDocumentPanel,
+          SheepyCreations.UIControl.Runtime
+        m_MethodName: Hide
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &1294188443
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1294188438}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c21dfdd449275ba4fb48dcd83efe6cac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.ButtonBridge
+  targetElementName: Escribe
+  onClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1294188440}
+        m_TargetAssemblyTypeName: SheepyCreations.UIControl.Runtime.UIDocumentPanel,
+          SheepyCreations.UIControl.Runtime
+        m_MethodName: Hide
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &1294188444
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1294188438}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 476cf627e19587d4298d276c4c0f6099, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HUD
+  addPostItButton: {fileID: 1294188443}
 --- !u!1 &1321535694
 GameObject:
   m_ObjectHideFlags: 0
@@ -1525,6 +2025,159 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!1 &1470295765
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1470295769}
+  - component: {fileID: 1470295767}
+  - component: {fileID: 1470295768}
+  - component: {fileID: 1470295766}
+  - component: {fileID: 1470295770}
+  m_Layer: 0
+  m_Name: DrawRenderPanel
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1470295766
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1470295765}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6206632201be2d49801546ef316c8c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DrawingRenderer
+  uiDocument: {fileID: 1470295767}
+  containerName: drawing-view
+  canvasWidthUnits: 10
+  fitDrawing: 1
+  padding: 8
+  testPostItId: S3NYQnicJqGPBmqOkw1i
+  testJson: 
+--- !u!114 &1470295767
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1470295765}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.dll::UnityEngine.UIElements.UIDocument
+  m_PanelSettings: {fileID: 11400000, guid: fec9bf6fa4770294a919da19c7dfd501, type: 2}
+  m_ParentUI: {fileID: 0}
+  sourceAsset: {fileID: 9197481963319205126, guid: 5d938d9babc57f64eb5865503fedf469, type: 3}
+  m_SortingOrder: 0
+  m_Position: 0
+  m_WorldSpaceSizeMode: 1
+  m_WorldSpaceWidth: 1920
+  m_WorldSpaceHeight: 1080
+  m_PivotReferenceSize: 0
+  m_Pivot: 0
+  m_WorldSpaceCollider: {fileID: 0}
+--- !u!114 &1470295768
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1470295765}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9dfb9f5942acaac4d91e8307ec2eecda, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.UIDocumentPanel
+  ownership: 0
+  explicitController: {fileID: 0}
+  controllerKey: 
+  panelOrder: 2147483647
+  panelPriorityName: 
+  panelInteractionMode: 0
+  startHidden: 1
+  persistence: 0
+  panelCloseMode: 0
+  panelName: DrawRenderPanel
+  panelId: 
+  definition: {fileID: 0}
+  suppressEventsOnInitialVisualState: 0
+  transition: 0
+  transitionDuration: 0.2
+  blockingScope: 0
+  blockedPanels: []
+  allowedPanels: []
+  onEarlyPanelShowed:
+    m_PersistentCalls:
+      m_Calls: []
+  onPanelShowed:
+    m_PersistentCalls:
+      m_Calls: []
+  onEarlyPanelHidden:
+    m_PersistentCalls:
+      m_Calls: []
+  onPanelHidden:
+    m_PersistentCalls:
+      m_Calls: []
+  onPanelInitialized:
+    m_PersistentCalls:
+      m_Calls: []
+  targetDocument: {fileID: 1470295767}
+  blocksRaycastsOnEmptyArea: 1
+--- !u!4 &1470295769
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1470295765}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1845594305}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1470295770
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1470295765}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c21dfdd449275ba4fb48dcd83efe6cac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.ButtonBridge
+  targetElementName: back-button
+  onClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2141101810}
+        m_TargetAssemblyTypeName: SheepyCreations.UIControl.Runtime.UIDocumentPanel,
+          SheepyCreations.UIControl.Runtime
+        m_MethodName: ShowIsolated
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1477883012
 GameObject:
   m_ObjectHideFlags: 0
@@ -1837,6 +2490,9 @@ Transform:
   - {fileID: 99561437}
   - {fileID: 2141101808}
   - {fileID: 1321535697}
+  - {fileID: 1123912162}
+  - {fileID: 1470295769}
+  - {fileID: 1294188439}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1845594306
@@ -1861,6 +2517,9 @@ MonoBehaviour:
   - {fileID: 99561435}
   - {fileID: 2141101810}
   - {fileID: 1321535695}
+  - {fileID: 1123912167}
+  - {fileID: 1470295768}
+  - {fileID: 1294188440}
   inspectorReferences: []
   showInitialPanelOnInitialize: 1
   initialPanel: {fileID: 2141101810}
@@ -2064,6 +2723,7 @@ GameObject:
   - component: {fileID: 2141101810}
   - component: {fileID: 2141101812}
   - component: {fileID: 2141101811}
+  - component: {fileID: 2141101813}
   m_Layer: 0
   m_Name: HUD panel
   m_TagString: Untagged
@@ -2163,7 +2823,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2141101807}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c21dfdd449275ba4fb48dcd83efe6cac, type: 3}
   m_Name: 
@@ -2179,72 +2839,41 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2141101807}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 476cf627e19587d4298d276c4c0f6099, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HUD
   addPostItButton: {fileID: 2141101811}
---- !u!1001 &8632095057549132635
-PrefabInstance:
+--- !u!114 &2141101813
+MonoBehaviour:
   m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 758747981297747977, guid: 644d408463c48b34090bead306f70e0d, type: 3}
-      propertyPath: m_Name
-      value: TextCanvasEntry
-      objectReference: {fileID: 0}
-    - target: {fileID: 8525209934582178061, guid: 644d408463c48b34090bead306f70e0d, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 1.13466
-      objectReference: {fileID: 0}
-    - target: {fileID: 8525209934582178061, guid: 644d408463c48b34090bead306f70e0d, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8525209934582178061, guid: 644d408463c48b34090bead306f70e0d, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -0.30818
-      objectReference: {fileID: 0}
-    - target: {fileID: 8525209934582178061, guid: 644d408463c48b34090bead306f70e0d, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8525209934582178061, guid: 644d408463c48b34090bead306f70e0d, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8525209934582178061, guid: 644d408463c48b34090bead306f70e0d, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8525209934582178061, guid: 644d408463c48b34090bead306f70e0d, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8525209934582178061, guid: 644d408463c48b34090bead306f70e0d, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8525209934582178061, guid: 644d408463c48b34090bead306f70e0d, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8525209934582178061, guid: 644d408463c48b34090bead306f70e0d, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 6648620653618874702, guid: 644d408463c48b34090bead306f70e0d, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 0}
-  m_SourcePrefab: {fileID: 100100000, guid: 644d408463c48b34090bead306f70e0d, type: 3}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2141101807}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c21dfdd449275ba4fb48dcd83efe6cac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.ButtonBridge
+  targetElementName: add-postit-button
+  onClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1294188440}
+        m_TargetAssemblyTypeName: SheepyCreations.UIControl.Runtime.UIDocumentPanel,
+          SheepyCreations.UIControl.Runtime
+        m_MethodName: Show
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -2259,5 +2888,6 @@ SceneRoots:
   - {fileID: 1477883016}
   - {fileID: 1260940611}
   - {fileID: 796252392}
-  - {fileID: 8632095057549132635}
   - {fileID: 2079716516}
+  - {fileID: 139788667}
+  - {fileID: 936949342}

@@ -1,0 +1,175 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5828700139096590399
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 280966156092928632}
+  m_Layer: 0
+  m_Name: DrawingCanvasEditor
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &280966156092928632
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5828700139096590399}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 4407155439534676869}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &9157776672407816309
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4407155439534676869}
+  - component: {fileID: 7138680027438873118}
+  - component: {fileID: 6274033226057729966}
+  - component: {fileID: 1798670748288639584}
+  - component: {fileID: 3730068085163807255}
+  m_Layer: 0
+  m_Name: DrawEditorPanel
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4407155439534676869
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9157776672407816309}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 280966156092928632}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!114 &7138680027438873118
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9157776672407816309}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.dll::UnityEngine.UIElements.UIDocument
+  m_PanelSettings: {fileID: 11400000, guid: 23f85d4d04f085b4a969360fb5e0048d, type: 2}
+  m_ParentUI: {fileID: 0}
+  sourceAsset: {fileID: 9197481963319205126, guid: a523193f27b98a44bad8f535e9b627e0, type: 3}
+  m_SortingOrder: 0
+  m_Position: 0
+  m_WorldSpaceSizeMode: 1
+  m_WorldSpaceWidth: 450
+  m_WorldSpaceHeight: 450
+  m_PivotReferenceSize: 0
+  m_Pivot: 0
+  m_WorldSpaceCollider: {fileID: 0}
+--- !u!114 &6274033226057729966
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9157776672407816309}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9dfb9f5942acaac4d91e8307ec2eecda, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.UIDocumentPanel
+  ownership: 3
+  explicitController: {fileID: 0}
+  controllerKey: 
+  panelOrder: 2147483647
+  panelPriorityName: 
+  panelInteractionMode: 0
+  startHidden: 1
+  persistence: 0
+  panelCloseMode: 0
+  panelName: DrawEditorPanel
+  panelId: 
+  definition: {fileID: 0}
+  suppressEventsOnInitialVisualState: 0
+  transition: 0
+  transitionDuration: 0.2
+  blockingScope: 0
+  blockedPanels: []
+  allowedPanels: []
+  onEarlyPanelShowed:
+    m_PersistentCalls:
+      m_Calls: []
+  onPanelShowed:
+    m_PersistentCalls:
+      m_Calls: []
+  onEarlyPanelHidden:
+    m_PersistentCalls:
+      m_Calls: []
+  onPanelHidden:
+    m_PersistentCalls:
+      m_Calls: []
+  onPanelInitialized:
+    m_PersistentCalls:
+      m_Calls: []
+  targetDocument: {fileID: 7138680027438873118}
+  blocksRaycastsOnEmptyArea: 1
+--- !u!114 &1798670748288639584
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9157776672407816309}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 696c2bc6fc5bed54ca731a259afe2006, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DrawEntry
+  drawTest: {fileID: 3730068085163807255}
+  uiDocument: {fileID: 7138680027438873118}
+--- !u!114 &3730068085163807255
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9157776672407816309}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7a2e3f8e83876d4ba8e485cee64fc74, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DrawTest
+  uiDocument: {fileID: 7138680027438873118}
+  drawingAreaName: drawing-area
+  canvasWidthUnits: 10
+  brushWidth: 0.05
+  brushColor: {r: 0, g: 0, b: 0, a: 1}
+  minPointDistance: 0.02
+  eraserRadius: 0.15
+  maxUndoSteps: 30
+  testAuthorId: test-user
+  testPosition: {x: 0, y: 0, z: 0}

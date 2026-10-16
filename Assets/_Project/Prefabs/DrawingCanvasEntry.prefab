@@ -31,6 +31,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3758919249016377628}
+  - {fileID: 7361899318038829659}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7799454695240137590
@@ -45,6 +46,61 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49b2c858e54bb4a47aaabc06a989156f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DrawingCanvasEntry
+  panel: {fileID: 2651362040357246222}
+  usernameLabel: {fileID: 7202657785922999577}
+  contentLabel: {fileID: 0}
+  drawingRenderer: {fileID: 2809849229890571680}
+--- !u!1 &2951113391391269545
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7361899318038829659}
+  - component: {fileID: 2809849229890571680}
+  m_Layer: 0
+  m_Name: DrawingRenderer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7361899318038829659
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2951113391391269545}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8525209934582178061}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2809849229890571680
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2951113391391269545}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6206632201be2d49801546ef316c8c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DrawingRenderer
+  uiDocument: {fileID: 5325520802600071614}
+  containerName: drawing-view
+  canvasWidthUnits: 10
+  fitDrawing: 1
+  padding: 8
+  testPostItId: 
+  testJson: 
 --- !u!1 &6648620653618874702
 GameObject:
   m_ObjectHideFlags: 0
@@ -57,9 +113,8 @@ GameObject:
   - component: {fileID: 5325520802600071614}
   - component: {fileID: 2651362040357246222}
   - component: {fileID: 7202657785922999577}
-  - component: {fileID: 2930434747002557534}
   m_Layer: 0
-  m_Name: TextEntryPanel
+  m_Name: DrawRenderPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -94,7 +149,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.dll::UnityEngine.UIElements.UIDocument
   m_PanelSettings: {fileID: 11400000, guid: 23f85d4d04f085b4a969360fb5e0048d, type: 2}
   m_ParentUI: {fileID: 0}
-  sourceAsset: {fileID: 9197481963319205126, guid: b5e02bd02d12aa14fa37217220083dfb, type: 3}
+  sourceAsset: {fileID: 9197481963319205126, guid: 15120bb5ec8abb64fb3fe27a80a9aac3, type: 3}
   m_SortingOrder: 0
   m_Position: 0
   m_WorldSpaceSizeMode: 1
@@ -124,7 +179,7 @@ MonoBehaviour:
   startHidden: 1
   persistence: 0
   panelCloseMode: 0
-  panelName: TextEntryPanel
+  panelName: DrawRenderPanel
   panelId: 
   definition: {fileID: 0}
   suppressEventsOnInitialVisualState: 0
@@ -165,18 +220,3 @@ MonoBehaviour:
   targetElementName: username-label-postit
   overrideInitialValue: 1
   initialValue: Usuario
---- !u!114 &2930434747002557534
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6648620653618874702}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 111e034da0efe6f4f8247690407bf89d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.LabelTextBridge
-  targetElementName: content-label-postit
-  overrideInitialValue: 1
-  initialValue: Contenido omg 123
