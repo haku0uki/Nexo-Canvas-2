@@ -23,33 +23,80 @@ public class FirestoreService : MonoBehaviour
     private CollectionReference postitsCollection;
     private ListenerRegistration realtimeListener;
 
+    // True cuando Firestore ya está inicializado y se puede leer/escribir.
+    public bool IsReady => postitsCollection != null;
+
+    // Si BoardCanvas pide escuchar antes de que Firestore esté listo, se guarda
+    // el callback y se abre el listener apenas termine la inicialización.
+    private Action<List<PostItData>> pendingPostItsCallback;
+    private bool subscribedToAuth;
+
     // Un listener de comentarios por post-it abierto, para poder detenerlo al cambiar o cerrar el detalle.
     private readonly Dictionary<string, ListenerRegistration> comentarioListeners = new Dictionary<string, ListenerRegistration>();
 
     private void Awake()
     {
+        Debug.Log("[FirestoreService] Awake");
         if (Instance == null) { Instance = this; DontDestroyOnLoad(gameObject); }
         else { Destroy(gameObject); }
     }
 
     void Start()
     {
-        // Esperar a que AuthManager inicialice Firebase antes de usar la base de datos
-        AuthManager.Instance.OnFirebaseInitialized += InicializarFirestore;
+        AuthManager auth = AuthManager.Instance;
+        Debug.Log("[FirestoreService] Start: authManager=" + (auth != null) + ", firebaseListo=" + (auth != null && auth.IsFirebaseInitialized));
+        if (auth == null)
+        {
+            Debug.LogError("FirestoreService: no existe AuthManager. Inicia desde la escena de login (AuthManager persiste entre escenas).");
+            return;
+        }
+
+        // Si Firebase ya se inicializó (AuthManager vive en la escena de login), el evento
+        // OnFirebaseInitialized ya pasó y no volverá a dispararse: se inicializa directamente.
+        if (auth.IsFirebaseInitialized)
+        {
+            InicializarFirestore();
+            return;
+        }
+
+        auth.OnFirebaseInitialized += InicializarFirestore;
+        subscribedToAuth = true;
     }
 
     private void InicializarFirestore()
     {
+        if (postitsCollection != null) return; // Ya inicializado.
+
+        if (subscribedToAuth && AuthManager.Instance != null)
+        {
+            AuthManager.Instance.OnFirebaseInitialized -= InicializarFirestore;
+            subscribedToAuth = false;
+        }
+
         db = FirebaseFirestore.DefaultInstance;
         postitsCollection = db.Collection("postits"); // Tu coleccion definitiva de produccion
         Debug.Log("<color=green>¡FirestoreService inicializado con éxito!</color>");
+
+        if (pendingPostItsCallback != null)
+        {
+            Action<List<PostItData>> callback = pendingPostItsCallback;
+            pendingPostItsCallback = null;
+            EscucharPostIts(callback);
+        }
     }
 
     // 1. Escuchar los post-its en tiempo real (Suscripcion)
     public void EscucharPostIts(Action<List<PostItData>> OnPostItsUpdated)
     {
-        if (postitsCollection == null) return;
         if (realtimeListener != null) return; // Ya suscripto; BoardCanvas puede llamar esto mas de una vez.
+
+        if (postitsCollection == null)
+        {
+            // Firestore aun no esta listo: se recuerda el pedido y se abre el listener al inicializar.
+            Debug.LogWarning("FirestoreService: Firestore aun no esta listo; la escucha de post-its comenzara al inicializar.");
+            pendingPostItsCallback = OnPostItsUpdated;
+            return;
+        }
 
         // Abrir el canal de escucha en tiempo real
         realtimeListener = postitsCollection.Listen(snapshot =>
@@ -57,8 +104,14 @@ public class FirestoreService : MonoBehaviour
             List<PostItData> listaPostIts = new List<PostItData>();
             foreach (DocumentSnapshot doc in snapshot.Documents)
             {
-                if (doc.Exists) listaPostIts.Add(LeerPostIt(doc));
+                if (!doc.Exists) continue;
+
+                // Un documento mal formado no debe impedir que se vean los demas.
+                try { listaPostIts.Add(LeerPostIt(doc)); }
+                catch (Exception e) { Debug.LogWarning("FirestoreService: post-it '" + doc.Id + "' ignorado: " + e.Message); }
             }
+
+            Debug.Log("FirestoreService: " + listaPostIts.Count + " post-its recibidos.");
             OnPostItsUpdated?.Invoke(listaPostIts); // Enviar datos al renderizador
         });
     }
@@ -67,7 +120,11 @@ public class FirestoreService : MonoBehaviour
     // Devuelve false si Firestore aun no esta listo, para que quien llama conserve lo que iba a publicar.
     public bool PublicarPostIt(string autorId, string tipo, string contenido, Vector3 posRelativa)
     {
-        if (postitsCollection == null) return false;
+        if (postitsCollection == null)
+        {
+            Debug.LogWarning("FirestoreService: Firestore aun no esta inicializado; el post-it no se publico.");
+            return false;
+        }
 
         var datosPostit = new Dictionary<string, object> {
             { "authorId", autorId },
@@ -81,7 +138,12 @@ public class FirestoreService : MonoBehaviour
             { "timestamp", FieldValue.ServerTimestamp }
         };
 
-        postitsCollection.AddAsync(datosPostit);
+        postitsCollection.AddAsync(datosPostit).ContinueWithOnMainThread(task =>
+        {
+            if (task.IsFaulted || task.IsCanceled)
+                Debug.LogError("FirestoreService: error al publicar el post-it: " + task.Exception);
+        });
+
         return true;
     }
 
@@ -110,17 +172,27 @@ public class FirestoreService : MonoBehaviour
     {
         PostItData data = new PostItData();
         data.id = doc.Id;
-        data.authorId = doc.GetValue<string>("authorId");
-        data.tipo = doc.GetValue<string>("tipo");
-        data.contenido = doc.GetValue<string>("contenido");
 
-        // Extraer las coordenadas 3D locales
-        Dictionary<string, object> pos = doc.GetValue<Dictionary<string, object>>("posicionRelativa");
-        data.posX = Convert.ToSingle(pos["x"]);
-        data.posY = Convert.ToSingle(pos["y"]);
-        data.posZ = Convert.ToSingle(pos["z"]);
+        string valor;
+        data.authorId = doc.TryGetValue("authorId", out valor) ? valor : string.Empty;
+        data.tipo = doc.TryGetValue("tipo", out valor) ? valor : "texto";
+        data.contenido = doc.TryGetValue("contenido", out valor) ? valor : string.Empty;
+
+        // Extraer las coordenadas 3D locales (0 si faltan)
+        Dictionary<string, object> pos;
+        if (doc.TryGetValue("posicionRelativa", out pos) && pos != null)
+        {
+            data.posX = LeerFloat(pos, "x");
+            data.posY = LeerFloat(pos, "y");
+            data.posZ = LeerFloat(pos, "z");
+        }
 
         return data;
+    }
+
+    private static float LeerFloat(Dictionary<string, object> dic, string clave)
+    {
+        return dic.TryGetValue(clave, out object v) && v != null ? Convert.ToSingle(v) : 0f;
     }
 
     // 3. Mover un post-it existente (Solo actualiza el campo de coordenadas en la nube)
@@ -198,6 +270,9 @@ public class FirestoreService : MonoBehaviour
 
     private void OnDestroy()
     {
+        if (subscribedToAuth && AuthManager.Instance != null)
+            AuthManager.Instance.OnFirebaseInitialized -= InicializarFirestore;
+
         // Muy importante: detener la escucha al cerrar para ahorrar ancho de banda de tu plan Spark (sin costo)
         if (realtimeListener != null) realtimeListener.Stop();
 
