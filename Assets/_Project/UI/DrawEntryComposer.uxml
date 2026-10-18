@@ -1,8 +1,8 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/_Project/UI/DefaultStyleSheet.uss?fileID=7433441132597879392&amp;guid=92f105faae8cdfa41a5bffceba250712&amp;type=3#DefaultStyleSheet"/>
-    <ui:VisualElement name="root" class="draw-entry-root">
-        <ui:VisualElement name="background" class="post-it-amarillo" style="bottom: 778px; right: -585px; width: 100%; top: 8%; height: 58%; aspect-ratio: auto;">
-            <ui:VisualElement name="drawing-area" class="draw-entry-drawing-area" style="bottom: 71px;"/>
+    <ui:VisualElement name="root" class="draw-entry-root" style="margin-top: 10%;">
+        <ui:VisualElement name="background" class="details-postit" style="background-image: url(&quot;project://database/Assets/_Project/2D/post_it_amarillo.png?fileID=2800000&amp;guid=ae5465568c0e1594a9a7133281d5598b&amp;type=3#post_it_amarillo&quot;);">
+            <ui:VisualElement name="drawing-area" class="draw-entry-drawing-area" style="bottom: 231px; top: 100px;"/>
         </ui:VisualElement>
         <ui:VisualElement name="draw-entry-controls" class="draw-entry-controls">
             <ui:VisualElement name="brush-control" class="draw-control-row">
@@ -27,6 +27,6 @@
             <ui:Button name="publish-button" text="Publicar" class="publish-button"/>
             <ui:Button name="cancel-button" text="Cancelar" class="cancel-button"/>
         </ui:VisualElement>
+        <ui:Button text="" name="back-button" class="back-button" style="top: -36px; right: 2px;"/>
     </ui:VisualElement>
-    <ui:Button text="" name="back-button" class="back-button"/>
 </ui:UXML>

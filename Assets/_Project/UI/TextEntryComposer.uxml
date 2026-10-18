@@ -1,0 +1,15 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/_Project/UI/DefaultStyleSheet.uss?fileID=7433441132597879392&amp;guid=92f105faae8cdfa41a5bffceba250712&amp;type=3#DefaultStyleSheet"/>
+    <ui:VisualElement name="root" class="details-root" style="background-image: url(&quot;project://database/Assets/_Project/2D/Fondo_nexo_canvas.png?fileID=2800000&amp;guid=974d1778c201b884ea9a35525b90d664&amp;type=3#Fondo_nexo_canvas&quot;); -unity-background-image-tint-color: rgba(67, 67, 67, 0.52); flex-direction: column;">
+        <ui:VisualElement name="spacer" class="details-spacer"/>
+        <ui:VisualElement name="postit-container" class="details-postit" style="flex-shrink: 0; width: 100%; aspect-ratio: 1; position: relative;">
+            <ui:VisualElement name="post-it-amarillo" class="post-it-amarillo"/>
+            <ui:TextField name="postit-text-input" placeholder-text="Escribe tus pensamientos..." multiline="true" class="empty-background" style="position: absolute; top: 10%; left: 5%; right: 5%; bottom: 10%; font-size: 28px; border-width: 0; color: rgb(0, 0, 0); -unity-text-align: upper-left; padding-left: 10px; padding-top: 10px; padding-bottom: 222px;"/>
+        </ui:VisualElement>
+        <ui:VisualElement name="buttons-container" style="flex-grow: 0; flex-direction: column; align-self: center; justify-content: flex-start; padding-top: 30px; padding-bottom: 20px; gap: 15px;">
+            <ui:Button text="" icon-image="project://database/Assets/_Project/2D/Boton%20Confirmar.png?fileID=-1941097173&amp;guid=8ec51c05a90b11c419ed34ddb43ef508&amp;type=3#Boton Confirmar_0" name="confirm-postit-button" style="flex-shrink: 0; width: 80%; height: 30%; background-image: none; background-color: rgba(188, 188, 188, 0); border-width: 0; align-self: center;"/>
+            <ui:Button text="" icon-image="project://database/Assets/_Project/2D/Boton%20Cancelar.png?fileID=-1312338684&amp;guid=93f7ddbbfd19f5d498f08a4fa517e253&amp;type=3#Boton Cancelar_0" name="cancel-postit-button" style="flex-shrink: 0; width: 80%; height: 30%; background-image: none; background-color: rgba(188, 188, 188, 0); border-width: 0; align-self: center;"/>
+        </ui:VisualElement>
+        <ui:Button text="" name="back-button" class="back-button"/>
+    </ui:VisualElement>
+</ui:UXML>
