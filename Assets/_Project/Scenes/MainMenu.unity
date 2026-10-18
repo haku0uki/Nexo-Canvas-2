@@ -293,6 +293,9 @@ MonoBehaviour:
   controllerKey: 
   panelOrder: 2147483647
   panelPriorityName: 
+  useRelativeSorting: 0
+  sortingTarget: {fileID: 0}
+  sortingOffset: 1
   panelInteractionMode: 0
   startHidden: 1
   persistence: 0
@@ -377,10 +380,22 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 1420616342}
+        m_TargetAssemblyTypeName: QuickLoginBridgeConnector, Assembly-CSharp
+        m_MethodName: IntentarAutologueoSiHayCuenta
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 1420616339}
         m_TargetAssemblyTypeName: SheepyCreations.UIControl.Runtime.UIDocumentPanel,
           SheepyCreations.UIControl.Runtime
-        m_MethodName: ShowIsolated
+        m_MethodName: ShowIsolatedViaController
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -409,7 +424,7 @@ MonoBehaviour:
       - m_Target: {fileID: 1195095263}
         m_TargetAssemblyTypeName: SheepyCreations.UIControl.Runtime.UIDocumentPanel,
           SheepyCreations.UIControl.Runtime
-        m_MethodName: ShowIsolated
+        m_MethodName: ShowIsolatedViaController
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -700,6 +715,12 @@ MonoBehaviour:
   onValueChanged:
     m_PersistentCalls:
       m_Calls: []
+  onEditConfirmed:
+    m_PersistentCalls:
+      m_Calls: []
+  onSubmit:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &1195095262
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -716,6 +737,12 @@ MonoBehaviour:
   overrideInitialValue: 0
   initialValue: 
   onValueChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  onEditConfirmed:
+    m_PersistentCalls:
+      m_Calls: []
+  onSubmit:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &1195095263
@@ -735,6 +762,9 @@ MonoBehaviour:
   controllerKey: 
   panelOrder: 2147483647
   panelPriorityName: 
+  useRelativeSorting: 0
+  sortingTarget: {fileID: 0}
+  sortingOffset: 1
   panelInteractionMode: 0
   startHidden: 1
   persistence: 0
@@ -835,7 +865,7 @@ MonoBehaviour:
       - m_Target: {fileID: 905400753}
         m_TargetAssemblyTypeName: SheepyCreations.UIControl.Runtime.UIDocumentPanel,
           SheepyCreations.UIControl.Runtime
-        m_MethodName: ShowIsolated
+        m_MethodName: ShowIsolatedViaController
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -897,6 +927,9 @@ MonoBehaviour:
   controllerKey: 
   panelOrder: 2147483647
   panelPriorityName: 
+  useRelativeSorting: 0
+  sortingTarget: {fileID: 0}
+  sortingOffset: 1
   panelInteractionMode: 0
   startHidden: 1
   persistence: 0
@@ -1010,6 +1043,12 @@ MonoBehaviour:
   onValueChanged:
     m_PersistentCalls:
       m_Calls: []
+  onEditConfirmed:
+    m_PersistentCalls:
+      m_Calls: []
+  onSubmit:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &1420616344
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1026,6 +1065,12 @@ MonoBehaviour:
   overrideInitialValue: 0
   initialValue: 
   onValueChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  onEditConfirmed:
+    m_PersistentCalls:
+      m_Calls: []
+  onSubmit:
     m_PersistentCalls:
       m_Calls: []
 --- !u!4 &1420616345
@@ -1062,7 +1107,7 @@ MonoBehaviour:
       - m_Target: {fileID: 905400753}
         m_TargetAssemblyTypeName: SheepyCreations.UIControl.Runtime.UIDocumentPanel,
           SheepyCreations.UIControl.Runtime
-        m_MethodName: ShowIsolated
+        m_MethodName: ShowIsolatedViaController
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
