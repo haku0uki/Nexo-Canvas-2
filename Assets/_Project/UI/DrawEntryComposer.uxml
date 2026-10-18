@@ -27,6 +27,5 @@
             <ui:Button name="publish-button" text="Publicar" class="publish-button"/>
             <ui:Button name="cancel-button" text="Cancelar" class="cancel-button"/>
         </ui:VisualElement>
-        <ui:Button text="" name="back-button" class="back-button" style="top: -36px; right: 2px;"/>
     </ui:VisualElement>
 </ui:UXML>
