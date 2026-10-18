@@ -3,16 +3,16 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 // Equivalente de TextCanvasEntry para post-its de tipo "dibujo".
-// Mismo ciclo de vida: espera a que el panel y las etiquetas estén listos,
+// Mismo ciclo de vida: espera a que el panel y las etiquetas estï¿½n listos,
 // muestra el autor, muestra el panel y registra el toque.
 public class DrawingCanvasEntry : BaseCanvasEntry
 {
     [Header("PANEL")]
-    [Tooltip("Si queda vacío se busca en este mismo prefab.")]
+    [Tooltip("Si queda vacï¿½o se busca en este mismo prefab.")]
     [SerializeField] private UIDocumentPanel panel;
-    [Tooltip("Etiqueta del autor (username-label-postit). Si queda vacía se usa el primer LabelTextBridge del prefab.")]
+    [Tooltip("Etiqueta del autor (username-label-postit). Si queda vacï¿½a se usa el primer LabelTextBridge del prefab.")]
     [SerializeField] private LabelTextBridge usernameLabel;
-    [Tooltip("Opcional. Si se asigna, se vacía: el JSON del dibujo no debe verse como texto.")]
+    [Tooltip("Opcional. Si se asigna, se vacï¿½a: el JSON del dibujo no debe verse como texto.")]
     [SerializeField] private LabelTextBridge contentLabel;
 
     [Header("DRAWING")]
@@ -22,8 +22,8 @@ public class DrawingCanvasEntry : BaseCanvasEntry
     private bool pendingPresentation;
 
     // BoardCanvas llama a Populate con TODOS los post-its cada vez que
-    // Firestore reporta un cambio. Se recuerda el último contenido para no
-    // volver a deserializar y repintar un dibujo que no cambió.
+    // Firestore reporta un cambio. Se recuerda el ï¿½ltimo contenido para no
+    // volver a deserializar y repintar un dibujo que no cambiï¿½.
     private string lastContent;
     private bool hasContent;
 
@@ -65,7 +65,7 @@ public class DrawingCanvasEntry : BaseCanvasEntry
         if (data == null)
             return;
 
-        base.Populate(data); // Posición (y datos base).
+        base.Populate(data); // Posiciï¿½n (y datos base).
 
         pendingPresentation = true;
         TryPresentData();
