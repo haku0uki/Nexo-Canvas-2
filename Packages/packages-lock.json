@@ -6,9 +6,10 @@
       "source": "git",
       "dependencies": {
         "com.unity.inputsystem": "1.7.0",
-        "com.unity.textmeshpro": "3.0.6"
+        "com.unity.textmeshpro": "3.0.6",
+        "com.unity.modules.audio": "1.0.0"
       },
-      "hash": "99c4dc9444701c446e714b7c19762a381401ecbf"
+      "hash": "654c806d029ba38b8d8acb72d1ab83f934de56ee"
     },
     "com.unity.2d.sprite": {
       "version": "1.0.0",
