@@ -6,6 +6,10 @@ public class QuickLoginBridgeConnector : MonoBehaviour
     [Header("Bridges de la UI")]
     [SerializeField] private TextFieldBridge emailBridge;
     [SerializeField] private TextFieldBridge passwordBridge;
+    [SerializeField] private TextFieldBridge confirmPasswordBridge;
+
+    [Header("Sistema de Notificaciones")]
+    [SerializeField] private NotificationBehaviour notificationPanel;
 
     void Start()
     {
@@ -21,14 +25,42 @@ public class QuickLoginBridgeConnector : MonoBehaviour
         if (emailBridge == null || passwordBridge == null) return;
         string email = emailBridge.Value.Trim();
         string password = passwordBridge.Value;
+
+        if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
+        {
+            ShowNotification("Por favor completa todos los campos.");
+            return;
+        }
+
         AuthManager.Instance.IniciarSesion(email, password);
     }
 
     public void TriggerRegisterFromBridges()
     {
-        if (emailBridge == null || passwordBridge == null) return;
+        if (emailBridge == null || passwordBridge == null || confirmPasswordBridge == null) return;
+
         string email = emailBridge.Value.Trim();
         string password = passwordBridge.Value;
+        string confirmPassword = confirmPasswordBridge.Value;
+
+        if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password) || string.IsNullOrEmpty(confirmPassword))
+        {
+            ShowNotification("Por favor completa todos los campos.");
+            return;
+        }
+
+        if (password != confirmPassword)
+        {
+            ShowNotification("Las contraseñas no coinciden.");
+            return;
+        }
+
+        if (password.Length < 6)
+        {
+            ShowNotification("La contraseña debe tener al menos 6 caracteres.");
+            return;
+        }
+
         AuthManager.Instance.RegistrarEstudiante(email, password);
     }
 
@@ -37,6 +69,13 @@ public class QuickLoginBridgeConnector : MonoBehaviour
         if (emailBridge == null || passwordBridge == null) return;
         string email = emailBridge.Value.Trim();
         string password = passwordBridge.Value;
+
+        if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
+        {
+            ShowNotification("Ingresa tu correo y contraseña para reenviar la verificación.");
+            return;
+        }
+
         AuthManager.Instance.ReenviarCorreoVerificacion(email, password);
     }
 
@@ -92,6 +131,14 @@ public class QuickLoginBridgeConnector : MonoBehaviour
         }
     }
 
+    private void ShowNotification(string mensaje)
+    {
+        Debug.LogWarning(mensaje);
+        if (notificationPanel != null)
+        {
+            notificationPanel.Enqueue(mensaje);
+        }
+    }
 
     public void ClearTextFields()
     {
