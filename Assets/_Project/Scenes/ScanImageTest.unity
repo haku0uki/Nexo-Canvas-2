@@ -167,7 +167,7 @@ GameObject:
   - component: {fileID: 99561439}
   - component: {fileID: 99561438}
   m_Layer: 0
-  m_Name: Post-It Details Panel
+  m_Name: Text Detail Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -190,11 +190,14 @@ MonoBehaviour:
   controllerKey: 
   panelOrder: 2147483647
   panelPriorityName: 
+  useRelativeSorting: 0
+  sortingTarget: {fileID: 0}
+  sortingOffset: 1
   panelInteractionMode: 0
   startHidden: 1
   persistence: 0
   panelCloseMode: 0
-  panelName: Post-It Details Panel
+  panelName: Text Detail Panel
   panelId: 
   definition: {fileID: 0}
   suppressEventsOnInitialVisualState: 0
@@ -329,9 +332,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69f715cb3d747a44a9b62795defb49e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PostItDetailPanel
+  kind: 0
   panel: {fileID: 99561435}
   authorLabel: {fileID: 99561440}
   contentLabel: {fileID: 99561439}
+  drawingRenderer: {fileID: 0}
   commentEntryAsset: {fileID: 9197481963319205126, guid: 433050bc0e167e44fbe652e9a4deb5e1, type: 3}
   commentsContainerName: comments-scrollview
   commentInput: {fileID: 0}
@@ -777,13 +782,15 @@ MonoBehaviour:
   hudPanel: {fileID: 2141101810}
   hud: {fileID: 1294188444}
   addDrawingButton: {fileID: 1294188442}
+  typeSelectionPanel: {fileID: 1294188440}
+  addTextButton: {fileID: 1294188443}
   composerPanel: {fileID: 1321535695}
   textInputName: postit-text-input
   confirmButton: {fileID: 1321535699}
   cancelButton: {fileID: 1321535698}
   drawPanel: {fileID: 1123912167}
   drawEntry: {fileID: 1123912164}
-  detailPanel: {fileID: 99561441}
+  detailPanels: []
   surfaceOffset: 0.01
 --- !u!1 &936949340
 GameObject:
@@ -1063,7 +1070,7 @@ GameObject:
   - component: {fileID: 1123912170}
   - component: {fileID: 1123912169}
   m_Layer: 0
-  m_Name: DrawEntryPanel
+  m_Name: Draw Entry Composer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1145,11 +1152,14 @@ MonoBehaviour:
   controllerKey: 
   panelOrder: 2147483647
   panelPriorityName: 
+  useRelativeSorting: 0
+  sortingTarget: {fileID: 0}
+  sortingOffset: 1
   panelInteractionMode: 0
   startHidden: 1
   persistence: 0
   panelCloseMode: 0
-  panelName: DrawEntryPanel
+  panelName: Draw Entry Composer
   panelId: 
   definition: {fileID: 0}
   suppressEventsOnInitialVisualState: 0
@@ -1368,7 +1378,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 22400762, guid: 67117722a812a2e46ab8cb8eafbf5f5e, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.00011062622
+      value: 0.000011444092
       objectReference: {fileID: 0}
     - target: {fileID: 22426080, guid: 67117722a812a2e46ab8cb8eafbf5f5e, type: 3}
       propertyPath: m_AnchorMax.x
@@ -1764,6 +1774,9 @@ MonoBehaviour:
   controllerKey: 
   panelOrder: 2147483647
   panelPriorityName: 
+  useRelativeSorting: 0
+  sortingTarget: {fileID: 0}
+  sortingOffset: 1
   panelInteractionMode: 0
   startHidden: 1
   persistence: 0
@@ -1829,7 +1842,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c21dfdd449275ba4fb48dcd83efe6cac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.ButtonBridge
-  targetElementName: Dibuja
+  targetElementName: dibuja
   onClick:
     m_PersistentCalls:
       m_Calls:
@@ -1858,7 +1871,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c21dfdd449275ba4fb48dcd83efe6cac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.ButtonBridge
-  targetElementName: Escribe
+  targetElementName: escribe
   onClick:
     m_PersistentCalls:
       m_Calls:
@@ -1902,7 +1915,7 @@ GameObject:
   - component: {fileID: 1321535699}
   - component: {fileID: 1321535698}
   m_Layer: 0
-  m_Name: Composer Panel
+  m_Name: Text Entry Composer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1925,11 +1938,14 @@ MonoBehaviour:
   controllerKey: 
   panelOrder: 2147483647
   panelPriorityName: 
+  useRelativeSorting: 0
+  sortingTarget: {fileID: 0}
+  sortingOffset: 1
   panelInteractionMode: 0
   startHidden: 1
   persistence: 0
   panelCloseMode: 0
-  panelName: Composer Panel
+  panelName: Text Entry Composer
   panelId: 
   definition: {fileID: 0}
   suppressEventsOnInitialVisualState: 0
@@ -2039,7 +2055,7 @@ GameObject:
   - component: {fileID: 1470295766}
   - component: {fileID: 1470295770}
   m_Layer: 0
-  m_Name: DrawRenderPanel
+  m_Name: Draw Detail Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2104,11 +2120,14 @@ MonoBehaviour:
   controllerKey: 
   panelOrder: 2147483647
   panelPriorityName: 
+  useRelativeSorting: 0
+  sortingTarget: {fileID: 0}
+  sortingOffset: 1
   panelInteractionMode: 0
   startHidden: 1
   persistence: 0
   panelCloseMode: 0
-  panelName: DrawRenderPanel
+  panelName: Draw Detail Panel
   panelId: 
   definition: {fileID: 0}
   suppressEventsOnInitialVisualState: 0
@@ -2488,10 +2507,10 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 99561437}
-  - {fileID: 2141101808}
+  - {fileID: 1470295769}
   - {fileID: 1321535697}
   - {fileID: 1123912162}
-  - {fileID: 1470295769}
+  - {fileID: 2141101808}
   - {fileID: 1294188439}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2515,10 +2534,10 @@ MonoBehaviour:
   initializeOnStart: 1
   childPanels:
   - {fileID: 99561435}
-  - {fileID: 2141101810}
+  - {fileID: 1470295768}
   - {fileID: 1321535695}
   - {fileID: 1123912167}
-  - {fileID: 1470295768}
+  - {fileID: 2141101810}
   - {fileID: 1294188440}
   inspectorReferences: []
   showInitialPanelOnInitialize: 1
@@ -2786,6 +2805,9 @@ MonoBehaviour:
   controllerKey: 
   panelOrder: 2147483647
   panelPriorityName: 
+  useRelativeSorting: 0
+  sortingTarget: {fileID: 0}
+  sortingOffset: 1
   panelInteractionMode: 0
   startHidden: 1
   persistence: 0

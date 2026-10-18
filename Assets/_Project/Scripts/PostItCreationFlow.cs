@@ -5,7 +5,7 @@ using SheepyCreations.UIControl.Runtime;
 
 public class PostItCreationFlow : MonoBehaviour
 {
-    private enum FlowState { Idle, SelectingPosition, Writing, Drawing }
+    private enum FlowState { Idle, SelectingType, SelectingPosition, Writing, Drawing }
 
     private enum PostItKind { Text, Drawing }
 
@@ -20,8 +20,12 @@ public class PostItCreationFlow : MonoBehaviour
     [Header("HUD -- shown only while the board is tracked and nothing else is in progress")]
     [SerializeField] private UIDocumentPanel hudPanel;
     [SerializeField] private HUD hud;
-    [Tooltip("ButtonBridge on the HUD panel targeting the 'add-drawing-button' element of the HUD UXML.")]
+    [Tooltip("ButtonBridge on the type selection panel targeting the 'dibuja' element.")]
     [SerializeField] private ButtonBridge addDrawingButton;
+    [Tooltip("Panel shown after pressing Add on the HUD.")]
+    [SerializeField] private UIDocumentPanel typeSelectionPanel;
+    [Tooltip("ButtonBridge on the type selection panel targeting the 'escribe' element.")]
+    [SerializeField] private ButtonBridge addTextButton;
 
     [Header("Composer -- shown while writing the post-it text")]
     [SerializeField] private UIDocumentPanel composerPanel;
@@ -56,7 +60,8 @@ public class PostItCreationFlow : MonoBehaviour
 
     private void OnEnable()
     {
-        if (hud != null) hud.AddPostItRequested += BeginTextPlacement;
+        if (hud != null) hud.AddPostItRequested += ShowTypeSelection;
+        if (addTextButton != null) addTextButton.Clicked += BeginTextPlacement;
         if (addDrawingButton != null) addDrawingButton.Clicked += BeginDrawingPlacement;
         if (confirmButton != null) confirmButton.Clicked += ConfirmPlacement;
         if (cancelButton != null) cancelButton.Clicked += CancelPlacement;
@@ -70,7 +75,8 @@ public class PostItCreationFlow : MonoBehaviour
 
     private void OnDisable()
     {
-        if (hud != null) hud.AddPostItRequested -= BeginTextPlacement;
+        if (hud != null) hud.AddPostItRequested -= ShowTypeSelection;
+        if (addTextButton != null) addTextButton.Clicked -= BeginTextPlacement;
         if (addDrawingButton != null) addDrawingButton.Clicked -= BeginDrawingPlacement;
         if (confirmButton != null) confirmButton.Clicked -= ConfirmPlacement;
         if (cancelButton != null) cancelButton.Clicked -= CancelPlacement;
@@ -110,15 +116,24 @@ public class PostItCreationFlow : MonoBehaviour
         if (shouldShow) ShowFlowPanel(hudPanel); else HideFlowPanel(hudPanel);
     }
 
+    private void ShowTypeSelection()
+    {
+        if (state != FlowState.Idle || boardCanvas == null || typeSelectionPanel == null) return;
+
+        state = FlowState.SelectingType;
+        ShowFlowPanel(typeSelectionPanel);
+    }
+
     private void BeginTextPlacement() => BeginPlacement(PostItKind.Text);
 
     private void BeginDrawingPlacement() => BeginPlacement(PostItKind.Drawing);
 
     private void BeginPlacement(PostItKind kind)
     {
-        if (state != FlowState.Idle || boardCanvas == null) return;
+        if (state != FlowState.SelectingType || boardCanvas == null) return;
         pendingKind = kind;
         state = FlowState.SelectingPosition;
+        HideFlowPanel(typeSelectionPanel);
         SetDetailPanelBlocked(true);
         if (placementPreview != null) placementPreview.gameObject.SetActive(true);
     }
@@ -194,6 +209,7 @@ public class PostItCreationFlow : MonoBehaviour
         if (placementPreview != null) placementPreview.gameObject.SetActive(false);
         HideFlowPanel(composerPanel);
         HideFlowPanel(drawPanel);
+        HideFlowPanel(typeSelectionPanel);
         hudPanel.ShowIsolatedViaController();
     }
 
@@ -236,6 +252,7 @@ public class PostItCreationFlow : MonoBehaviour
     private bool IsPointerOverUI(Vector2 screenPosition)
     {
         return PanelContainsPoint(hudPanel, screenPosition)
+            || PanelContainsPoint(typeSelectionPanel, screenPosition)
             || PanelContainsPoint(composerPanel, screenPosition)
             || PanelContainsPoint(drawPanel, screenPosition);
     }
