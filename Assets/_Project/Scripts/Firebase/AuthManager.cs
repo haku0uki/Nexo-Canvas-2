@@ -4,6 +4,7 @@ using Firebase.Auth;
 using Firebase.Extensions;
 using System;
 using UnityEngine.SceneManagement;
+using SheepyCreations.UIControl.Runtime;
 
 public class AuthManager : MonoBehaviour
 {
@@ -18,6 +19,9 @@ public class AuthManager : MonoBehaviour
     public event Action OnUserLoggedOut;
 
     private FirebaseAuth auth;
+    private NotificationBehaviour notification;
+
+
     public FirebaseUser CurrentUser => auth != null ? auth.CurrentUser : null;
 
     private void Awake()
@@ -28,6 +32,8 @@ public class AuthManager : MonoBehaviour
 
     void Start()
     {
+        notification = FindFirstObjectByType<NotificationBehaviour>();
+
         InicializarFirebase();
     }
 
@@ -43,7 +49,7 @@ public class AuthManager : MonoBehaviour
                 OnFirebaseInitialized?.Invoke();
                 Debug.Log("<color=green>¡Firebase Auth inicializado con éxito!</color>");
 
-                VerificarSesionPersistente();
+                //VerificarSesionPersistente();
             }
             else
             {
@@ -72,9 +78,16 @@ public class AuthManager : MonoBehaviour
     // 1. REGISTRAR ESTUDIANTE (Con dominio institucional obligatorio)
     public void RegistrarEstudiante(string email, string password)
     {
+
         if (!ValidarCorreoInstitucional(email))
         {
             Debug.LogError("Registro rechazado: Debe usar su correo institucional @uandresbello.edu");
+
+            if (notification != null)
+            {
+                notification.Enqueue("Debes usar tu correo @uandresbello.edu");
+            }
+
             return;
         }
 
@@ -89,11 +102,23 @@ public class AuthManager : MonoBehaviour
                     if (errorCode == AuthError.EmailAlreadyInUse)
                     {
                         Debug.LogWarning("<b>[Aviso]</b> Este correo ya está registrado. Por favor, selecciona la opción de iniciar sesión.");
+
+                        if (notification != null)
+                        {
+                            notification.Enqueue("Este correo ya está registrado. Inicia sesión");
+                        }
+
                         return;
                     }
                 }
 
                 Debug.LogError("Error inesperado al registrar: " + task.Exception);
+
+                if (notification != null)
+                {
+                    notification.Enqueue("Error inesperado al registrar: " + task.Exception);
+                }
+
                 return;
             }
 
@@ -102,6 +127,13 @@ public class AuthManager : MonoBehaviour
 
             user.SendEmailVerificationAsync().ContinueWithOnMainThread(verifyTask => {
                 Debug.Log("Correo de verificación enviado. Revisa tu bandeja de entrada de la universidad.");
+
+                if (notification != null)
+                {
+                    notification.Enqueue("Correo de verificación enviado a " + user.Email + ". Revisa tu bandeja de entrada.");
+                }
+
+
                 SignOut();
             });
         });
@@ -113,6 +145,12 @@ public class AuthManager : MonoBehaviour
         if (!ValidarCorreoInstitucional(email))
         {
             Debug.LogError("Login rechazado: El correo no pertenece a la universidad.");
+
+            if (notification != null)
+            {
+                notification.Enqueue("Usa tu correo @uandresbello.edu");
+            }
+
             return;
         }
 
@@ -120,6 +158,12 @@ public class AuthManager : MonoBehaviour
             if (task.IsFaulted)
             {
                 Debug.LogError("Error al iniciar sesión: " + task.Exception);
+
+                if (notification != null)
+                {
+                    notification.Enqueue("Error al iniciar sesión: " + task.Exception);
+                }
+
                 return;
             }
 
@@ -129,6 +173,12 @@ public class AuthManager : MonoBehaviour
             if (user.IsEmailVerified)
             {
                 Debug.Log($"<color=green>Sesión iniciada con éxito: {user.Email}</color>");
+
+                if (notification != null)
+                {
+                    notification.Enqueue("¡Sesión iniciada con éxito!");
+                }
+
                 OnUserLoggedIn?.Invoke(user);
 
                 LoadMainScene();
@@ -136,6 +186,12 @@ public class AuthManager : MonoBehaviour
             else
             {
                 Debug.LogWarning("Por favor, verifica tu correo en tu Outlook antes de ingresar.");
+
+                if (notification != null)
+                {
+                    notification.Enqueue("Por favor, verifica tu correo antes de ingresar.");
+                }
+
                 SignOut();
             }
         });
@@ -146,6 +202,12 @@ public class AuthManager : MonoBehaviour
         if (!ValidarCorreoInstitucional(email))
         {
             Debug.LogError("Operación rechazada: El correo no pertenece a la universidad.");
+
+            if (notification != null)
+            {
+                notification.Enqueue("Por favor, verifica tu correo antes de ingresar.");
+            }
+
             return;
         }
 
