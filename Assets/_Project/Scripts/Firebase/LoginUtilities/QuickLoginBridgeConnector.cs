@@ -8,6 +8,9 @@ public class QuickLoginBridgeConnector : MonoBehaviour
     [SerializeField] private TextFieldBridge passwordBridge;
     [SerializeField] private TextFieldBridge confirmPasswordBridge;
 
+    [Header("Sistema de Notificaciones")]
+    [SerializeField] private NotificationBehaviour notificationPanel;
+
     void Start()
     {
         // 1. Suscribirse al evento de login exitoso para guardar credenciales
@@ -22,6 +25,13 @@ public class QuickLoginBridgeConnector : MonoBehaviour
         if (emailBridge == null || passwordBridge == null) return;
         string email = emailBridge.Value.Trim();
         string password = passwordBridge.Value;
+
+        if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
+        {
+            ShowNotification("Por favor completa todos los campos.");
+            return;
+        }
+
         AuthManager.Instance.IniciarSesion(email, password);
     }
 
@@ -33,18 +43,21 @@ public class QuickLoginBridgeConnector : MonoBehaviour
         string password = passwordBridge.Value;
         string confirmPassword = confirmPasswordBridge.Value;
 
-        // Validar que las contraseñas coincidan antes de enviar a Firebase
-        if (password != confirmPassword)
+        if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password) || string.IsNullOrEmpty(confirmPassword))
         {
-            Debug.LogError("Error de registro: Las contraseñas no coinciden.");
-            // Opcional: Mostrar un mensaje en pantalla si tienes un label de feedback
+            ShowNotification("Por favor completa todos los campos.");
             return;
         }
 
-        // Validar longitud mínima que exige Firebase (por lo general 6 caracteres)
+        if (password != confirmPassword)
+        {
+            ShowNotification("Las contraseñas no coinciden.");
+            return;
+        }
+
         if (password.Length < 6)
         {
-            Debug.LogError("Error de registro: La contraseña debe tener al menos 6 caracteres.");
+            ShowNotification("La contraseña debe tener al menos 6 caracteres.");
             return;
         }
 
@@ -56,6 +69,13 @@ public class QuickLoginBridgeConnector : MonoBehaviour
         if (emailBridge == null || passwordBridge == null) return;
         string email = emailBridge.Value.Trim();
         string password = passwordBridge.Value;
+
+        if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
+        {
+            ShowNotification("Ingresa tu correo y contraseña para reenviar la verificación.");
+            return;
+        }
+
         AuthManager.Instance.ReenviarCorreoVerificacion(email, password);
     }
 
@@ -111,6 +131,14 @@ public class QuickLoginBridgeConnector : MonoBehaviour
         }
     }
 
+    private void ShowNotification(string mensaje)
+    {
+        Debug.LogWarning(mensaje);
+        if (notificationPanel != null)
+        {
+            notificationPanel.Enqueue(mensaje);
+        }
+    }
 
     public void ClearTextFields()
     {
