@@ -8,10 +8,20 @@ using UnityEngine.UIElements;
 // Shows the post-it enlarged, its comment thread, and lets the user publish a new comment.
 public class PostItDetailPanel : MonoBehaviour
 {
+    public enum DetailKind { Text, Drawing }
+
+    [Header("Kind")]
+    [Tooltip("Which post-its this panel opens for. Use one panel per kind: text details and drawing details have different UXML.")]
+    [SerializeField] private DetailKind kind = DetailKind.Text;
+
     [Header("Enlarged post-it")]
     [SerializeField] private UIDocumentPanel panel;
     [SerializeField] private LabelTextBridge authorLabel;
     [SerializeField] private LabelTextBridge contentLabel;
+
+    [Header("Drawing post-its")]
+    [Tooltip("Drawing kind only. Paints the strokes in the 'drawing-view' element of the drawing details UXML. Canvas Width Units must match DrawTest.")]
+    [SerializeField] private DrawingRenderer drawingRenderer;
 
     [Header("Comments")]
     [Tooltip("UXML template for a single comment row (matches CommentEntry's constructor).")]
@@ -26,8 +36,6 @@ public class PostItDetailPanel : MonoBehaviour
     private readonly Dictionary<string, CommentEntry> comments = new Dictionary<string, CommentEntry>();
     private string currentPostItId;
 
-    // Set by PostItCreationFlow for the whole placement flow, so tapping an existing post-it
-    // doesn't open its detail while a new one is being placed.
     public bool IsOpeningBlocked { get; set; }
 
     private EventGroup eventGroup;
@@ -55,6 +63,10 @@ public class PostItDetailPanel : MonoBehaviour
 
     private void OnEntryClicked(EntryClickedEvent<PostItData> evt)
     {
+        // Same rule BoardCanvas uses to pick the entry prefab: "dibujo" is a drawing, anything else is text.
+        bool isDrawing = evt.Data.tipo == "dibujo";
+        if (isDrawing != (kind == DetailKind.Drawing)) return;
+
         Open(evt.Data);
     }
 
@@ -62,17 +74,17 @@ public class PostItDetailPanel : MonoBehaviour
     {
         if (IsOpeningBlocked) return;
 
-        // commentsContainer has no bridge type, so it's the only element still resolved by name;
-        // doing it before Close() lets the first Open() clear the 8 UI Builder preview rows too.
         ResolveCommentsContainer();
-        Close(); // Also handles the case where a different post-it's detail was already open.
+        Close();
 
         currentPostItId = postIt.id;
+        bool isDrawingPanel = kind == DetailKind.Drawing;
         if (authorLabel != null) authorLabel.SetText(postIt.authorId);
-        if (contentLabel != null) contentLabel.SetText(postIt.contenido);
+        if (contentLabel != null) contentLabel.SetText(isDrawingPanel ? string.Empty : postIt.contenido);
+        ShowDrawing(isDrawingPanel ? postIt.contenido : null);
 
         FirestoreService.Instance.EscucharComentarios(postIt.id, OnCommentsUpdated);
-        if (panel != null) panel.ShowIsolatedViaController();
+        if (panel != null) panel.Show();
     }
 
     public void Close()
@@ -89,11 +101,32 @@ public class PostItDetailPanel : MonoBehaviour
         if (panel != null) panel.Hide();
     }
 
+    private void ShowDrawing(string json)
+    {
+        if (drawingRenderer == null) return;
+
+        if (string.IsNullOrEmpty(json))
+        {
+            drawingRenderer.Clear();
+            return;
+        }
+
+        try
+        {
+            drawingRenderer.SetDrawing(DrawingSerializer.Deserialize(json));
+        }
+        catch (System.ArgumentException exception)
+        {
+            drawingRenderer.Clear();
+            Debug.LogWarning($"PostItDetailPanel: invalid drawing JSON. {exception.Message}", this);
+        }
+    }
+
     private void OnCommentsUpdated(List<CommentData> updatedComments)
     {
         foreach (CommentData data in updatedComments)
         {
-            if (comments.ContainsKey(data.id)) continue; // Append-only for now, same as post-its.
+            if (comments.ContainsKey(data.id)) continue;
 
             CommentEntry entry = new CommentEntry(commentEntryAsset, data);
             commentsContainer?.Add(entry.Root);
