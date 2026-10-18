@@ -6,6 +6,7 @@ public class QuickLoginBridgeConnector : MonoBehaviour
     [Header("Bridges de la UI")]
     [SerializeField] private TextFieldBridge emailBridge;
     [SerializeField] private TextFieldBridge passwordBridge;
+    [SerializeField] private TextFieldBridge confirmPasswordBridge;
 
     void Start()
     {
@@ -26,9 +27,27 @@ public class QuickLoginBridgeConnector : MonoBehaviour
 
     public void TriggerRegisterFromBridges()
     {
-        if (emailBridge == null || passwordBridge == null) return;
+        if (emailBridge == null || passwordBridge == null || confirmPasswordBridge == null) return;
+
         string email = emailBridge.Value.Trim();
         string password = passwordBridge.Value;
+        string confirmPassword = confirmPasswordBridge.Value;
+
+        // Validar que las contraseñas coincidan antes de enviar a Firebase
+        if (password != confirmPassword)
+        {
+            Debug.LogError("Error de registro: Las contraseñas no coinciden.");
+            // Opcional: Mostrar un mensaje en pantalla si tienes un label de feedback
+            return;
+        }
+
+        // Validar longitud mínima que exige Firebase (por lo general 6 caracteres)
+        if (password.Length < 6)
+        {
+            Debug.LogError("Error de registro: La contraseña debe tener al menos 6 caracteres.");
+            return;
+        }
+
         AuthManager.Instance.RegistrarEstudiante(email, password);
     }
 
