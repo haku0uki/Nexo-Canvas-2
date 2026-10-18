@@ -453,6 +453,7 @@ GameObject:
   - component: {fileID: 1195095263}
   - component: {fileID: 1195095262}
   - component: {fileID: 1195095261}
+  - component: {fileID: 1195095267}
   - component: {fileID: 1195095260}
   - component: {fileID: 1195095259}
   - component: {fileID: 1195095265}
@@ -534,6 +535,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::QuickLoginBridgeConnector
   emailBridge: {fileID: 1195095262}
   passwordBridge: {fileID: 1195095261}
+  confirmPasswordBridge: {fileID: 1195095267}
 --- !u!114 &1195095261
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -546,7 +548,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8173f1ba0f2ffd34a8ffa8d0759d5229, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.TextFieldBridge
-  targetElementName: PasswordField
+  targetElementName: Password
   overrideInitialValue: 0
   initialValue: 
   onValueChanged:
@@ -737,6 +739,30 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &1195095267
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1195095257}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8173f1ba0f2ffd34a8ffa8d0759d5229, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.TextFieldBridge
+  targetElementName: ConfirmPassword
+  overrideInitialValue: 0
+  initialValue: 
+  onValueChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  onEditConfirmed:
+    m_PersistentCalls:
+      m_Calls: []
+  onSubmit:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1518309008
 GameObject:
   m_ObjectHideFlags: 0
@@ -1114,6 +1140,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::QuickLoginBridgeConnector
   emailBridge: {fileID: 7656241766789499892}
   passwordBridge: {fileID: 3474769318636013526}
+  confirmPasswordBridge: {fileID: 0}
 --- !u!114 &3400995886981924898
 MonoBehaviour:
   m_ObjectHideFlags: 0
