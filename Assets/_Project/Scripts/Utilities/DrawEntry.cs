@@ -12,28 +12,28 @@ public class DrawEntry : MonoBehaviour
 
     [Header("PUBLISH")]
     [Tooltip(
-        "Solo para probar en el Editor cuando no hay sesiÛn iniciada. " +
-        "En el juego se usa el usuario autenticado."
-    )]
-    [SerializeField] private string editorTestAuthorId = "test-user";
-
-    [Tooltip(
-        "PosiciÛn relativa del post-it en el tablero."
+        "Posici√≥n relativa del post-it en el tablero."
     )]
     [SerializeField] private Vector3 postItPosition = Vector3.zero;
 
     [Header("EVENTS")]
     [Tooltip(
-        "Se invoca despuÈs de publicar. " +
-        "ConÈctalo para volver al HUD."
+        "Se invoca despu√©s de publicar. " +
+        "Con√©ctalo para volver al HUD."
     )]
     public UnityEvent onPublished;
 
     [Tooltip(
         "Se invoca al cancelar. " +
-        "ConÈctalo para volver al HUD."
+        "Con√©ctalo para volver al HUD."
     )]
     public UnityEvent onCancelled;
+
+    [Tooltip(
+        "Se invoca cuando la celda elegida ya fue ocupada por otro usuario. " +
+        "El dibujo se conserva para poder elegir otra celda."
+    )]
+    public UnityEvent onCellOccupied;
 
     private Slider brushSizeSlider;
     private Slider eraserSizeSlider;
@@ -52,6 +52,12 @@ public class DrawEntry : MonoBehaviour
 
     private bool initialized;
 
+    // ID de documento de la celda elegida (vac√≠o = ID autom√°tico, comportamiento anterior).
+    private string cellId;
+
+    // Evita doble publicaci√≥n mientras la transacci√≥n est√° en curso.
+    private bool isPublishing;
+
 
     // ============================================================
     // UNITY
@@ -68,12 +74,14 @@ public class DrawEntry : MonoBehaviour
     // ============================================================
 
     /// <summary>
-    /// Define dÛnde queda el post-it en el tablero.
+    /// Define d√≥nde queda el post-it en el tablero y, opcionalmente,
+    /// la celda de la grilla que ocupar√°.
     /// Llamar antes de mostrar el panel.
     /// </summary>
-    public void Configure(Vector3 newPostItPosition)
+    public void Configure(Vector3 newPostItPosition, string newCellId = null)
     {
         postItPosition = newPostItPosition;
+        cellId = newCellId;
     }
 
 
@@ -81,33 +89,21 @@ public class DrawEntry : MonoBehaviour
     // AUTHOR
     // ============================================================
 
+    // Solo se publica con una sesi√≥n iniciada. Igual que los textos,
+    // el autor es el Email del usuario autenticado.
     private bool TryGetAuthorId(out string id)
     {
         id = null;
 
         if (
-            AuthManager.Instance != null &&
-            AuthManager.Instance.CurrentUser != null
+            AuthManager.Instance == null ||
+            AuthManager.Instance.CurrentUser == null
         )
-        {
-            id = AuthManager.Instance.CurrentUser.UserId;
+            return false;
 
-            return !string.IsNullOrEmpty(id);
-        }
+        id = AuthManager.Instance.CurrentUser.Email;
 
-#if UNITY_EDITOR
-        // Permite probar la escena sin pasar por el login.
-        Debug.LogWarning(
-            "DrawEntry: No hay sesiÛn iniciada, " +
-            "se usa el autor de prueba."
-        );
-
-        id = editorTestAuthorId;
-
-        return true;
-#else
-        return false;
-#endif
+        return !string.IsNullOrEmpty(id);
     }
 
 
@@ -149,7 +145,7 @@ public class DrawEntry : MonoBehaviour
         if (root == null)
         {
             Debug.LogError(
-                "DrawEntry: No se encontrÛ rootVisualElement."
+                "DrawEntry: No se encontr√≥ rootVisualElement."
             );
 
             return;
@@ -444,7 +440,7 @@ public class DrawEntry : MonoBehaviour
         drawTest.ToggleEraser();
 
         Debug.Log(
-            "DrawEntry: Se cambiÛ el modo goma."
+            "DrawEntry: Se cambi√≥ el modo goma."
         );
     }
 
@@ -481,6 +477,9 @@ public class DrawEntry : MonoBehaviour
 
     private void Publish()
     {
+        if (isPublishing)
+            return;
+
         if (drawTest == null)
             return;
 
@@ -507,34 +506,76 @@ public class DrawEntry : MonoBehaviour
         if (!TryGetAuthorId(out id))
         {
             Debug.LogError(
-                "DrawEntry: No hay un usuario autenticado."
+                "DrawEntry: Hay que iniciar sesi√≥n para publicar. " +
+                "El dibujo se conserva."
             );
 
             return;
         }
+
+        isPublishing = true;
 
         bool sent =
             FirestoreService.Instance.PublicarPostIt(
                 id,
                 "dibujo",
                 drawTest.GetDrawingJson(),
-                postItPosition
+                postItPosition,
+                cellId,
+                OnPublishResult
             );
 
-        // Si Firestore a˙n no est· listo, el dibujo se conserva.
+        // Si Firestore a√∫n no est√° listo, el dibujo se conserva.
         if (!sent)
-            return;
+            isPublishing = false;
+    }
 
-        Debug.Log(
-            "DrawEntry: Dibujo publicado en Firestore."
-        );
 
-        // Deja el lienzo limpio para el prÛximo dibujo.
-        drawTest.LoadDrawingData(
-            new DrawingData()
-        );
+    private void OnPublishResult(
+        ResultadoPublicacion resultado
+    )
+    {
+        isPublishing = false;
 
-        onPublished?.Invoke();
+        switch (resultado)
+        {
+            case ResultadoPublicacion.Ok:
+
+                Debug.Log(
+                    "DrawEntry: Dibujo publicado en Firestore."
+                );
+
+                // Deja el lienzo limpio para el pr√≥ximo dibujo.
+                if (drawTest != null)
+                {
+                    drawTest.LoadDrawingData(
+                        new DrawingData()
+                    );
+                }
+
+                onPublished?.Invoke();
+                break;
+
+            case ResultadoPublicacion.CeldaOcupada:
+
+                Debug.LogWarning(
+                    "DrawEntry: La celda ya fue ocupada. " +
+                    "El dibujo se conserva."
+                );
+
+                // No se limpia el dibujo: el usuario elige otra celda y publica de nuevo.
+                onCellOccupied?.Invoke();
+                break;
+
+            case ResultadoPublicacion.Error:
+
+                Debug.LogError(
+                    "DrawEntry: Error al publicar. " +
+                    "El dibujo se conserva."
+                );
+
+                break;
+        }
     }
 
 

@@ -144,6 +144,7 @@ public class QuickLoginBridgeConnector : MonoBehaviour
     {
         if (emailBridge != null) emailBridge.SetValue(string.Empty, false);
         if (passwordBridge != null) passwordBridge.SetValue(string.Empty, false);
+        if (confirmPasswordBridge != null) confirmPasswordBridge.SetValue(string.Empty, false);
     }
 
     private void OnDestroy()

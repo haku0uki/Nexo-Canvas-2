@@ -1,0 +1,15 @@
+.profile-root { padding-left: 20px; padding-right: 20px; padding-top: 20px; padding-bottom: 24px; }
+.profile-avatar { width: 140px; height: 140px; align-self: center; position: relative; border-radius: 70px; overflow: hidden; margin-bottom: 12px; }
+.profile-nickname { -unity-text-align: middle-center; font-size: 22px; -unity-font-style: bold; margin-bottom: 4px; }
+.profile-pronouns, .profile-email { -unity-text-align: middle-center; margin-bottom: 5px; }
+.profile-status { margin-top: 10px; white-space: normal; }
+.profile-separator { height: 1px; margin-top: 18px; margin-bottom: 18px; background-color: rgba(255,255,255,0.25); }
+.profile-section-title { font-size: 18px; -unity-font-style: bold; margin-top: 10px; margin-bottom: 12px; }
+.profile-posts-list { flex-direction: column; }
+.profile-post-card { padding: 12px; margin-bottom: 12px; border-radius: 8px; background-color: rgba(128,128,128,0.15); }
+.profile-post-type { -unity-font-style: bold; margin-bottom: 8px; }
+.profile-post-content { white-space: normal; }
+.profile-post-drawing { min-height: 180px; position: relative; }
+.profile-empty-posts { margin-top: 8px; }
+.profile-field-label { margin-top: 12px; margin-bottom: 5px; -unity-font-style: bold; }
+.profile-button { margin-top: 14px; min-height: 40px; }
