@@ -166,6 +166,8 @@ GameObject:
   - component: {fileID: 99561440}
   - component: {fileID: 99561439}
   - component: {fileID: 99561438}
+  - component: {fileID: 99561443}
+  - component: {fileID: 99561442}
   m_Layer: 0
   m_Name: Text Detail Panel
   m_TagString: Untagged
@@ -339,9 +341,49 @@ MonoBehaviour:
   drawingRenderer: {fileID: 0}
   commentEntryAsset: {fileID: 9197481963319205126, guid: 433050bc0e167e44fbe652e9a4deb5e1, type: 3}
   commentsContainerName: comments-scrollview
-  commentInput: {fileID: 0}
-  publishButton: {fileID: 0}
-  backButton: {fileID: 0}
+  commentInput: {fileID: 99561442}
+  publishButton: {fileID: 99561443}
+  backButton: {fileID: 99561438}
+--- !u!114 &99561442
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 99561434}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8173f1ba0f2ffd34a8ffa8d0759d5229, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.TextFieldBridge
+  targetElementName: comment-input
+  overrideInitialValue: 0
+  initialValue: 
+  onValueChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  onEditConfirmed:
+    m_PersistentCalls:
+      m_Calls: []
+  onSubmit:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &99561443
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 99561434}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c21dfdd449275ba4fb48dcd83efe6cac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.ButtonBridge
+  targetElementName: publish-comment-button
+  onClick:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &335039838
 GameObject:
   m_ObjectHideFlags: 0
@@ -914,6 +956,50 @@ MonoBehaviour:
       m_Flags: 0
     m_Reference: {fileID: 0}
   m_TrackedImageManager: {fileID: 1028204675}
+--- !u!1 &1052550438
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1052550440}
+  - component: {fileID: 1052550439}
+  m_Layer: 0
+  m_Name: FirestoreService
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1052550439
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1052550438}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62630cae443955a48b1bcaa9b6e5e2c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FirestoreService
+--- !u!4 &1052550440
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1052550438}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.01053, y: 0, z: -1.11759}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1123912161
 GameObject:
   m_ObjectHideFlags: 0
@@ -1088,7 +1174,7 @@ MonoBehaviour:
       - m_Target: {fileID: 2141101810}
         m_TargetAssemblyTypeName: SheepyCreations.UIControl.Runtime.UIDocumentPanel,
           SheepyCreations.UIControl.Runtime
-        m_MethodName: ShowIsolated
+        m_MethodName: ShowIsolatedViaController
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1141,7 +1227,7 @@ MonoBehaviour:
       - m_Target: {fileID: 2141101810}
         m_TargetAssemblyTypeName: SheepyCreations.UIControl.Runtime.UIDocumentPanel,
           SheepyCreations.UIControl.Runtime
-        m_MethodName: ShowIsolated
+        m_MethodName: ShowIsolatedViaController
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1163,7 +1249,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c21dfdd449275ba4fb48dcd83efe6cac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.ButtonBridge
-  targetElementName: back-button
+  targetElementName: cancel-button
   onClick:
     m_PersistentCalls:
       m_Calls:
@@ -1183,7 +1269,7 @@ MonoBehaviour:
       - m_Target: {fileID: 2141101810}
         m_TargetAssemblyTypeName: SheepyCreations.UIControl.Runtime.UIDocumentPanel,
           SheepyCreations.UIControl.Runtime
-        m_MethodName: ShowIsolated
+        m_MethodName: ShowIsolatedViaController
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1239,7 +1325,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 22400762, guid: 67117722a812a2e46ab8cb8eafbf5f5e, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.0001411438
+      value: 0.000034332275
       objectReference: {fileID: 0}
     - target: {fileID: 22426080, guid: 67117722a812a2e46ab8cb8eafbf5f5e, type: 3}
       propertyPath: m_AnchorMax.x
@@ -1902,6 +1988,9 @@ GameObject:
   - component: {fileID: 1470295766}
   - component: {fileID: 1470295770}
   - component: {fileID: 1470295771}
+  - component: {fileID: 1470295774}
+  - component: {fileID: 1470295773}
+  - component: {fileID: 1470295772}
   m_Layer: 0
   m_Name: Draw Detail Panel
   m_TagString: Untagged
@@ -2035,7 +2124,7 @@ MonoBehaviour:
       - m_Target: {fileID: 2141101810}
         m_TargetAssemblyTypeName: SheepyCreations.UIControl.Runtime.UIDocumentPanel,
           SheepyCreations.UIControl.Runtime
-        m_MethodName: ShowIsolated
+        m_MethodName: ShowIsolatedViaController
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2059,14 +2148,69 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PostItDetailPanel
   kind: 1
   panel: {fileID: 1470295768}
-  authorLabel: {fileID: 0}
+  authorLabel: {fileID: 1470295774}
   contentLabel: {fileID: 0}
   drawingRenderer: {fileID: 1470295766}
   commentEntryAsset: {fileID: 9197481963319205126, guid: 433050bc0e167e44fbe652e9a4deb5e1, type: 3}
   commentsContainerName: comments-scrollview
-  commentInput: {fileID: 0}
-  publishButton: {fileID: 0}
+  commentInput: {fileID: 1470295773}
+  publishButton: {fileID: 1470295772}
   backButton: {fileID: 1470295770}
+--- !u!114 &1470295772
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1470295765}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c21dfdd449275ba4fb48dcd83efe6cac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.ButtonBridge
+  targetElementName: publish-comment-button
+  onClick:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &1470295773
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1470295765}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8173f1ba0f2ffd34a8ffa8d0759d5229, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.TextFieldBridge
+  targetElementName: comment-input
+  overrideInitialValue: 0
+  initialValue: 
+  onValueChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  onEditConfirmed:
+    m_PersistentCalls:
+      m_Calls: []
+  onSubmit:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &1470295774
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1470295765}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 111e034da0efe6f4f8247690407bf89d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.LabelTextBridge
+  targetElementName: username-label-postit
+  overrideInitialValue: 0
+  initialValue: 
 --- !u!1 &1477883012
 GameObject:
   m_ObjectHideFlags: 0
@@ -2180,7 +2324,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1673790449
+--- !u!1 &1730594298
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2188,37 +2332,38 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1673790451}
-  - component: {fileID: 1673790450}
+  - component: {fileID: 1730594300}
+  - component: {fileID: 1730594299}
   m_Layer: 0
-  m_Name: FirestoreService
+  m_Name: AuthManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1673790450
+--- !u!114 &1730594299
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1673790449}
+  m_GameObject: {fileID: 1730594298}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62630cae443955a48b1bcaa9b6e5e2c8, type: 3}
+  m_Script: {fileID: 11500000, guid: a96feecaf5c506949934da83002320ac, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::FirestoreService
---- !u!4 &1673790451
+  m_EditorClassIdentifier: Assembly-CSharp::AuthManager
+  mainScene: NexoCanvasScene
+--- !u!4 &1730594300
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1673790449}
+  m_GameObject: {fileID: 1730594298}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0, y: -0, z: 0}
+  m_LocalPosition: {x: 1.01053, y: 0, z: -1.11759}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2611,6 +2756,8 @@ GameObject:
   - component: {fileID: 2141101810}
   - component: {fileID: 2141101812}
   - component: {fileID: 2141101811}
+  - component: {fileID: 2141101814}
+  - component: {fileID: 2141101813}
   m_Layer: 0
   m_Name: HUD panel
   m_TagString: Untagged
@@ -2735,6 +2882,46 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HUD
   addPostItButton: {fileID: 2141101811}
+--- !u!114 &2141101813
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2141101807}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 120131af4411ebd44a654cf396cdb74b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LoadSceneComponent
+--- !u!114 &2141101814
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2141101807}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c21dfdd449275ba4fb48dcd83efe6cac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.ButtonBridge
+  targetElementName: main-menu-button
+  onClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2141101813}
+        m_TargetAssemblyTypeName: LoadSceneComponent, Assembly-CSharp
+        m_MethodName: LoadScene
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: MainMenu
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -2744,8 +2931,9 @@ SceneRoots:
   - {fileID: 480359970}
   - {fileID: 1028204680}
   - {fileID: 1845594305}
+  - {fileID: 1730594300}
+  - {fileID: 1052550440}
   - {fileID: 1477883016}
   - {fileID: 1260940611}
   - {fileID: 796252392}
   - {fileID: 2079716516}
-  - {fileID: 1673790451}
