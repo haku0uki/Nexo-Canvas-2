@@ -1,5 +1,6 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
     <Style src="project://database/Assets/_Project/Scripts/UserProfiles/UserProfilePanels.uss?fileID=7433441132597879392&amp;guid=344c157ced2639d4d8d216198f00f7bc&amp;type=3#UserProfilePanels"/>
+    <Style src="project://database/Assets/_Project/UI/DefaultStyleSheet.uss?fileID=7433441132597879392&amp;guid=92f105faae8cdfa41a5bffceba250712&amp;type=3#DefaultStyleSheet"/>
     <ui:ScrollView name="profile-scroll" mode="Vertical" class="profile-scroll" style="flex-grow: 1; -unity-font-definition: url(&quot;project://database/Assets/_Project/UI/Fonts/NexoCanvasFuente-Regular.otf?fileID=12800000&amp;guid=c8d3790eab9c74a488ca8941f9eab3d5&amp;type=3#NexoCanvasFuente-Regular&quot;);">
         <ui:VisualElement name="profile-view-root" class="profile-root">
             <ui:VisualElement name="profile-header" class="profile-header" style="flex-direction: row; align-items: center; height: 632%; padding-bottom: 10%; padding-top: 10%; font-size: 61px; -unity-text-outline-width: 1px; color: rgba(35, 48, 57, 0.6);">
@@ -18,6 +19,7 @@
                         <ui:Label name="profile-pronouns-label" text="que/teimporta" class="profile-pronouns" style="font-size: 75px; margin-top: -5%;"/>
                     </ui:VisualElement>
                 </ui:VisualElement>
+                <ui:Button text="" name="profile-editor" icon-image="project://database/Assets/_Project/2D/Boton%20de%20lapiz.png?fileID=219454448&amp;guid=e030ae35b350ec743898ba6adbcfee83&amp;type=3#Boton de lapiz_0" style="margin-top: -1%; width: 11%; align-self: flex-end; align-items: flex-end; top: 15%; bottom: 0%; right: 8%; background-color: rgba(188, 188, 188, 0); padding-top: 26px; height: 41%; border-top-color: rgba(149, 149, 149, 0); border-bottom-color: rgba(149, 149, 149, 0); border-left-color: rgba(149, 149, 149, 0); border-right-color: rgba(149, 149, 149, 0); opacity: 1;"/>
             </ui:VisualElement>
             <ui:Label name="profile-status-label" class="profile-status"/>
             <ui:VisualElement name="profile-separator" class="profile-separator"/>
@@ -30,6 +32,7 @@
                     <ui:Label name="profile-empty-label" text="Todavía no hay publicaciones." class="profile-empty-posts"/>
                 </ui:VisualElement>
             </ui:VisualElement>
+            <ui:Button text="" name="back-button" icon-image="" class="back-button" style="background-color: rgba(188, 188, 188, 0); border-bottom-color: rgba(149, 149, 149, 0); border-left-color: rgba(149, 149, 149, 0); border-right-color: rgba(149, 149, 149, 0); border-top-color: rgba(149, 149, 149, 0); width: 3%; height: 10%; top: 9%; right: 6%;"/>
         </ui:VisualElement>
     </ui:ScrollView>
 </ui:UXML>

@@ -430,7 +430,7 @@ public class UserProfileEditPanelController : MonoBehaviour
         SetStatus("Sesión cerrada.");
     }
 
-    private void LoadProfile()
+    public void LoadProfile()
     {
         if (currentUser == null || !currentUser.IsEmailVerified)
         {
@@ -490,7 +490,7 @@ public class UserProfileEditPanelController : MonoBehaviour
         );
     }
 
-    private void SaveProfile()
+    public void SaveProfile()
     {
         if (currentUser == null ||
             !currentUser.IsEmailVerified ||
