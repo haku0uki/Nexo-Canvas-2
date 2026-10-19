@@ -84,7 +84,7 @@ public class PostItDetailPanel : MonoBehaviour
         ShowDrawing(isDrawingPanel ? postIt.contenido : null);
 
         FirestoreService.Instance.EscucharComentarios(postIt.id, OnCommentsUpdated);
-        if (panel != null) panel.Show();
+        if (panel != null) panel.ShowIsolatedViaController();
     }
 
     public void Close()

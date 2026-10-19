@@ -3,6 +3,7 @@ using Firebase;
 using Firebase.Auth;
 using Firebase.Extensions;
 using System;
+using System.Collections;
 using UnityEngine.SceneManagement;
 using SheepyCreations.UIControl.Runtime;
 
@@ -21,7 +22,6 @@ public class AuthManager : MonoBehaviour
     private FirebaseAuth auth;
     private NotificationBehaviour notification;
 
-
     public FirebaseUser CurrentUser => auth != null ? auth.CurrentUser : null;
 
     private void Awake()
@@ -32,9 +32,22 @@ public class AuthManager : MonoBehaviour
 
     void Start()
     {
-        notification = FindFirstObjectByType<NotificationBehaviour>();
-
         InicializarFirebase();
+    }
+
+    // Muestra una notificación en el panel de la escena actual.
+    // La referencia se busca cuando hace falta: AuthManager persiste entre escenas,
+    // así que el panel puede haber sido destruido o no existir todavía.
+    private void Notificar(string mensaje)
+    {
+        // "== null" también es true si el objeto fue destruido: en ese caso se vuelve a buscar.
+        if (notification == null)
+            notification = FindFirstObjectByType<NotificationBehaviour>();
+        if (notification == null) return;
+
+        notification.ClearQueue();   // descarta las que están esperando
+        notification.SkipCurrent();  // cierra la que se está mostrando
+        notification.Enqueue(mensaje);
     }
 
     private void InicializarFirebase()
@@ -78,16 +91,10 @@ public class AuthManager : MonoBehaviour
     // 1. REGISTRAR ESTUDIANTE (Con dominio institucional obligatorio)
     public void RegistrarEstudiante(string email, string password)
     {
-
         if (!ValidarCorreoInstitucional(email))
         {
             Debug.LogError("Registro rechazado: Debe usar su correo institucional @uandresbello.edu");
-
-            if (notification != null)
-            {
-                notification.Enqueue("Debes usar tu correo @uandresbello.edu");
-            }
-
+            Notificar("Debes usar tu correo @uandresbello.edu");
             return;
         }
 
@@ -102,23 +109,14 @@ public class AuthManager : MonoBehaviour
                     if (errorCode == AuthError.EmailAlreadyInUse)
                     {
                         Debug.LogWarning("<b>[Aviso]</b> Este correo ya está registrado. Por favor, selecciona la opción de iniciar sesión.");
-
-                        if (notification != null)
-                        {
-                            notification.Enqueue("Este correo ya está registrado. Inicia sesión");
-                        }
-
+                        Notificar("Este correo ya está registrado. Inicia sesión");
                         return;
                     }
                 }
 
+                // La excepción completa solo va a la consola, no a la pantalla del usuario.
                 Debug.LogError("Error inesperado al registrar: " + task.Exception);
-
-                if (notification != null)
-                {
-                    notification.Enqueue("Error inesperado al registrar: " + task.Exception);
-                }
-
+                Notificar("No se pudo completar el registro. Inténtalo de nuevo");
                 return;
             }
 
@@ -126,13 +124,16 @@ public class AuthManager : MonoBehaviour
             Debug.Log($"<color=green>¡Cuenta creada! Enviando verificación a {user.Email}</color>");
 
             user.SendEmailVerificationAsync().ContinueWithOnMainThread(verifyTask => {
-                Debug.Log("Correo de verificación enviado. Revisa tu bandeja de entrada de la universidad.");
-
-                if (notification != null)
+                if (verifyTask.IsFaulted || verifyTask.IsCanceled)
                 {
-                    notification.Enqueue("Correo de verificación enviado a " + user.Email + ". Revisa tu bandeja de entrada.");
+                    Debug.LogError("Error al enviar el correo de verificación: " + verifyTask.Exception);
+                    Notificar("Cuenta creada, pero no se pudo enviar el correo de verificación. Usa la opción de reenviar");
                 }
-
+                else
+                {
+                    Debug.Log("Correo de verificación enviado. Revisa tu bandeja de entrada de la universidad.");
+                    Notificar("Correo de verificación enviado a " + user.Email + ". Revisa tu bandeja de entrada.");
+                }
 
                 SignOut();
             });
@@ -145,12 +146,7 @@ public class AuthManager : MonoBehaviour
         if (!ValidarCorreoInstitucional(email))
         {
             Debug.LogError("Login rechazado: El correo no pertenece a la universidad.");
-
-            if (notification != null)
-            {
-                notification.Enqueue("Usa tu correo @uandresbello.edu");
-            }
-
+            Notificar("Usa tu correo @uandresbello.edu");
             return;
         }
 
@@ -158,12 +154,7 @@ public class AuthManager : MonoBehaviour
             if (task.IsFaulted)
             {
                 Debug.LogError("Error al iniciar sesión: " + task.Exception);
-
-                if (notification != null)
-                {
-                    notification.Enqueue("Error al iniciar sesión: " + task.Exception);
-                }
-
+                Notificar("No se pudo iniciar sesión. Revisa tu correo y contraseña");
                 return;
             }
 
@@ -173,11 +164,7 @@ public class AuthManager : MonoBehaviour
             if (user.IsEmailVerified)
             {
                 Debug.Log($"<color=green>Sesión iniciada con éxito: {user.Email}</color>");
-
-                if (notification != null)
-                {
-                    notification.Enqueue("¡Sesión iniciada con éxito!");
-                }
+                Notificar("¡Sesión iniciada con éxito!");
 
                 OnUserLoggedIn?.Invoke(user);
 
@@ -186,12 +173,7 @@ public class AuthManager : MonoBehaviour
             else
             {
                 Debug.LogWarning("Por favor, verifica tu correo en tu Outlook antes de ingresar.");
-
-                if (notification != null)
-                {
-                    notification.Enqueue("Por favor, verifica tu correo antes de ingresar.");
-                }
-
+                Notificar("Por favor, verifica tu correo antes de ingresar.");
                 SignOut();
             }
         });
@@ -202,12 +184,7 @@ public class AuthManager : MonoBehaviour
         if (!ValidarCorreoInstitucional(email))
         {
             Debug.LogError("Operación rechazada: El correo no pertenece a la universidad.");
-
-            if (notification != null)
-            {
-                notification.Enqueue("Por favor, verifica tu correo antes de ingresar.");
-            }
-
+            Notificar("Usa tu correo @uandresbello.edu");
             return;
         }
 
@@ -216,6 +193,7 @@ public class AuthManager : MonoBehaviour
             if (task.IsFaulted)
             {
                 Debug.LogError("No se pudo iniciar sesión para reenviar el correo: " + task.Exception);
+                Notificar("No se pudo reenviar el correo. Revisa tu correo y contraseña");
                 return;
             }
 
@@ -226,10 +204,12 @@ public class AuthManager : MonoBehaviour
                 if (verifyTask.IsCompletedSuccessfully)
                 {
                     Debug.Log("<color=yellow><b>[Auth]</b> Enlace de verificación reenviado con éxito a tu Outlook.</color>");
+                    Notificar("Enlace de verificación reenviado. Revisa tu bandeja de entrada.");
                 }
                 else
                 {
                     Debug.LogError("Error al reenviar el correo de verificación: " + verifyTask.Exception);
+                    Notificar("No se pudo reenviar el correo de verificación. Inténtalo más tarde");
                 }
                 SignOut(); // Cerrar sesión inmediatamente por seguridad
             });
@@ -238,15 +218,16 @@ public class AuthManager : MonoBehaviour
 
     private void LoadMainScene()
     {
-        if (!string.IsNullOrEmpty(mainScene))
-        {
-            SceneManager.LoadScene(mainScene);
-        }
-        else
+        if (string.IsNullOrEmpty(mainScene))
         {
             Debug.LogError("El nombre de la escena principal está vacío en el AuthManager.");
+            return;
         }
+        
+        
+        SceneManager.LoadScene(mainScene);
     }
+
 
     public void SignOut()
     {
