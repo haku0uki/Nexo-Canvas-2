@@ -275,6 +275,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c21dfdd449275ba4fb48dcd83efe6cac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.ButtonBridge
+  overrideInteractable: 0
+  initialInteractable: 1
+  overrideDisplayed: 0
+  initialDisplayed: 1
+  overrideTooltip: 0
+  initialTooltip: 
   targetElementName: back-button
   onClick:
     m_PersistentCalls:
@@ -304,6 +310,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 111e034da0efe6f4f8247690407bf89d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.LabelTextBridge
+  overrideInteractable: 0
+  initialInteractable: 1
+  overrideDisplayed: 0
+  initialDisplayed: 1
+  overrideTooltip: 0
+  initialTooltip: 
   targetElementName: content-label-postit
   overrideInitialValue: 0
   initialValue: 
@@ -319,6 +331,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 111e034da0efe6f4f8247690407bf89d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.LabelTextBridge
+  overrideInteractable: 0
+  initialInteractable: 1
+  overrideDisplayed: 0
+  initialDisplayed: 1
+  overrideTooltip: 0
+  initialTooltip: 
   targetElementName: username-label-postit
   overrideInitialValue: 0
   initialValue: 
@@ -356,6 +374,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8173f1ba0f2ffd34a8ffa8d0759d5229, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.TextFieldBridge
+  overrideInteractable: 0
+  initialInteractable: 1
+  overrideDisplayed: 0
+  initialDisplayed: 1
+  overrideTooltip: 0
+  initialTooltip: 
   targetElementName: comment-input
   overrideInitialValue: 0
   initialValue: 
@@ -380,6 +404,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c21dfdd449275ba4fb48dcd83efe6cac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.ButtonBridge
+  overrideInteractable: 0
+  initialInteractable: 1
+  overrideDisplayed: 0
+  initialDisplayed: 1
+  overrideTooltip: 0
+  initialTooltip: 
   targetElementName: publish-comment-button
   onClick:
     m_PersistentCalls:
@@ -1117,6 +1147,7 @@ GameObject:
   - component: {fileID: 1123912162}
   - component: {fileID: 1123912168}
   - component: {fileID: 1123912167}
+  - component: {fileID: 1123912172}
   - component: {fileID: 1123912164}
   - component: {fileID: 1123912163}
   - component: {fileID: 1123912171}
@@ -1272,6 +1303,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c21dfdd449275ba4fb48dcd83efe6cac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.ButtonBridge
+  overrideInteractable: 0
+  initialInteractable: 1
+  overrideDisplayed: 0
+  initialDisplayed: 1
+  overrideTooltip: 0
+  initialTooltip: 
   targetElementName: cancel-button
   onClick:
     m_PersistentCalls:
@@ -1313,6 +1350,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c21dfdd449275ba4fb48dcd83efe6cac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.ButtonBridge
+  overrideInteractable: 0
+  initialInteractable: 1
+  overrideDisplayed: 0
+  initialDisplayed: 1
+  overrideTooltip: 0
+  initialTooltip: 
   targetElementName: publish-button
   onClick:
     m_PersistentCalls:
@@ -1354,6 +1397,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c21dfdd449275ba4fb48dcd83efe6cac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.ButtonBridge
+  overrideInteractable: 0
+  initialInteractable: 1
+  overrideDisplayed: 0
+  initialDisplayed: 1
+  overrideTooltip: 0
+  initialTooltip: 
   targetElementName: cancel-button
   onClick:
     m_PersistentCalls:
@@ -1384,6 +1433,20 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &1123912172
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1123912161}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a8421b85e1bd414ca8b11fae044eae1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::KeyboardAvoider
+  document: {fileID: 1123912168}
+  targetName: comment-composer
 --- !u!1001 &1260940611
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1430,7 +1493,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 22400762, guid: 67117722a812a2e46ab8cb8eafbf5f5e, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.00011062622
+      value: -0.000030517578
       objectReference: {fileID: 0}
     - target: {fileID: 22426080, guid: 67117722a812a2e46ab8cb8eafbf5f5e, type: 3}
       propertyPath: m_AnchorMax.x
@@ -1893,6 +1956,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c21dfdd449275ba4fb48dcd83efe6cac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.ButtonBridge
+  overrideInteractable: 0
+  initialInteractable: 1
+  overrideDisplayed: 0
+  initialDisplayed: 1
+  overrideTooltip: 0
+  initialTooltip: 
   targetElementName: dibuja
   onClick:
     m_PersistentCalls:
@@ -1922,6 +1991,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c21dfdd449275ba4fb48dcd83efe6cac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.ButtonBridge
+  overrideInteractable: 0
+  initialInteractable: 1
+  overrideDisplayed: 0
+  initialDisplayed: 1
+  overrideTooltip: 0
+  initialTooltip: 
   targetElementName: escribe
   onClick:
     m_PersistentCalls:
@@ -1952,6 +2027,7 @@ GameObject:
   - component: {fileID: 1321535695}
   - component: {fileID: 1321535699}
   - component: {fileID: 1321535698}
+  - component: {fileID: 1321535700}
   m_Layer: 0
   m_Name: Text Entry Composer
   m_TagString: Untagged
@@ -2059,6 +2135,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c21dfdd449275ba4fb48dcd83efe6cac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.ButtonBridge
+  overrideInteractable: 0
+  initialInteractable: 1
+  overrideDisplayed: 0
+  initialDisplayed: 1
+  overrideTooltip: 0
+  initialTooltip: 
   targetElementName: cancel-postit-button
   onClick:
     m_PersistentCalls:
@@ -2075,10 +2157,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c21dfdd449275ba4fb48dcd83efe6cac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.ButtonBridge
+  overrideInteractable: 0
+  initialInteractable: 1
+  overrideDisplayed: 0
+  initialDisplayed: 1
+  overrideTooltip: 0
+  initialTooltip: 
   targetElementName: confirm-postit-button
   onClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1321535700
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1321535694}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a8421b85e1bd414ca8b11fae044eae1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::KeyboardAvoider
+  document: {fileID: 1321535696}
+  targetName: comment-composer
 --- !u!1 &1470295765
 GameObject:
   m_ObjectHideFlags: 0
@@ -2222,6 +2324,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c21dfdd449275ba4fb48dcd83efe6cac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.ButtonBridge
+  overrideInteractable: 0
+  initialInteractable: 1
+  overrideDisplayed: 0
+  initialDisplayed: 1
+  overrideTooltip: 0
+  initialTooltip: 
   targetElementName: back-button
   onClick:
     m_PersistentCalls:
@@ -2273,6 +2381,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c21dfdd449275ba4fb48dcd83efe6cac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.ButtonBridge
+  overrideInteractable: 0
+  initialInteractable: 1
+  overrideDisplayed: 0
+  initialDisplayed: 1
+  overrideTooltip: 0
+  initialTooltip: 
   targetElementName: publish-comment-button
   onClick:
     m_PersistentCalls:
@@ -2289,6 +2403,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8173f1ba0f2ffd34a8ffa8d0759d5229, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.TextFieldBridge
+  overrideInteractable: 0
+  initialInteractable: 1
+  overrideDisplayed: 0
+  initialDisplayed: 1
+  overrideTooltip: 0
+  initialTooltip: 
   targetElementName: comment-input
   overrideInitialValue: 0
   initialValue: 
@@ -2313,6 +2433,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 111e034da0efe6f4f8247690407bf89d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.LabelTextBridge
+  overrideInteractable: 0
+  initialInteractable: 1
+  overrideDisplayed: 0
+  initialDisplayed: 1
+  overrideTooltip: 0
+  initialTooltip: 
   targetElementName: username-label-postit
   overrideInitialValue: 0
   initialValue: 
@@ -3124,6 +3250,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c21dfdd449275ba4fb48dcd83efe6cac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.ButtonBridge
+  overrideInteractable: 0
+  initialInteractable: 1
+  overrideDisplayed: 0
+  initialDisplayed: 1
+  overrideTooltip: 0
+  initialTooltip: 
   targetElementName: add-postit-button
   onClick:
     m_PersistentCalls:
@@ -3165,6 +3297,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c21dfdd449275ba4fb48dcd83efe6cac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.ButtonBridge
+  overrideInteractable: 0
+  initialInteractable: 1
+  overrideDisplayed: 0
+  initialDisplayed: 1
+  overrideTooltip: 0
+  initialTooltip: 
   targetElementName: main-menu-button
   onClick:
     m_PersistentCalls:

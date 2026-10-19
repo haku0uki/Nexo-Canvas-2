@@ -1,8 +1,15 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/_Project/UI/DefaultStyleSheet.uss?fileID=7433441132597879392&amp;guid=92f105faae8cdfa41a5bffceba250712&amp;type=3#DefaultStyleSheet"/>
-    <ui:VisualElement name="root" class="draw-entry-root" style="margin-top: 10%;">
-        <ui:VisualElement name="background" class="details-postit" style="background-image: url(&quot;project://database/Assets/_Project/2D/post_it_amarillo.png?fileID=2800000&amp;guid=ae5465568c0e1594a9a7133281d5598b&amp;type=3#post_it_amarillo&quot;);">
-            <ui:VisualElement name="drawing-area" class="draw-entry-drawing-area" style="bottom: 231px; top: 100px;"/>
+    <ui:VisualElement name="root" class="details-root">
+        <ui:VisualElement name="background" class="details-background"/>
+        <ui:VisualElement name="spacer" class="details-spacer"/>
+        <ui:VisualElement name="postit-container" class="details-postit">
+            <ui:VisualElement name="post-it-amarillo" class="post-it-amarillo"/>
+            <ui:VisualElement name="elements-container" class="postit-content">
+                <ui:Label text="Usuario" name="username-label-postit" class="user-label"/>
+                <ui:VisualElement class="separator"/>
+                <ui:VisualElement name="drawing-area" class="draw-entry-drawing-area"/>
+            </ui:VisualElement>
         </ui:VisualElement>
         <ui:VisualElement name="draw-entry-controls" class="draw-entry-controls">
             <ui:VisualElement name="brush-control" class="draw-control-row">
@@ -14,15 +21,15 @@
                 <ui:Slider name="eraser-size-slider" low-value="0.02" high-value="0.5" value="0.15" class="draw-slider"/>
             </ui:VisualElement>
             <ui:VisualElement name="color-buttons" class="color-buttons">
-                <ui:Button name="black-color-button" text="Negro" class="color-button"/>
-                <ui:Button name="red-color-button" text="Rojo" class="color-button"/>
-                <ui:Button name="blue-color-button" text="Azul" class="color-button"/>
-                <ui:Button name="green-color-button" text="Verde" class="color-button"/>
+                <ui:Button name="black-color-button" text="Negro" class="draw-button"/>
+                <ui:Button name="red-color-button" text="Rojo" class="draw-button"/>
+                <ui:Button name="blue-color-button" text="Azul" class="draw-button"/>
+                <ui:Button name="green-color-button" text="Verde" class="draw-button"/>
             </ui:VisualElement>
             <ui:VisualElement name="draw-actions" class="draw-actions">
-                <ui:Button name="eraser-button" text="Goma" class="action-button"/>
-                <ui:Button name="undo-button" text="Deshacer" class="action-button"/>
-                <ui:Button name="redo-button" text="Rehacer" class="action-button"/>
+                <ui:Button name="eraser-button" text="Goma" class="draw-button"/>
+                <ui:Button name="undo-button" text="Deshacer" class="draw-button"/>
+                <ui:Button name="redo-button" text="Rehacer" class="draw-button"/>
             </ui:VisualElement>
             <ui:Button name="publish-button" text="Publicar" class="publish-button"/>
             <ui:Button name="cancel-button" text="Cancelar" class="cancel-button"/>
