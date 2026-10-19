@@ -51,6 +51,8 @@ public class PostItCreationFlow : MonoBehaviour
     private FlowState state = FlowState.Idle;
     private PostItKind pendingKind = PostItKind.Text;
     private Vector3 selectedLocalPoint;
+    private Vector2Int selectedCell;
+    private bool isPublishing;
     private bool hudCurrentlyShown;
 
     private void Awake()
@@ -70,6 +72,7 @@ public class PostItCreationFlow : MonoBehaviour
         {
             drawEntry.onPublished.AddListener(OnDrawingFinished);
             drawEntry.onCancelled.AddListener(OnDrawingFinished);
+            drawEntry.onCellOccupied.AddListener(OnDrawingCellOccupied);
         }
     }
 
@@ -85,6 +88,7 @@ public class PostItCreationFlow : MonoBehaviour
         {
             drawEntry.onPublished.RemoveListener(OnDrawingFinished);
             drawEntry.onCancelled.RemoveListener(OnDrawingFinished);
+            drawEntry.onCellOccupied.RemoveListener(OnDrawingCellOccupied);
         }
 
         SetDetailPanelBlocked(false); // Never leave the detail panel blocked if this component is disabled mid-flow.
@@ -143,11 +147,19 @@ public class PostItCreationFlow : MonoBehaviour
         if (!PointerInput.TryGetPointerDown(out Vector2 screenPosition)) return;
         if (IsPointerOverUI(screenPosition)) return; // A tap on UI controls must never count as a board tap.
         if (!BoardRaycaster.TryGetLocalPoint(boardCanvas, arCamera, screenPosition, surfaceOffset, out Vector3 localPoint)) return;
-        if (!boardCanvas.IsInsideBoard(localPoint)) return; // Ignore taps outside the paper; keep selecting.
+        if (!boardCanvas.TryGetCell(localPoint, out Vector2Int cell)) return; // Ignore taps outside the paper; keep selecting.
 
-        selectedLocalPoint = localPoint;
+        if (boardCanvas.IsCellOccupied(cell))
+        {
+            Debug.Log($"PostItCreationFlow: la celda {cell} ya está ocupada.");
+            return; // Keep selecting; add visual feedback here if desired.
+        }
+
+        selectedCell = cell;
+        selectedLocalPoint = boardCanvas.CellToLocalPoint(cell, surfaceOffset); // Cell center, not the raw tap.
+
         if (placementPreview != null)
-            placementPreview.position = boardCanvas.transform.TransformPoint(localPoint);
+            placementPreview.position = boardCanvas.transform.TransformPoint(selectedLocalPoint);
 
         if (pendingKind == PostItKind.Drawing) BeginDrawing(); else BeginWriting();
     }
@@ -174,7 +186,8 @@ public class PostItCreationFlow : MonoBehaviour
         }
 
         state = FlowState.Drawing;
-        drawEntry.Configure(selectedLocalPoint); // DrawEntry publishes the post-it at this board position.
+        // DrawEntry publishes the post-it at this board position, in this cell.
+        drawEntry.Configure(selectedLocalPoint, boardCanvas.GetCellId(selectedCell));
         ShowFlowPanel(drawPanel);
     }
 
@@ -184,17 +197,66 @@ public class PostItCreationFlow : MonoBehaviour
         ReturnToIdle();
     }
 
+    // Another user took the cell while this one was drawing. The drawing is kept
+    // (DrawEntry does not clear it), so the user only has to pick another cell.
+    private void OnDrawingCellOccupied()
+    {
+        if (state != FlowState.Drawing) return;
+
+        HideFlowPanel(drawPanel);
+        state = FlowState.SelectingPosition;
+    }
+
     private void ConfirmPlacement()
     {
+        if (isPublishing) return; // Ignore double taps while the transaction is in flight.
+
         string texto = textInput != null ? textInput.value?.Trim() : null;
         if (string.IsNullOrEmpty(texto)) return; // Nothing to publish; stay in Writing.
+
+        // Quick local check: someone else may have taken the cell while this user was writing.
+        if (boardCanvas.IsCellOccupied(selectedCell))
+        {
+            BackToPositionSelection();
+            return;
+        }
 
         string autorId = AuthManager.Instance.CurrentUser != null
             ? AuthManager.Instance.CurrentUser.Email
             : "anonimo";
 
-        FirestoreService.Instance.PublicarPostIt(autorId, "texto", texto, selectedLocalPoint);
-        ReturnToIdle();
+        isPublishing = true;
+        bool sent = FirestoreService.Instance.PublicarPostIt(
+            autorId, "texto", texto, selectedLocalPoint,
+            boardCanvas.GetCellId(selectedCell), OnPublishResult);
+
+        if (!sent) isPublishing = false; // Firestore not ready; stay in Writing without losing the text.
+    }
+
+    private void OnPublishResult(ResultadoPublicacion resultado)
+    {
+        isPublishing = false;
+        if (state != FlowState.Writing) return; // The user cancelled in the meantime.
+
+        switch (resultado)
+        {
+            case ResultadoPublicacion.Ok:
+                ReturnToIdle();
+                break;
+
+            case ResultadoPublicacion.CeldaOcupada:
+                BackToPositionSelection(); // Another user won the cell: pick a different one.
+                break;
+
+            case ResultadoPublicacion.Error:
+                break; // Stay in Writing so the user can retry without losing the text.
+        }
+    }
+
+    private void BackToPositionSelection()
+    {
+        HideFlowPanel(composerPanel);
+        state = FlowState.SelectingPosition;
     }
 
     private void CancelPlacement()
