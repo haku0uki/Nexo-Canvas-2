@@ -1,0 +1,15 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/_Project/UI/DefaultStyleSheet.uss?fileID=7433441132597879392&amp;guid=92f105faae8cdfa41a5bffceba250712&amp;type=3#DefaultStyleSheet"/>
+    <ui:ScrollView name="profile-scroll" mode="Vertical">
+        <ui:VisualElement name="profile-view-root" class="profile-root">
+            <ui:VisualElement name="profile-avatar-drawing" class="profile-avatar"/>
+            <ui:Label name="profile-nickname-label" text="Usuario" class="profile-nickname"/>
+            <ui:Label name="profile-pronouns-label" class="profile-pronouns"/>
+            <ui:Label name="profile-email-label" class="profile-email"/>
+            <ui:Label name="profile-status-label" class="profile-status"/>
+            <ui:VisualElement class="profile-separator"/>
+            <ui:Label text="Publicaciones" class="profile-section-title"/>
+            <ui:VisualElement name="profile-posts-list" class="profile-posts-list"/>
+        </ui:VisualElement>
+    </ui:ScrollView>
+</ui:UXML>
