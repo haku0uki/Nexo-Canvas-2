@@ -15,6 +15,9 @@ public class PostItData
     public float posX, posY, posZ; // Coordenadas locales relativas
 }
 
+// Resultado de publicar un post-it en una celda concreta de la grilla.
+public enum ResultadoPublicacion { Ok, CeldaOcupada, Error }
+
 public class FirestoreService : MonoBehaviour
 {
     public static FirestoreService Instance { get; private set; }
@@ -118,7 +121,13 @@ public class FirestoreService : MonoBehaviour
 
     // 2. Publicar un nuevo post-it (Texto o Dibujo) con su posicion local
     // Devuelve false si Firestore aun no esta listo, para que quien llama conserve lo que iba a publicar.
-    public bool PublicarPostIt(string autorId, string tipo, string contenido, Vector3 posRelativa)
+    //
+    // celdaId (opcional): si se indica, el documento se crea con ese ID dentro de una transaccion que
+    // falla si ya existe, garantizando un solo post-it por celda aunque dos usuarios publiquen a la vez.
+    // Sin celdaId se mantiene el comportamiento anterior (ID automatico).
+    // onResultado (opcional): se invoca en el hilo principal cuando termina la escritura.
+    public bool PublicarPostIt(string autorId, string tipo, string contenido, Vector3 posRelativa,
+                               string celdaId = null, Action<ResultadoPublicacion> onResultado = null)
     {
         if (postitsCollection == null)
         {
@@ -145,10 +154,50 @@ public class FirestoreService : MonoBehaviour
             { "timestamp", FieldValue.ServerTimestamp }
         };
 
-        postitsCollection.AddAsync(datosPostit).ContinueWithOnMainThread(task =>
+        // Sin celda: comportamiento anterior (ID automatico).
+        if (string.IsNullOrEmpty(celdaId))
+        {
+            postitsCollection.AddAsync(datosPostit).ContinueWithOnMainThread(task =>
+            {
+                bool ok = !(task.IsFaulted || task.IsCanceled);
+                if (!ok) Debug.LogError("FirestoreService: error al publicar el post-it: " + task.Exception);
+                onResultado?.Invoke(ok ? ResultadoPublicacion.Ok : ResultadoPublicacion.Error);
+            });
+
+            return true;
+        }
+
+        // Con celda: el ID del documento ES la celda y se crea solo si no existe.
+        DocumentReference docRef = postitsCollection.Document(celdaId);
+        bool celdaOcupada = false;
+
+        db.RunTransactionAsync(transaction =>
+        {
+            celdaOcupada = false; // La transaccion puede reintentarse; se reinicia en cada intento.
+
+            return transaction.GetSnapshotAsync(docRef).ContinueWith(snapshotTask =>
+            {
+                if (snapshotTask.Result.Exists)
+                {
+                    celdaOcupada = true; // No se escribe nada: la transaccion termina sin cambios.
+                    return;
+                }
+
+                transaction.Set(docRef, datosPostit);
+            });
+        }).ContinueWithOnMainThread(task =>
         {
             if (task.IsFaulted || task.IsCanceled)
-                Debug.LogError("FirestoreService: error al publicar el post-it: " + task.Exception);
+            {
+                Debug.LogError("FirestoreService: error al publicar el post-it en " + celdaId + ": " + task.Exception);
+                onResultado?.Invoke(ResultadoPublicacion.Error);
+                return;
+            }
+
+            if (celdaOcupada)
+                Debug.LogWarning("FirestoreService: la celda " + celdaId + " ya estaba ocupada.");
+
+            onResultado?.Invoke(celdaOcupada ? ResultadoPublicacion.CeldaOcupada : ResultadoPublicacion.Ok);
         });
 
         return true;
@@ -203,6 +252,8 @@ public class FirestoreService : MonoBehaviour
     }
 
     // 3. Mover un post-it existente (Solo actualiza el campo de coordenadas en la nube)
+    // OJO: con la grilla, el ID del documento representa su celda. Mover un post-it cambiando solo
+    // la posicion dejaria el ID desfasado; para moverlos hay que crear en la celda nueva y borrar la anterior.
     public void ActualizarPosicion(string postitId, Vector3 nuevaPosRelativa)
     {
         if (postitsCollection == null) return;
