@@ -12,12 +12,6 @@ public class DrawEntry : MonoBehaviour
 
     [Header("PUBLISH")]
     [Tooltip(
-        "Solo para probar en el Editor cuando no hay sesión iniciada. " +
-        "En el juego se usa el usuario autenticado."
-    )]
-    [SerializeField] private string editorTestAuthorId = "test-user";
-
-    [Tooltip(
         "Posición relativa del post-it en el tablero."
     )]
     [SerializeField] private Vector3 postItPosition = Vector3.zero;
@@ -81,33 +75,21 @@ public class DrawEntry : MonoBehaviour
     // AUTHOR
     // ============================================================
 
+    // Solo se publica con una sesión iniciada. Igual que los textos,
+    // el autor es el Email del usuario autenticado.
     private bool TryGetAuthorId(out string id)
     {
         id = null;
 
         if (
-            AuthManager.Instance != null &&
-            AuthManager.Instance.CurrentUser != null
+            AuthManager.Instance == null ||
+            AuthManager.Instance.CurrentUser == null
         )
-        {
-            id = AuthManager.Instance.CurrentUser.UserId;
+            return false;
 
-            return !string.IsNullOrEmpty(id);
-        }
+        id = AuthManager.Instance.CurrentUser.Email;
 
-#if UNITY_EDITOR
-        // Permite probar la escena sin pasar por el login.
-        Debug.LogWarning(
-            "DrawEntry: No hay sesión iniciada, " +
-            "se usa el autor de prueba."
-        );
-
-        id = editorTestAuthorId;
-
-        return true;
-#else
-        return false;
-#endif
+        return !string.IsNullOrEmpty(id);
     }
 
 
@@ -507,7 +489,8 @@ public class DrawEntry : MonoBehaviour
         if (!TryGetAuthorId(out id))
         {
             Debug.LogError(
-                "DrawEntry: No hay un usuario autenticado."
+                "DrawEntry: Hay que iniciar sesión para publicar. " +
+                "El dibujo se conserva."
             );
 
             return;
