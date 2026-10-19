@@ -1,41 +1,35 @@
-
-<ui:UXML xmlns:ui="UnityEngine.UIElements">
-  <ui:ScrollView name="profile-scroll" mode="Vertical">
-    <ui:VisualElement
-        name="profile-view-root"
-        class="profile-root">
-
-      <ui:VisualElement
-          name="profile-avatar-drawing"
-          class="profile-avatar" />
-
-      <ui:Label
-          name="profile-nickname-label"
-          text="Usuario"
-          class="profile-nickname" />
-
-      <ui:Label
-          name="profile-pronouns-label"
-          class="profile-pronouns" />
-
-      <ui:Label
-          name="profile-email-label"
-          class="profile-email" />
-
-      <ui:Label
-          name="profile-status-label"
-          class="profile-status" />
-
-      <ui:VisualElement class="profile-separator" />
-
-      <ui:Label
-          text="Publicaciones"
-          class="profile-section-title" />
-
-      <ui:VisualElement
-          name="profile-posts-list"
-          class="profile-posts-list" />
-
-    </ui:VisualElement>
-  </ui:ScrollView>
+<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/_Project/Scripts/UserProfiles/UserProfilePanels.uss?fileID=7433441132597879392&amp;guid=344c157ced2639d4d8d216198f00f7bc&amp;type=3#UserProfilePanels"/>
+    <ui:ScrollView name="profile-scroll" mode="Vertical" class="profile-scroll" style="flex-grow: 1; -unity-font-definition: url(&quot;project://database/Assets/_Project/UI/Fonts/NexoCanvasFuente-Regular.otf?fileID=12800000&amp;guid=c8d3790eab9c74a488ca8941f9eab3d5&amp;type=3#NexoCanvasFuente-Regular&quot;);">
+        <ui:VisualElement name="profile-view-root" class="profile-root">
+            <ui:VisualElement name="profile-header" class="profile-header" style="flex-direction: row; align-items: center; height: 632%; padding-bottom: 10%; padding-top: 10%; font-size: 61px; -unity-text-outline-width: 1px; color: rgba(35, 48, 57, 0.6);">
+                <ui:VisualElement name="profile-avatar-drawing" class="profile-avatar" style="width: 30%; aspect-ratio: 1; flex-shrink: 0; border-top-left-radius: 50%; border-top-right-radius: 50%; border-bottom-left-radius: 50%; border-bottom-right-radius: 50%; margin-bottom: 0%; margin-right: 5%;"/>
+                <ui:VisualElement name="profile-identity" class="profile-identity" style="flex-grow: 1; flex-shrink: 1; letter-spacing: -7px; word-spacing: -12px;">
+                    <ui:VisualElement name="profile-email-group" class="profile-info-group" style="height: 126px;">
+                        <ui:Label name="profile-email-title" text="Correo institucional" class="profile-field-label" style="color: rgba(35, 48, 57, 0.31);"/>
+                        <ui:Label name="profile-email-label" binding-path="" text="s.usercorreo@uandresbello.edu" class="profile-email" style="font-size: 75px; margin-top: -5%;"/>
+                    </ui:VisualElement>
+                    <ui:VisualElement name="profile-nickname-group" class="profile-info-group" style="margin-bottom: 1%; height: 144px;">
+                        <ui:Label name="profile-nickname-title" text="Nombre de usuario" class="profile-field-label" style="-unity-font-definition: url(&quot;project://database/Assets/_Project/UI/Fonts/NexoCanvasFuente-Regular.ttf?fileID=12800000&amp;guid=2d36ea7c7e007b042b88b43f3e796c2a&amp;type=3#NexoCanvasFuente-Regular&quot;); color: rgba(35, 48, 57, 0.31);"/>
+                        <ui:Label name="profile-nickname-label" text="Owo" class="profile-nickname" style="font-size: 100px; background-color: rgba(0, 0, 0, 0); margin-top: 0%;"/>
+                    </ui:VisualElement>
+                    <ui:VisualElement name="profile-pronouns-group" class="profile-info-group" style="margin-bottom: 1%; height: 151px;">
+                        <ui:Label name="profile-pronouns-title" text="Pronombres" class="profile-field-label" style="color: rgba(35, 48, 57, 0.31);"/>
+                        <ui:Label name="profile-pronouns-label" text="que/teimporta" class="profile-pronouns" style="font-size: 75px; margin-top: -5%;"/>
+                    </ui:VisualElement>
+                </ui:VisualElement>
+            </ui:VisualElement>
+            <ui:Label name="profile-status-label" class="profile-status"/>
+            <ui:VisualElement name="profile-separator" class="profile-separator"/>
+            <ui:VisualElement name="profile-posts-section" class="profile-posts-section">
+                <ui:VisualElement name="profile-posts-header" class="profile-posts-header">
+                    <ui:Label name="profile-posts-title" text="Post-Its publicados" class="profile-section-title" style="font-size: 75px; color: rgba(28, 53, 68, 0.6); height: 21px; padding-left: 8%;"/>
+                </ui:VisualElement>
+                <ui:VisualElement name="profile-posts-list" class="profile-posts-list"/>
+                <ui:VisualElement name="profile-empty-state" class="profile-empty-state" style="display: none;">
+                    <ui:Label name="profile-empty-label" text="Todavía no hay publicaciones." class="profile-empty-posts"/>
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:ScrollView>
 </ui:UXML>

@@ -1,98 +1,160 @@
 
-/* Hoja independiente de los paneles de perfil.
-   No modifica DefaultStyleSheet.uss. */
+/* =========================================
+   PROFILE VIEW
+   Visual styles only.
+   Geometry can be configured in UI Builder.
+   ========================================= */
+
+.profile-scroll {
+    background-color: rgb(241, 239, 232);
+}
 
 .profile-root {
-    padding-left: 20px;
-    padding-right: 20px;
-    padding-top: 20px;
-    padding-bottom: 24px;
+    color: rgb(35, 48, 57);
+}
+
+/* Profile header */
+
+.profile-header {
+    background-color: rgb(255, 255, 255);
+    border-radius: 12px;
 }
 
 .profile-avatar {
-    width: 140px;
-    height: 140px;
-    align-self: center;
     position: relative;
     border-radius: 70px;
     overflow: hidden;
-    margin-bottom: 12px;
+    background-color: rgb(222, 229, 230);
+}
+
+.profile-identity {
+}
+
+.profile-eyebrow {
+    font-size: 10px;
+    -unity-font-style: bold;
+    color: rgb(91, 116, 127);
 }
 
 .profile-nickname {
-    -unity-text-align: middle-center;
     font-size: 22px;
     -unity-font-style: bold;
-    margin-bottom: 4px;
+    -unity-text-align: MiddleLeft;
+    color: rgb(28, 53, 68);
+    white-space: normal;
 }
 
-.profile-pronouns,
-.profile-email {
-    -unity-text-align: middle-center;
-    margin-bottom: 5px;
+.profile-pronouns {
+    font-size: 13px;
+    color: rgb(80, 99, 108);
+    -unity-text-align: MiddleLeft;
+    white-space: normal;
 }
+
+.profile-email {
+    font-size: 11px;
+    color: rgb(103, 119, 126);
+    -unity-text-align: MiddleLeft;
+    white-space: normal;
+}
+
+/* Status */
 
 .profile-status {
-    margin-top: 8px;
-    white-space: normal;
+    color: rgb(73, 94, 104);
     font-size: 12px;
+    white-space: normal;
 }
+
+/* Separator */
 
 .profile-separator {
     height: 1px;
-    margin-top: 18px;
-    margin-bottom: 18px;
-    background-color: rgba(255,255,255,0.25);
+    background-color: rgb(205, 211, 210);
+}
+
+/* Posts header */
+
+.profile-posts-header {
+}
+
+.profile-posts-heading {
 }
 
 .profile-section-title {
-    font-size: 18px;
+    font-size: 20px;
     -unity-font-style: bold;
-    margin-top: 10px;
-    margin-bottom: 12px;
+    color: rgb(28, 53, 68);
 }
 
+.profile-section-subtitle {
+    font-size: 12px;
+    color: rgb(100, 116, 123);
+    white-space: normal;
+}
+
+.profile-posts-icon {
+    background-color: rgb(220, 231, 233);
+    border-radius: 8px;
+}
+
+.profile-posts-icon Label {
+    font-size: 23px;
+    color: rgb(37, 74, 89);
+}
+
+/* Posts list */
+
 .profile-posts-list {
-    flex-direction: column;
 }
 
 .profile-post-card {
-    padding: 12px;
-    margin-bottom: 12px;
-    border-radius: 8px;
-    background-color: rgba(128,128,128,0.15);
+    background-color: rgb(255, 255, 255);
+    border-radius: 10px;
 }
 
 .profile-post-type {
+    color: rgb(37, 74, 89);
+    font-size: 13px;
     -unity-font-style: bold;
-    margin-bottom: 8px;
 }
 
 .profile-post-content {
+    color: rgb(39, 50, 57);
+    font-size: 14px;
     white-space: normal;
 }
 
 .profile-post-drawing {
-    min-height: 180px;
     position: relative;
+    background-color: rgb(248, 247, 243);
+    border-radius: 6px;
 }
 
 .profile-empty-posts {
-    margin-top: 8px;
+    color: rgb(100, 116, 123);
+    background-color: rgb(255, 255, 255);
+    border-radius: 10px;
+    font-size: 13px;
+    white-space: normal;
 }
 
+/* =========================================
+   SHARED PROFILE CONTROLS
+   ========================================= */
+
 .profile-field-label {
-    margin-top: 9px;
-    margin-bottom: 4px;
     -unity-font-style: bold;
 }
 
 .profile-button {
-    margin-top: 14px;
     min-height: 40px;
 }
 
-/* Ventana modal de edición */
+/* =========================================
+   PROFILE EDIT MODAL
+   Existing editor styling preserved.
+   ========================================= */
 
 .profile-edit-overlay {
     position: absolute;
@@ -168,7 +230,7 @@
     margin: 0;
     font-size: 11px;
     -unity-font-style: bold;
-    color: rgb(255,255,255);
+    color: rgb(255, 255, 255);
     background-color: rgba(20, 23, 29, 0.88);
     border-top-left-radius: 14px;
     border-top-right-radius: 14px;
