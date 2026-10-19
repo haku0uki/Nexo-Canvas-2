@@ -1,19 +1,11 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:Template name="DrawEntry" src="project://database/Assets/_Project/UI/DrawEntry.uxml"/>
     <ui:Template name="comment-entry" src="project://database/Assets/_Project/UI/comment-entry.uxml?fileID=9197481963319205126&amp;guid=433050bc0e167e44fbe652e9a4deb5e1&amp;type=3#comment-entry"/>
     <Style src="project://database/Assets/_Project/UI/DefaultStyleSheet.uss?fileID=7433441132597879392&amp;guid=92f105faae8cdfa41a5bffceba250712&amp;type=3#DefaultStyleSheet"/>
-    <ui:VisualElement name="root" class="details-root" style="background-image: url(&quot;project://database/Assets/_Project/2D/Fondo_nexo_canvas.png?fileID=2800000&amp;guid=974d1778c201b884ea9a35525b90d664&amp;type=3#Fondo_nexo_canvas&quot;); -unity-background-image-tint-color: rgba(67, 67, 67, 0.52);">
+    <ui:VisualElement name="root" class="details-root">
+        <ui:VisualElement name="background" class="details-background"/>
         <ui:VisualElement name="spacer" class="details-spacer"/>
-        <ui:VisualElement template="Post-It">
-            <Style src="project://database/Assets/_Project/UI/DefaultStyleSheet.uss?fileID=7433441132597879392&amp;guid=92f105faae8cdfa41a5bffceba250712&amp;type=3#DefaultStyleSheet"/>
-            <ui:VisualElement name="root" style="flex-grow: 1; aspect-ratio: 1;">
-                <ui:VisualElement name="background" style="flex-grow: 1; background-image: url(&quot;project://database/Assets/_Project/2D/post_it_amarillo.png?fileID=2800000&amp;guid=ae5465568c0e1594a9a7133281d5598b&amp;type=3#post_it_amarillo&quot;); position: absolute; top: 0; right: 0; bottom: 0; left: 0;"/>
-                <ui:VisualElement name="elements-container" style="flex-grow: 1; margin-right: 10%; margin-top: 10%; margin-bottom: 10%; margin-left: 10%;">
-                    <ui:Label text="Label" name="username-label-postit" class="user-label"/>
-                    <ui:VisualElement class="separator"/>
-                    <ui:VisualElement name="drawing-view" style="flex-grow: 1;"/>
-                </ui:VisualElement>
-            </ui:VisualElement>
-        </ui:VisualElement>
+        <ui:Instance template="DrawEntry" class="details-postit"/>
         <ui:ScrollView name="comments-scrollview" class="details-comments">
             <ui:Instance template="comment-entry" name="comment-entry"/>
             <ui:Instance template="comment-entry" name="comment-entry"/>
