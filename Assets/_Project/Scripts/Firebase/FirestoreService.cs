@@ -126,6 +126,13 @@ public class FirestoreService : MonoBehaviour
             return false;
         }
 
+        // Ningun post-it (texto o dibujo) se publica sin una sesion iniciada.
+        if (AuthManager.Instance == null || AuthManager.Instance.CurrentUser == null)
+        {
+            Debug.LogWarning("FirestoreService: no hay sesion iniciada; el post-it no se publico.");
+            return false;
+        }
+
         var datosPostit = new Dictionary<string, object> {
             { "authorId", autorId },
             { "tipo", tipo },

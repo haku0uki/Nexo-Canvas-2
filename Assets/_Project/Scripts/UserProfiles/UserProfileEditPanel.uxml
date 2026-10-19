@@ -1,0 +1,18 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/_Project/UI/DefaultStyleSheet.uss?fileID=7433441132597879392&amp;guid=92f105faae8cdfa41a5bffceba250712&amp;type=3#DefaultStyleSheet"/>
+    <ui:ScrollView name="profile-scroll" mode="Vertical">
+        <ui:VisualElement name="profile-edit-root" class="profile-root">
+            <ui:Label text="Editar mi perfil" class="profile-section-title"/>
+            <ui:VisualElement name="profile-avatar-drawing" class="profile-avatar"/>
+            <ui:Button name="profile-clear-drawing-button" text="Quitar dibujo" class="profile-button"/>
+            <ui:Label text="Correo electrónico" class="profile-field-label"/>
+            <ui:Label name="profile-email-label" class="profile-email"/>
+            <ui:Label text="Nickname" class="profile-field-label"/>
+            <ui:TextField name="profile-nickname-field"/>
+            <ui:Label text="Pronombres" class="profile-field-label"/>
+            <ui:TextField name="profile-pronouns-field"/>
+            <ui:Button name="profile-save-button" text="Guardar cambios" class="profile-button"/>
+            <ui:Label name="profile-status-label" class="profile-status"/>
+        </ui:VisualElement>
+    </ui:ScrollView>
+</ui:UXML>
