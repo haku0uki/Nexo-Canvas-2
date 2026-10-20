@@ -12,9 +12,10 @@ namespace SheepyCreations.EventBus
     {
         Action<T> onEvent = _ => { };
 
-        // Maps a no-args callback to the wrapper that was created for it, so Remove can find
-        // and unhook the exact same wrapper the matching Add created.
-        readonly Dictionary<Action, Action<T>> noArgsCallbackWrappers = new Dictionary<Action, Action<T>>();
+        // Tracks every wrapper created for a no-args callback, so Remove can unhook the exact
+        // wrapper that the matching Add created while still respecting delegate semantics when
+        // the same callback is subscribed multiple times.
+        readonly Dictionary<Action, Stack<Action<T>>> noArgsCallbackWrappers = new Dictionary<Action, Stack<Action<T>>>();
 
         Action<T> IEventBinding<T>.OnEvent
         {
@@ -57,7 +58,13 @@ namespace SheepyCreations.EventBus
             }
 
             Action<T> wrapper = _ => callback();
-            noArgsCallbackWrappers[callback] = wrapper;
+            if (!noArgsCallbackWrappers.TryGetValue(callback, out Stack<Action<T>> wrappers))
+            {
+                wrappers = new Stack<Action<T>>();
+                noArgsCallbackWrappers[callback] = wrappers;
+            }
+
+            wrappers.Push(wrapper);
             onEvent += wrapper;
         }
 
@@ -68,10 +75,15 @@ namespace SheepyCreations.EventBus
                 return;
             }
 
-            if (noArgsCallbackWrappers.TryGetValue(callback, out Action<T> wrapper))
+            if (noArgsCallbackWrappers.TryGetValue(callback, out Stack<Action<T>> wrappers) && wrappers.Count > 0)
             {
+                Action<T> wrapper = wrappers.Pop();
                 onEvent -= wrapper;
-                noArgsCallbackWrappers.Remove(callback);
+
+                if (wrappers.Count == 0)
+                {
+                    noArgsCallbackWrappers.Remove(callback);
+                }
             }
         }
 

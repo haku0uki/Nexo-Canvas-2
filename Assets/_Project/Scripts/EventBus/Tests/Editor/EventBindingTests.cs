@@ -70,5 +70,22 @@ namespace SheepyCreations.EventBus.Tests
 
             Assert.AreEqual(1, invocationCount);
         }
+
+        [Test]
+        public void RemovingOneOfMultipleNoArgsCallbacks_OnlyRemovesThatSubscription()
+        {
+            int invocationCount = 0;
+            void Callback() => invocationCount++;
+
+            var binding = new EventBinding<SampleEvent>(Callback);
+            binding.Add(Callback);
+            EventBus<SampleEvent>.Register(binding);
+
+            EventBus<SampleEvent>.Raise(new SampleEvent());
+            binding.Remove((Action)Callback);
+            EventBus<SampleEvent>.Raise(new SampleEvent());
+
+            Assert.AreEqual(2, invocationCount);
+        }
     }
 }

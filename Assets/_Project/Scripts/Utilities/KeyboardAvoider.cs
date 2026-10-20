@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UIElements;
+using SheepyCreations.UIControl.Runtime;
 
 /// <summary>
 /// Sube el contenido de un UIDocument cuando el teclado del movil taparia
@@ -13,8 +14,8 @@ using UnityEngine.UIElements;
 /// - Mueve el elemento raiz con "translate", sin alterar el layout.
 /// </summary>
 [DisallowMultipleComponent]
-[RequireComponent(typeof(UIDocument))]
-public class KeyboardAvoider : MonoBehaviour
+[RequireComponent(typeof(UIDocumentPanel))]
+public class KeyboardAvoider : PanelBehaviour
 {
     [Header("Elementos que deben quedar visibles")]
     [Tooltip(
@@ -68,24 +69,30 @@ public class KeyboardAvoider : MonoBehaviour
     // UNITY
     // ============================================================
 
-    private void Awake()
+    public override void OnPanelInitialized(UIPanel ownerPanel, UIControllerBase uiController)
     {
-        document = GetComponent<UIDocument>();
+        base.OnPanelInitialized(ownerPanel, uiController);
+        document = (ownerPanel as UIDocumentPanel)?.Document;
+        ResetShift();
     }
 
+
+    public override void OnEarlyPanelHidden(UIPanel ownerPanel)
+    {
+        ResetShift();
+    }
 
     private void OnDisable()
     {
         ResetShift();
     }
 
-
-    private void Update()
+    public override void OnVisibleUpdate(UIPanel ownerPanel)
     {
         if (document == null)
             return;
 
-        VisualElement root = document.rootVisualElement;
+        VisualElement root = (ownerPanel as UIDocumentPanel)?.RootVisualElement;
 
         if (root == null || root.panel == null)
             return;
@@ -119,7 +126,8 @@ public class KeyboardAvoider : MonoBehaviour
 
     private float ComputeTargetShift(VisualElement root)
     {
-        bool keyboardVisible = IsKeyboardVisible();
+        TextField field = FindFocusedTextField(root);
+        bool keyboardVisible = IsKeyboardVisible(field);
 
         if (keyboardVisible)
             lastKeyboardTime = Time.unscaledTime;
@@ -138,8 +146,6 @@ public class KeyboardAvoider : MonoBehaviour
         // Entre campo y campo el teclado puede parpadear: se mantiene lo anterior.
         if (!keyboardVisible)
             return lastTarget;
-
-        TextField field = FindFocusedTextField(root);
 
         if (field == null)
         {
@@ -261,13 +267,19 @@ public class KeyboardAvoider : MonoBehaviour
     // TECLADO
     // ============================================================
 
-    private bool IsKeyboardVisible()
+    private bool IsKeyboardVisible(TextField focusedField)
     {
 #if UNITY_EDITOR
         if (simulateKeyboardInEditor)
             return true;
 #endif
-        return TouchScreenKeyboard.visible;
+        if (TouchScreenKeyboard.visible)
+            return true;
+
+        // UI Toolkit can focus the field before Unity reports the keyboard as visible.
+        // The reported area is still useful during that transition and when switching
+        // directly between fields.
+        return focusedField != null && TouchScreenKeyboard.area.height > 1f;
     }
 
 
