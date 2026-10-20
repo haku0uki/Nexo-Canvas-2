@@ -1,15 +1,280 @@
-.profile-root { padding-left: 20px; padding-right: 20px; padding-top: 20px; padding-bottom: 24px; }
-.profile-avatar { width: 140px; height: 140px; align-self: center; position: relative; border-radius: 70px; overflow: hidden; margin-bottom: 12px; }
-.profile-nickname { -unity-text-align: middle-center; font-size: 22px; -unity-font-style: bold; margin-bottom: 4px; }
-.profile-pronouns, .profile-email { -unity-text-align: middle-center; margin-bottom: 5px; }
-.profile-status { margin-top: 10px; white-space: normal; }
-.profile-separator { height: 1px; margin-top: 18px; margin-bottom: 18px; background-color: rgba(255,255,255,0.25); }
-.profile-section-title { font-size: 18px; -unity-font-style: bold; margin-top: 10px; margin-bottom: 12px; }
-.profile-posts-list { flex-direction: column; }
-.profile-post-card { padding: 12px; margin-bottom: 12px; border-radius: 8px; background-color: rgba(128,128,128,0.15); }
-.profile-post-type { -unity-font-style: bold; margin-bottom: 8px; }
-.profile-post-content { white-space: normal; }
-.profile-post-drawing { min-height: 180px; position: relative; }
-.profile-empty-posts { margin-top: 8px; }
-.profile-field-label { margin-top: 12px; margin-bottom: 5px; -unity-font-style: bold; }
-.profile-button { margin-top: 14px; min-height: 40px; }
+
+/* =========================================
+   PROFILE VIEW
+   Visual styles only.
+   Geometry can be configured in UI Builder.
+   ========================================= */
+
+.profile-scroll {
+    background-color: rgb(241, 239, 232);
+}
+
+.profile-root {
+    color: rgb(35, 48, 57);
+}
+
+/* Profile header */
+
+.profile-header {
+    background-color: rgb(255, 255, 255);
+    border-radius: 12px;
+}
+
+.profile-avatar {
+    position: relative;
+    border-radius: 70px;
+    overflow: hidden;
+    background-color: rgb(222, 229, 230);
+}
+
+.profile-identity {
+}
+
+.profile-eyebrow {
+    font-size: 10px;
+    -unity-font-style: bold;
+    color: rgb(91, 116, 127);
+}
+
+.profile-nickname {
+    font-size: 22px;
+    -unity-font-style: bold;
+    -unity-text-align: MiddleLeft;
+    color: rgb(28, 53, 68);
+    white-space: normal;
+}
+
+.profile-pronouns {
+    font-size: 13px;
+    color: rgb(80, 99, 108);
+    -unity-text-align: MiddleLeft;
+    white-space: normal;
+}
+
+.profile-email {
+    font-size: 11px;
+    color: rgb(103, 119, 126);
+    -unity-text-align: MiddleLeft;
+    white-space: normal;
+}
+
+/* Status */
+
+.profile-status {
+    color: rgb(73, 94, 104);
+    font-size: 12px;
+    white-space: normal;
+}
+
+/* Separator */
+
+.profile-separator {
+    height: 1px;
+    background-color: rgb(205, 211, 210);
+}
+
+/* Posts header */
+
+.profile-posts-header {
+}
+
+.profile-posts-heading {
+}
+
+.profile-section-title {
+    font-size: 20px;
+    -unity-font-style: bold;
+    color: rgb(28, 53, 68);
+}
+
+.profile-section-subtitle {
+    font-size: 12px;
+    color: rgb(100, 116, 123);
+    white-space: normal;
+}
+
+.profile-posts-icon {
+    background-color: rgb(220, 231, 233);
+    border-radius: 8px;
+}
+
+.profile-posts-icon Label {
+    font-size: 23px;
+    color: rgb(37, 74, 89);
+}
+
+/* Posts list */
+
+.profile-posts-list {
+}
+
+.profile-post-card {
+    background-color: rgb(255, 255, 255);
+    border-radius: 10px;
+}
+
+.profile-post-type {
+    color: rgb(37, 74, 89);
+    font-size: 13px;
+    -unity-font-style: bold;
+}
+
+.profile-post-content {
+    color: rgb(39, 50, 57);
+    font-size: 14px;
+    white-space: normal;
+}
+
+.profile-post-drawing {
+    position: relative;
+    background-color: rgb(248, 247, 243);
+    border-radius: 6px;
+}
+
+.profile-empty-posts {
+    color: rgb(100, 116, 123);
+    background-color: rgb(255, 255, 255);
+    border-radius: 10px;
+    font-size: 13px;
+    white-space: normal;
+}
+
+/* =========================================
+   SHARED PROFILE CONTROLS
+   ========================================= */
+
+.profile-field-label {
+    -unity-font-style: bold;
+}
+
+.profile-button {
+    min-height: 40px;
+}
+
+/* =========================================
+   PROFILE EDIT MODAL
+   Existing editor styling preserved.
+   ========================================= */
+
+.profile-edit-overlay {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.62);
+}
+
+.profile-edit-window {
+    position: relative;
+    top: 0;
+    width: 90%;
+    max-width: 440px;
+    padding-left: 18px;
+    padding-right: 18px;
+    padding-top: 14px;
+    padding-bottom: 16px;
+    background-color: rgb(35, 38, 44);
+    border-top-left-radius: 14px;
+    border-top-right-radius: 14px;
+    border-bottom-left-radius: 14px;
+    border-bottom-right-radius: 14px;
+}
+
+.profile-edit-header {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 6px;
+}
+
+.profile-edit-title {
+    font-size: 19px;
+    -unity-font-style: bold;
+    flex-grow: 1;
+}
+
+.profile-close-button {
+    width: 34px;
+    min-width: 34px;
+    height: 34px;
+    margin-left: 8px;
+    margin-top: 0;
+    margin-bottom: 0;
+    font-size: 22px;
+}
+
+.profile-edit-avatar {
+    width: 116px;
+    height: 116px;
+    min-width: 116px;
+    min-height: 116px;
+    align-self: center;
+    position: relative;
+    overflow: hidden;
+    border-radius: 58px;
+    margin-top: 2px;
+    margin-bottom: 8px;
+    background-color: rgb(52, 56, 64);
+}
+
+.profile-change-drawing-button {
+    position: absolute;
+    left: 3px;
+    right: 3px;
+    bottom: 4px;
+    height: 28px;
+    min-height: 28px;
+    margin: 0;
+    font-size: 11px;
+    -unity-font-style: bold;
+    color: rgb(255, 255, 255);
+    background-color: rgba(20, 23, 29, 0.88);
+    border-top-left-radius: 14px;
+    border-top-right-radius: 14px;
+    border-bottom-left-radius: 14px;
+    border-bottom-right-radius: 14px;
+}
+
+.profile-edit-window .profile-field-label {
+    margin-top: 5px;
+    margin-bottom: 3px;
+    font-size: 13px;
+}
+
+.profile-edit-text-field {
+    min-height: 34px;
+    margin-top: 0;
+    margin-bottom: 3px;
+}
+
+.profile-edit-text-field .unity-text-field__input {
+    min-height: 32px;
+}
+
+.profile-edit-window .profile-status {
+    min-height: 14px;
+    margin-top: 4px;
+    margin-bottom: 2px;
+    font-size: 11px;
+}
+
+.profile-edit-actions {
+    flex-direction: row;
+    justify-content: flex-end;
+    margin-top: 4px;
+}
+
+.profile-cancel-button,
+.profile-save-button {
+    min-height: 36px;
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-left: 6px;
+}
+
+.profile-save-button {
+    -unity-font-style: bold;
+}
