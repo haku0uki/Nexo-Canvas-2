@@ -9,6 +9,7 @@ public class HUD : PanelBehaviour
     [SerializeField] private ButtonBridge addPostItButton;
 
     public event Action AddPostItRequested;
+    public event Action PanelShown;
 
     private void OnEnable()
     {
@@ -18,6 +19,12 @@ public class HUD : PanelBehaviour
     private void OnDisable()
     {
         if (addPostItButton != null) addPostItButton.Clicked -= RaiseAddPostItRequested;
+    }
+
+    public override void OnPanelShowed(UIPanel ownerPanel)
+    {
+        base.OnPanelShowed(ownerPanel);
+        PanelShown?.Invoke();
     }
 
     private void RaiseAddPostItRequested()

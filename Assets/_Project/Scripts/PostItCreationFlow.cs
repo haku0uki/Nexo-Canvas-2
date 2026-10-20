@@ -63,6 +63,7 @@ public class PostItCreationFlow : MonoBehaviour
     private void OnEnable()
     {
         if (hud != null) hud.AddPostItRequested += ShowTypeSelection;
+        if (hud != null) hud.PanelShown += ResetWhenHudIsShown;
         if (addTextButton != null) addTextButton.Clicked += BeginTextPlacement;
         if (addDrawingButton != null) addDrawingButton.Clicked += BeginDrawingPlacement;
         if (confirmButton != null) confirmButton.Clicked += ConfirmPlacement;
@@ -79,6 +80,7 @@ public class PostItCreationFlow : MonoBehaviour
     private void OnDisable()
     {
         if (hud != null) hud.AddPostItRequested -= ShowTypeSelection;
+        if (hud != null) hud.PanelShown -= ResetWhenHudIsShown;
         if (addTextButton != null) addTextButton.Clicked -= BeginTextPlacement;
         if (addDrawingButton != null) addDrawingButton.Clicked -= BeginDrawingPlacement;
         if (confirmButton != null) confirmButton.Clicked -= ConfirmPlacement;
@@ -126,6 +128,13 @@ public class PostItCreationFlow : MonoBehaviour
 
         state = FlowState.SelectingType;
         ShowFlowPanel(typeSelectionPanel);
+    }
+
+    private void ResetWhenHudIsShown()
+    {
+        if (state == FlowState.Idle) return;
+
+        ReturnToIdle();
     }
 
     private void BeginTextPlacement() => BeginPlacement(PostItKind.Text);
@@ -267,6 +276,7 @@ public class PostItCreationFlow : MonoBehaviour
     private void ReturnToIdle()
     {
         state = FlowState.Idle;
+        isPublishing = false;
         SetDetailPanelBlocked(false);
         if (placementPreview != null) placementPreview.gameObject.SetActive(false);
         HideFlowPanel(composerPanel);
