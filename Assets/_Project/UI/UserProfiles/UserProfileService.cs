@@ -1,4 +1,3 @@
-
 using System;
 using System.Collections.Generic;
 using Firebase.Firestore;
@@ -234,6 +233,72 @@ public class UserProfileService : MonoBehaviour
                     drawingJson = ReadString(
                         doc, "drawingJson", string.Empty
                     )
+                });
+            });
+    }
+
+    /// <summary>
+    /// Lee un perfil por correo. Las publicaciones guardan authorId como correo,
+    /// asi que es la forma de llegar al perfil del autor de un post-it.
+    /// Entrega null si no existe un documento users con ese correo.
+    /// </summary>
+    public void LoadProfileByEmail(
+        string email,
+        Action<UserProfileData> onComplete)
+    {
+        if (string.IsNullOrWhiteSpace(email))
+        {
+            onComplete?.Invoke(null);
+            return;
+        }
+
+        if (users == null)
+            InitializeFirestore();
+
+        if (users == null)
+        {
+            onComplete?.Invoke(null);
+            return;
+        }
+
+        users.WhereEqualTo("email", email).Limit(1).GetSnapshotAsync()
+            .ContinueWithOnMainThread(task =>
+            {
+                if (task.IsFaulted || task.IsCanceled)
+                {
+                    Debug.LogError(
+                        "UserProfileService: error al cargar perfil por correo: "
+                        + task.Exception
+                    );
+
+                    onComplete?.Invoke(null);
+                    return;
+                }
+
+                DocumentSnapshot doc = null;
+
+                foreach (DocumentSnapshot candidate in task.Result.Documents)
+                {
+                    if (candidate.Exists)
+                    {
+                        doc = candidate;
+                        break;
+                    }
+                }
+
+                if (doc == null)
+                {
+                    onComplete?.Invoke(null);
+                    return;
+                }
+
+                onComplete?.Invoke(new UserProfileData
+                {
+                    uid = doc.Id,
+                    email = ReadString(doc, "email", email),
+                    nickname = ReadString(doc, "nickname", string.Empty),
+                    pronouns = ReadString(doc, "pronouns", string.Empty),
+                    drawingJson = ReadString(doc, "drawingJson", string.Empty)
                 });
             });
     }

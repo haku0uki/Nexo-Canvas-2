@@ -1,318 +1,389 @@
-
 using System;
 using System.Collections.Generic;
+using SheepyCreations.UIControl.Runtime;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-/// <summary>
-/// Visualiza cualquier perfil por UID. No ofrece edición de datos.
-/// </summary>
-[RequireComponent(typeof(UIDocument))]
+// Muestra el perfil de cualquier usuario (por UID) con sus publicaciones.
+// No edita datos: el boton de editar solo abre UserProfileEditPanelController
+// y aparece unicamente cuando el perfil mostrado es el del usuario conectado.
+//
+// Se usa igual que el resto del proyecto: los bridges se asignan en el Inspector,
+// nada se busca con root.Q, y los metodos publicos se enganchan a un ButtonBridge.
 public class UserProfileViewPanelController : MonoBehaviour
 {
-    [Header("Dibujo")]
+    [Header("PANEL")]
+    [Tooltip("Si queda vacio se usa el UIDocumentPanel de este GameObject.")]
+    [SerializeField] private UIDocumentPanel panel;
+    [Tooltip("Opcional. Panel que vuelve a mostrarse al cerrar el perfil (por ejemplo el HUD).")]
+    [SerializeField] private UIDocumentPanel returnPanel;
+    [Tooltip("Opcional. Ventana de edicion; se abre con el boton de editar.")]
+    [SerializeField] private UserProfileEditPanelController editPanel;
+
+    [Header("TEXTOS (LabelTextBridge)")]
+    [Tooltip("Elemento: profile-nickname-label")]
+    [SerializeField] private LabelTextBridge nicknameLabel;
+    [Tooltip("Elemento: profile-pronouns-label")]
+    [SerializeField] private LabelTextBridge pronounsLabel;
+    [Tooltip("Elemento: profile-email-label")]
+    [SerializeField] private LabelTextBridge emailLabel;
+    [Tooltip("Elemento: profile-status-label")]
+    [SerializeField] private LabelTextBridge statusLabel;
+
+    [Header("BOTONES (ButtonBridge)")]
+    [Tooltip("Elemento: profile-editor")]
+    [SerializeField] private ButtonBridge editButton;
+    [Tooltip("Elemento: back-button")]
+    [SerializeField] private ButtonBridge backButton;
+
+    [Header("CONTENEDORES (por nombre)")]
+    [SerializeField] private string avatarContainerName = "profile-avatar-drawing";
+    [SerializeField] private string postsListName = "profile-posts-list";
+    [SerializeField] private string emptyStateName = "profile-empty-state";
+    [SerializeField] private string editButtonName = "profile-editor";
+
+    [Header("DIBUJO")]
     [SerializeField] private float drawingUnitsWidth = 10f;
     [SerializeField] private float drawingPadding = 8f;
 
-    private UIDocument document;
-    private VisualElement root;
-    private VisualElement avatarContainer;
-    private VisualElement postsContainer;
-
-    private Label nicknameLabel;
-    private Label pronounsLabel;
-    private Label emailLabel;
-    private Label statusLabel;
+    // Estado que se muestra. Se vuelca a la UI cuando el panel y los bridges estan listos.
+    private string currentUid;
+    private string currentEmail;
+    private Action returnAction;
+    private string nickname = string.Empty;
+    private string pronouns = string.Empty;
+    private string email = string.Empty;
+    private string status = string.Empty;
+    private string drawingJson = string.Empty;
+    private List<PostItData> posts;
+    private bool postsLoaded;
+    private bool needsRender;
+    private int loadToken;
 
     private DrawingSurface avatarSurface;
-    private string requestedUid;
+
+
+    // ============================================================
+    // UNITY
+    // ============================================================
 
     private void Awake()
     {
-        document = GetComponent<UIDocument>();
+        if (panel == null)
+            panel = GetComponent<UIDocumentPanel>();
     }
 
     private void OnEnable()
     {
-        InitializeUI();
-
-        if (!string.IsNullOrWhiteSpace(requestedUid))
-            LoadProfile(requestedUid);
+        if (editButton != null) editButton.Clicked += OpenEditor;
+        if (backButton != null) backButton.Clicked += Close;
+        if (editPanel != null) editPanel.Saved += RefreshProfile;
     }
 
     private void OnDisable()
     {
+        if (editButton != null) editButton.Clicked -= OpenEditor;
+        if (backButton != null) backButton.Clicked -= Close;
+        if (editPanel != null) editPanel.Saved -= RefreshProfile;
+
         avatarSurface?.RemoveFromHierarchy();
         avatarSurface = null;
     }
 
-    private void InitializeUI()
+    private void Update()
     {
-        if (document == null)
-            document = GetComponent<UIDocument>();
+        if (needsRender)
+            TryRender();
+    }
 
-        if (document == null)
-            return;
 
-        root = document.rootVisualElement;
+    // ============================================================
+    // API PUBLICA
+    // ============================================================
 
-        if (root == null)
-            return;
-
-        avatarContainer =
-            root.Q<VisualElement>("profile-avatar-drawing");
-
-        postsContainer =
-            root.Q<VisualElement>("profile-posts-list");
-
-        nicknameLabel =
-            root.Q<Label>("profile-nickname-label");
-
-        pronounsLabel =
-            root.Q<Label>("profile-pronouns-label");
-
-        emailLabel =
-            root.Q<Label>("profile-email-label");
-
-        statusLabel =
-            root.Q<Label>("profile-status-label");
-
-        if (avatarContainer != null && avatarSurface == null)
+    /// <summary>Abre el perfil del usuario conectado. Sin parametros: se puede enganchar a ButtonBridge.onClick.</summary>
+    public void ShowOwnProfile()
+    {
+        if (!ProfilePanelUtility.TryGetSessionUser(out Firebase.Auth.FirebaseUser user))
         {
-            avatarSurface = new DrawingSurface
-            {
-                ReadOnly = true,
-                UnitsWidth = drawingUnitsWidth,
-                FitToContent = true,
-                FitPadding = drawingPadding
-            };
-
-            avatarSurface.style.position = Position.Absolute;
-            avatarSurface.style.left = 0;
-            avatarSurface.style.top = 0;
-            avatarSurface.style.right = 0;
-            avatarSurface.style.bottom = 0;
-
-            avatarContainer.Add(avatarSurface);
-            avatarSurface.SetDrawing(null);
+            Debug.LogWarning("UserProfileViewPanelController: hay que iniciar sesion para ver tu perfil.");
+            return;
         }
+
+        ShowProfile(user.UserId);
     }
 
-    /// <summary>
-    /// Llamar con el UID de Firebase del perfil que se quiere mostrar.
-    /// </summary>
+    /// <summary>Abre el perfil del usuario con ese UID de Firebase.</summary>
     public void ShowProfile(string uid)
-    {
-        requestedUid = uid;
-        InitializeUI();
-        LoadProfile(uid);
-    }
-
-    public void RefreshProfile()
-    {
-        LoadProfile(requestedUid);
-    }
-
-    private void LoadProfile(string uid)
     {
         if (string.IsNullOrWhiteSpace(uid))
         {
-            SetStatus("No se indicó el UID del perfil.");
-            ClearProfile();
+            Debug.LogWarning("UserProfileViewPanelController: no se indico el UID del perfil.");
             return;
         }
 
+        BeginShow(uid, null, null);
+    }
+
+    /// <summary>
+    /// Abre el perfil del usuario con ese correo. Es lo que se conoce de un post-it,
+    /// porque authorId guarda el correo y no el UID.
+    /// </summary>
+    /// <param name="onReturn">Opcional. Si se indica, al cerrar el perfil se ejecuta esto en lugar de mostrar Return Panel (por ejemplo, reabrir el detalle de un post-it).</param>
+    public void ShowProfileByEmail(string email, Action onReturn = null)
+    {
+        if (string.IsNullOrWhiteSpace(email))
+        {
+            Debug.LogWarning("UserProfileViewPanelController: no se indico el correo del perfil.");
+            return;
+        }
+
+        BeginShow(null, email, onReturn);
+    }
+
+    private void BeginShow(string uid, string email, Action onReturn)
+    {
+        currentUid = uid;
+        currentEmail = email;
+        returnAction = onReturn;
+        ClearState();
+        SetStatus("Cargando perfil…");
+
+        if ((returnPanel != null || returnAction != null) && panel != null && panel.HasController)
+            panel.ShowIsolatedViaController();
+        else
+            ProfilePanelUtility.ShowFlowPanel(panel);
+
+        LoadProfile();
+    }
+
+    /// <summary>Vuelve a pedir los datos del perfil que esta abierto.</summary>
+    public void RefreshProfile()
+    {
+        if (string.IsNullOrWhiteSpace(currentUid) && string.IsNullOrWhiteSpace(currentEmail)) return;
+        LoadProfile();
+    }
+
+    /// <summary>Cierra el perfil y devuelve el panel de retorno, si hay uno.</summary>
+    public void Close()
+    {
+        loadToken++; // Ignora respuestas que lleguen despues de cerrar.
+
+        if (editPanel != null) editPanel.Close();
+
+        // Quien abrio el perfil decide a donde se vuelve; si no, al Return Panel.
+        Action onReturn = returnAction;
+        returnAction = null;
+
+        if (onReturn != null)
+        {
+            ProfilePanelUtility.HideFlowPanel(panel);
+            onReturn();
+        }
+        else if (returnPanel != null)
+            returnPanel.ShowIsolatedViaController();
+        else
+            ProfilePanelUtility.HideFlowPanel(panel);
+    }
+
+
+    // ============================================================
+    // CARGA
+    // ============================================================
+
+    private void LoadProfile()
+    {
         if (UserProfileService.Instance == null)
         {
-            SetStatus(
-                "No se encontró UserProfileService en la escena."
-            );
-
-            Debug.LogError(
-                "UserProfileViewPanelController: falta un GameObject "
-                + "con UserProfileService."
-            );
-
+            SetStatus("No se encontro UserProfileService en la escena.");
+            Debug.LogError("UserProfileViewPanelController: falta un GameObject con UserProfileService.");
             return;
         }
 
-        SetStatus("Cargando perfil…");
-        ClearPosts();
+        int token = ++loadToken;
+        postsLoaded = false;
+        posts = null;
+        MarkDirty();
 
-        UserProfileService.Instance.LoadProfileByUid(
-            uid,
-            profile =>
-            {
-                if (profile == null)
-                {
-                    ClearProfile();
-                    SetStatus(
-                        "No se encontró el perfil o no se pudo cargar."
-                    );
-                    return;
-                }
-
-                if (nicknameLabel != null)
-                {
-                    nicknameLabel.text =
-                        string.IsNullOrWhiteSpace(profile.nickname)
-                            ? "Usuario"
-                            : profile.nickname;
-                }
-
-                if (pronounsLabel != null)
-                    pronounsLabel.text = profile.pronouns ?? string.Empty;
-
-                if (emailLabel != null)
-                    emailLabel.text = profile.email ?? string.Empty;
-
-                LoadAvatar(profile.drawingJson);
-                SetStatus(string.Empty);
-
-                UserProfileService.Instance.LoadUserPosts(
-                    profile.email,
-                    RenderPosts
-                );
-            }
-        );
-    }
-
-    private void LoadAvatar(string json)
-    {
-        if (avatarSurface == null)
-            InitializeUI();
-
-        if (avatarSurface == null)
-            return;
-
-        DrawingData drawing = null;
-
-        if (!string.IsNullOrWhiteSpace(json))
+        void OnProfileLoaded(UserProfileService.UserProfileData profile)
         {
-            try
+            if (token != loadToken) return;
+
+            if (profile == null && !string.IsNullOrWhiteSpace(currentEmail) && string.IsNullOrWhiteSpace(currentUid))
             {
-                drawing = DrawingSerializer.Deserialize(json);
+                // Quien publico todavia no tiene documento de perfil: se muestran
+                // su correo y sus publicaciones.
+                profile = new UserProfileService.UserProfileData { email = currentEmail };
             }
-            catch (Exception e)
+
+            if (profile == null)
             {
-                Debug.LogWarning(
-                    "Dibujo de perfil no válido: " + e.Message
-                );
+                ClearState();
+                SetStatus("No se encontro el perfil o no se pudo cargar.");
+                return;
             }
+
+            currentUid = string.IsNullOrWhiteSpace(profile.uid) ? currentUid : profile.uid;
+            currentEmail = string.IsNullOrWhiteSpace(profile.email) ? currentEmail : profile.email;
+
+            nickname = string.IsNullOrWhiteSpace(profile.nickname) ? "Usuario" : profile.nickname;
+            pronouns = profile.pronouns ?? string.Empty;
+            email = profile.email ?? string.Empty;
+            drawingJson = profile.drawingJson ?? string.Empty;
+            SetStatus(string.Empty);
+
+            UserProfileService.Instance.LoadUserPosts(profile.email, list =>
+            {
+                if (token != loadToken) return;
+
+                posts = list ?? new List<PostItData>();
+                postsLoaded = true;
+                MarkDirty();
+            });
         }
 
-        avatarSurface.SetDrawing(drawing);
+        if (!string.IsNullOrWhiteSpace(currentUid))
+            UserProfileService.Instance.LoadProfileByUid(currentUid, OnProfileLoaded);
+        else
+            UserProfileService.Instance.LoadProfileByEmail(currentEmail, OnProfileLoaded);
     }
 
-    private void RenderPosts(List<PostItData> posts)
+    private void OpenEditor()
     {
-        if (postsContainer == null)
-            return;
-
-        postsContainer.Clear();
-
-        if (posts == null || posts.Count == 0)
-        {
-            Label empty = new Label(
-                "Todavía no hay publicaciones."
-            );
-
-            empty.AddToClassList("profile-empty-posts");
-            postsContainer.Add(empty);
-            return;
-        }
-
-        foreach (PostItData post in posts)
-        {
-            VisualElement card = new VisualElement();
-            card.AddToClassList("profile-post-card");
-
-            bool isDrawing = string.Equals(
-                post.tipo,
-                "dibujo",
-                StringComparison.OrdinalIgnoreCase
-            );
-
-            Label type = new Label(isDrawing ? "Dibujo" : "Texto");
-            type.AddToClassList("profile-post-type");
-            card.Add(type);
-
-            if (isDrawing)
-            {
-                VisualElement box = new VisualElement();
-                box.AddToClassList("profile-post-drawing");
-                box.style.position = Position.Relative;
-                box.style.height = 180;
-
-                card.Add(box);
-
-                DrawingSurface surface = new DrawingSurface
-                {
-                    ReadOnly = true,
-                    UnitsWidth = drawingUnitsWidth,
-                    FitToContent = true,
-                    FitPadding = drawingPadding
-                };
-
-                surface.style.position = Position.Absolute;
-                surface.style.left = 0;
-                surface.style.top = 0;
-                surface.style.right = 0;
-                surface.style.bottom = 0;
-
-                box.Add(surface);
-
-                try
-                {
-                    surface.SetDrawing(
-                        DrawingSerializer.Deserialize(post.contenido)
-                    );
-                }
-                catch (Exception e)
-                {
-                    Debug.LogWarning(
-                        "Dibujo de publicación no válido: " + e.Message
-                    );
-                }
-            }
-            else
-            {
-                Label content = new Label(
-                    post.contenido ?? string.Empty
-                );
-
-                content.style.whiteSpace = WhiteSpace.Normal;
-                content.AddToClassList("profile-post-content");
-                card.Add(content);
-            }
-
-            postsContainer.Add(card);
-        }
+        if (editPanel != null)
+            editPanel.Open();
     }
 
-    private void ClearProfile()
+
+    // ============================================================
+    // ESTADO Y RENDER
+    // ============================================================
+
+    private void ClearState()
     {
-        if (nicknameLabel != null)
-            nicknameLabel.text = string.Empty;
-
-        if (pronounsLabel != null)
-            pronounsLabel.text = string.Empty;
-
-        if (emailLabel != null)
-            emailLabel.text = string.Empty;
-
-        avatarSurface?.SetDrawing(null);
-        ClearPosts();
-    }
-
-    private void ClearPosts()
-    {
-        postsContainer?.Clear();
+        nickname = string.Empty;
+        pronouns = string.Empty;
+        email = string.Empty;
+        drawingJson = string.Empty;
+        posts = null;
+        postsLoaded = false;
+        MarkDirty();
     }
 
     private void SetStatus(string message)
     {
-        if (statusLabel != null)
-            statusLabel.text = message ?? string.Empty;
+        status = message ?? string.Empty;
+        MarkDirty();
+    }
+
+    private void MarkDirty()
+    {
+        needsRender = true;
+        TryRender();
+    }
+
+    private bool IsReady()
+    {
+        return ProfilePanelUtility.IsPanelReady(panel)
+            && !ProfilePanelUtility.IsUnbound(nicknameLabel)
+            && !ProfilePanelUtility.IsUnbound(pronounsLabel)
+            && !ProfilePanelUtility.IsUnbound(emailLabel)
+            && !ProfilePanelUtility.IsUnbound(statusLabel);
+    }
+
+    private void TryRender()
+    {
+        if (!IsReady()) return;
+
+        if (nicknameLabel != null) nicknameLabel.SetText(nickname);
+        if (pronounsLabel != null) pronounsLabel.SetText(pronouns);
+        if (emailLabel != null) emailLabel.SetText(email);
+        if (statusLabel != null) statusLabel.SetText(status);
+
+        RenderEditButton();
+        RenderAvatar();
+        RenderPosts();
+
+        needsRender = false;
+    }
+
+    // Solo el dueño del perfil ve el boton de editar.
+    private void RenderEditButton()
+    {
+        if (!panel.TryGetElement(editButtonName, out VisualElement element)) return;
+
+        Firebase.Auth.FirebaseUser me = AuthManager.Instance != null ? AuthManager.Instance.CurrentUser : null;
+
+        bool isOwn = me != null && (
+            (!string.IsNullOrEmpty(currentUid) && me.UserId == currentUid) ||
+            string.Equals(me.Email, currentEmail, System.StringComparison.OrdinalIgnoreCase));
+
+        element.style.display = isOwn ? DisplayStyle.Flex : DisplayStyle.None;
+    }
+
+    private void RenderAvatar()
+    {
+        if (!panel.TryGetElement(avatarContainerName, out VisualElement container)) return;
+
+        if (avatarSurface == null || avatarSurface.parent != container)
+        {
+            avatarSurface?.RemoveFromHierarchy();
+            avatarSurface = ProfilePanelUtility.CreateReadOnlySurface(drawingUnitsWidth, drawingPadding);
+            container.Add(avatarSurface);
+        }
+
+        avatarSurface.SetDrawing(ProfilePanelUtility.ParseDrawing(drawingJson));
+    }
+
+    private void RenderPosts()
+    {
+        if (!panel.TryGetElement(postsListName, out VisualElement list)) return;
+
+        list.Clear();
+
+        if (panel.TryGetElement(emptyStateName, out VisualElement empty))
+        {
+            bool showEmpty = postsLoaded && (posts == null || posts.Count == 0);
+            empty.style.display = showEmpty ? DisplayStyle.Flex : DisplayStyle.None;
+        }
+
+        if (!postsLoaded || posts == null) return;
+
+        foreach (PostItData post in posts)
+            list.Add(BuildPostCard(post));
+    }
+
+    private VisualElement BuildPostCard(PostItData post)
+    {
+        VisualElement card = new VisualElement();
+        card.AddToClassList("profile-post-card");
+
+        bool isDrawing = string.Equals(post.tipo, "dibujo", System.StringComparison.OrdinalIgnoreCase);
+
+        Label type = new Label(isDrawing ? "Dibujo" : "Texto");
+        type.AddToClassList("profile-post-type");
+        card.Add(type);
+
+        if (isDrawing)
+        {
+            VisualElement box = new VisualElement();
+            box.AddToClassList("profile-post-drawing");
+            box.style.position = Position.Relative;
+            box.style.height = 180;
+            card.Add(box);
+
+            DrawingSurface surface = ProfilePanelUtility.CreateReadOnlySurface(drawingUnitsWidth, drawingPadding);
+            box.Add(surface);
+            surface.SetDrawing(ProfilePanelUtility.ParseDrawing(post.contenido));
+        }
+        else
+        {
+            Label content = new Label(post.contenido ?? string.Empty);
+            content.style.whiteSpace = WhiteSpace.Normal;
+            content.AddToClassList("profile-post-content");
+            card.Add(content);
+        }
+
+        return card;
     }
 }

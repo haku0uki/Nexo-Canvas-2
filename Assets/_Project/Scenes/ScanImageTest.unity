@@ -363,6 +363,9 @@ MonoBehaviour:
   commentInput: {fileID: 99561442}
   publishButton: {fileID: 99561443}
   backButton: {fileID: 99561438}
+  profilePanel: {fileID: 0}
+  authorProfileButton: {fileID: 0}
+  commentAuthorElementName: username-label
 --- !u!114 &99561442
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -791,6 +794,10 @@ GameObject:
   - component: {fileID: 489602850}
   - component: {fileID: 489602849}
   - component: {fileID: 489602848}
+  - component: {fileID: 489602854}
+  - component: {fileID: 489602853}
+  - component: {fileID: 489602852}
+  - component: {fileID: 489602851}
   m_Layer: 0
   m_Name: UserProfileView
   m_TagString: Untagged
@@ -968,8 +975,105 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd7f095980f32cb49be0ea3bfad8047b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UserProfileViewPanelController
+  panel: {fileID: 489602846}
+  returnPanel: {fileID: 2141101810}
+  editPanel: {fileID: 1694106779}
+  nicknameLabel: {fileID: 489602854}
+  pronounsLabel: {fileID: 489602853}
+  emailLabel: {fileID: 489602852}
+  statusLabel: {fileID: 489602851}
+  editButton: {fileID: 489602848}
+  backButton: {fileID: 489602849}
+  avatarContainerName: profile-avatar-drawing
+  postsListName: profile-posts-list
+  emptyStateName: profile-empty-state
+  editButtonName: profile-editor
   drawingUnitsWidth: 10
   drawingPadding: 8
+--- !u!114 &489602851
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 489602844}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 111e034da0efe6f4f8247690407bf89d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.LabelTextBridge
+  overrideInteractable: 0
+  initialInteractable: 1
+  overrideDisplayed: 0
+  initialDisplayed: 1
+  overrideTooltip: 0
+  initialTooltip: 
+  targetElementName: profile-status-label
+  overrideInitialValue: 0
+  initialValue: 
+--- !u!114 &489602852
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 489602844}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 111e034da0efe6f4f8247690407bf89d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.LabelTextBridge
+  overrideInteractable: 0
+  initialInteractable: 1
+  overrideDisplayed: 0
+  initialDisplayed: 1
+  overrideTooltip: 0
+  initialTooltip: 
+  targetElementName: profile-email-label
+  overrideInitialValue: 0
+  initialValue: 
+--- !u!114 &489602853
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 489602844}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 111e034da0efe6f4f8247690407bf89d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.LabelTextBridge
+  overrideInteractable: 0
+  initialInteractable: 1
+  overrideDisplayed: 0
+  initialDisplayed: 1
+  overrideTooltip: 0
+  initialTooltip: 
+  targetElementName: profile-pronouns-label
+  overrideInitialValue: 0
+  initialValue: 
+--- !u!114 &489602854
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 489602844}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 111e034da0efe6f4f8247690407bf89d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.LabelTextBridge
+  overrideInteractable: 0
+  initialInteractable: 1
+  overrideDisplayed: 0
+  initialDisplayed: 1
+  overrideTooltip: 0
+  initialTooltip: 
+  targetElementName: profile-nickname-label
+  overrideInitialValue: 0
+  initialValue: 
 --- !u!1 &796252390
 GameObject:
   m_ObjectHideFlags: 0
@@ -1589,7 +1693,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 22400762, guid: 67117722a812a2e46ab8cb8eafbf5f5e, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.0000038146973
+      value: -0.00033950806
       objectReference: {fileID: 0}
     - target: {fileID: 22426080, guid: 67117722a812a2e46ab8cb8eafbf5f5e, type: 3}
       propertyPath: m_AnchorMax.x
@@ -2487,6 +2591,9 @@ MonoBehaviour:
   commentInput: {fileID: 1470295773}
   publishButton: {fileID: 1470295772}
   backButton: {fileID: 1470295770}
+  profilePanel: {fileID: 0}
+  authorProfileButton: {fileID: 0}
+  commentAuthorElementName: username-label
 --- !u!114 &1470295772
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2707,6 +2814,7 @@ GameObject:
   - component: {fileID: 1694106778}
   - component: {fileID: 1694106777}
   - component: {fileID: 1694106776}
+  - component: {fileID: 1694106779}
   m_Layer: 0
   m_Name: UserProfileEditor
   m_TagString: Untagged
@@ -2893,6 +3001,32 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &1694106779
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1694106772}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be97f3b0eb4b99a4cba4ec313537015a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UserProfileEditPanelController
+  panel: {fileID: 1694106774}
+  statusLabel: {fileID: 0}
+  saveButton: {fileID: 1694106778}
+  cancelButton: {fileID: 1694106777}
+  changeDrawingButton: {fileID: 1694106776}
+  nicknameFieldName: profile-nickname-field
+  pronounsFieldName: profile-pronouns-field
+  avatarContainerName: profile-avatar-drawing
+  drawTest: {fileID: 0}
+  onEditDrawingRequested:
+    m_PersistentCalls:
+      m_Calls: []
+  drawingUnitsWidth: 10
+  drawingPadding: 8
 --- !u!1 &1730594298
 GameObject:
   m_ObjectHideFlags: 0
@@ -2903,6 +3037,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1730594300}
   - component: {fileID: 1730594299}
+  - component: {fileID: 1730594301}
   m_Layer: 0
   m_Name: AuthManager
   m_TagString: Untagged
@@ -2938,6 +3073,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1730594301
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1730594298}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f0362f63d4350b4ea1645d5cca632c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UserProfileService
 --- !u!1 &1750630449
 GameObject:
   m_ObjectHideFlags: 0
