@@ -1,4 +1,3 @@
-
 using System;
 using System.Collections.Generic;
 using Firebase.Firestore;
@@ -17,6 +16,15 @@ public class UserProfileService : MonoBehaviour
     private CollectionReference users;
     private CollectionReference postits;
     private bool subscribedToAuth;
+
+    // Nombre a mostrar por correo (nickname, o la parte local del correo si no hay).
+    // Los post-its y comentarios guardan el correo como autor; sin cache habria una
+    // consulta por cada post-it cada vez que Firestore reporta un cambio.
+    private readonly Dictionary<string, string> displayNames =
+        new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+
+    private readonly Dictionary<string, List<Action<string>>> pendingDisplayNames =
+        new Dictionary<string, List<Action<string>>>(StringComparer.OrdinalIgnoreCase);
 
     [Serializable]
     public class UserProfileData
@@ -238,6 +246,133 @@ public class UserProfileService : MonoBehaviour
             });
     }
 
+    /// <summary>Nombre de respaldo cuando no hay nickname: la parte del correo antes de la arroba.</summary>
+    public static string FallbackName(string email)
+    {
+        if (string.IsNullOrWhiteSpace(email)) return string.Empty;
+
+        int at = email.IndexOf('@');
+        return at > 0 ? email.Substring(0, at) : email;
+    }
+
+    /// <summary>Devuelve el nombre si ya esta en cache, sin consultar Firestore.</summary>
+    public bool TryGetDisplayName(string email, out string name)
+    {
+        name = null;
+        return !string.IsNullOrWhiteSpace(email) && displayNames.TryGetValue(email, out name);
+    }
+
+    /// <summary>
+    /// Entrega el nickname del usuario con ese correo (o el nombre de respaldo).
+    /// Si ya esta en cache, responde en el mismo instante; si no, consulta una sola vez
+    /// aunque varios pidan el mismo correo a la vez.
+    /// </summary>
+    public void ResolveDisplayName(string email, Action<string> onResolved)
+    {
+        if (onResolved == null) return;
+
+        if (string.IsNullOrWhiteSpace(email))
+        {
+            onResolved(string.Empty);
+            return;
+        }
+
+        if (displayNames.TryGetValue(email, out string cached))
+        {
+            onResolved(cached);
+            return;
+        }
+
+        if (pendingDisplayNames.TryGetValue(email, out List<Action<string>> waiting))
+        {
+            waiting.Add(onResolved);
+            return;
+        }
+
+        pendingDisplayNames[email] = new List<Action<string>> { onResolved };
+
+        LoadProfileByEmail(email, profile =>
+        {
+            string name = profile != null && !string.IsNullOrWhiteSpace(profile.nickname)
+                ? profile.nickname.Trim()
+                : FallbackName(email);
+
+            displayNames[email] = name;
+
+            List<Action<string>> callbacks = pendingDisplayNames[email];
+            pendingDisplayNames.Remove(email);
+
+            foreach (Action<string> callback in callbacks)
+                callback(name);
+        });
+    }
+
+    /// <summary>
+    /// Lee un perfil por correo. Las publicaciones guardan authorId como correo,
+    /// asi que es la forma de llegar al perfil del autor de un post-it.
+    /// Entrega null si no existe un documento users con ese correo.
+    /// </summary>
+    public void LoadProfileByEmail(
+        string email,
+        Action<UserProfileData> onComplete)
+    {
+        if (string.IsNullOrWhiteSpace(email))
+        {
+            onComplete?.Invoke(null);
+            return;
+        }
+
+        if (users == null)
+            InitializeFirestore();
+
+        if (users == null)
+        {
+            onComplete?.Invoke(null);
+            return;
+        }
+
+        users.WhereEqualTo("email", email).Limit(1).GetSnapshotAsync()
+            .ContinueWithOnMainThread(task =>
+            {
+                if (task.IsFaulted || task.IsCanceled)
+                {
+                    Debug.LogError(
+                        "UserProfileService: error al cargar perfil por correo: "
+                        + task.Exception
+                    );
+
+                    onComplete?.Invoke(null);
+                    return;
+                }
+
+                DocumentSnapshot doc = null;
+
+                foreach (DocumentSnapshot candidate in task.Result.Documents)
+                {
+                    if (candidate.Exists)
+                    {
+                        doc = candidate;
+                        break;
+                    }
+                }
+
+                if (doc == null)
+                {
+                    onComplete?.Invoke(null);
+                    return;
+                }
+
+                onComplete?.Invoke(new UserProfileData
+                {
+                    uid = doc.Id,
+                    email = ReadString(doc, "email", email),
+                    nickname = ReadString(doc, "nickname", string.Empty),
+                    pronouns = ReadString(doc, "pronouns", string.Empty),
+                    drawingJson = ReadString(doc, "drawingJson", string.Empty)
+                });
+            });
+    }
+
     /// <summary>Lee el perfil del usuario autenticado.</summary>
     public void LoadProfile(
         Firebase.Auth.FirebaseUser user,
@@ -341,6 +476,13 @@ public class UserProfileService : MonoBehaviour
                         "UserProfileService: error al guardar perfil: "
                         + task.Exception
                     );
+                }
+                else
+                {
+                    // Los post-its nuevos ya muestran el nickname recien guardado.
+                    string trimmed = (nickname ?? string.Empty).Trim();
+                    displayNames[user.Email ?? string.Empty] =
+                        trimmed.Length > 0 ? trimmed : FallbackName(user.Email);
                 }
 
                 onComplete?.Invoke(success);

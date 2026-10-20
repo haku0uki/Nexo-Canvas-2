@@ -32,9 +32,18 @@ public class PostItDetailPanel : MonoBehaviour
     [SerializeField] private ButtonBridge publishButton;
     [SerializeField] private ButtonBridge backButton;
 
+    [Header("Author profile")]
+    [Tooltip("Optional. Panel that shows the profile of the post-it's author.")]
+    [SerializeField] private UserProfileViewPanelController profilePanel;
+    [Tooltip("Optional. Button 'author-profile-button' in the details UXML.")]
+    [SerializeField] private ButtonBridge authorProfileButton;
+    [Tooltip("Name of the author Label inside each comment row (comment-entry.uxml). Tapping it opens that user's profile.")]
+    [SerializeField] private string commentAuthorElementName = "username-label";
+
     private VisualElement commentsContainer;
     private readonly Dictionary<string, CommentEntry> comments = new Dictionary<string, CommentEntry>();
     private string currentPostItId;
+    private PostItData currentPostIt;
 
     public bool IsOpeningBlocked { get; set; }
 
@@ -51,6 +60,7 @@ public class PostItDetailPanel : MonoBehaviour
 
         if (publishButton != null) publishButton.Clicked += PublishComment;
         if (backButton != null) backButton.Clicked += Close;
+        if (authorProfileButton != null) authorProfileButton.Clicked += OpenAuthorProfile;
     }
 
     private void OnDisable()
@@ -59,6 +69,7 @@ public class PostItDetailPanel : MonoBehaviour
 
         if (publishButton != null) publishButton.Clicked -= PublishComment;
         if (backButton != null) backButton.Clicked -= Close;
+        if (authorProfileButton != null) authorProfileButton.Clicked -= OpenAuthorProfile;
     }
 
     private void OnEntryClicked(EntryClickedEvent<PostItData> evt)
@@ -78,8 +89,9 @@ public class PostItDetailPanel : MonoBehaviour
         Close();
 
         currentPostItId = postIt.id;
+        currentPostIt = postIt;
         bool isDrawingPanel = kind == DetailKind.Drawing;
-        if (authorLabel != null) authorLabel.SetText(postIt.authorId);
+        if (authorLabel != null) ProfilePanelUtility.ShowAuthorName(postIt.authorId, authorLabel.SetText, () => currentPostIt == postIt);
         if (contentLabel != null) contentLabel.SetText(isDrawingPanel ? string.Empty : postIt.contenido);
         ShowDrawing(isDrawingPanel ? postIt.contenido : null);
 
@@ -99,6 +111,42 @@ public class PostItDetailPanel : MonoBehaviour
         currentPostItId = null;
 
         if (panel != null) panel.Hide();
+    }
+
+    // The author is stored as an email, so the profile is looked up by email.
+    public void OpenAuthorProfile()
+    {
+        if (currentPostIt != null) OpenProfileOf(currentPostIt.authorId);
+    }
+
+    // Opens a profile and, when the user goes back, reopens this same post-it detail.
+    private void OpenProfileOf(string authorEmail)
+    {
+        if (profilePanel == null || string.IsNullOrEmpty(authorEmail)) return;
+
+        PostItData postIt = currentPostIt;
+        Close(); // Stop the comments listener before another panel takes over.
+
+        profilePanel.ShowProfileByEmail(authorEmail, () =>
+        {
+            if (postIt != null) Open(postIt);
+        });
+    }
+
+    // Shows the author's nickname in the comment row and makes it open the profile when tapped.
+    private void SetupCommentAuthor(VisualElement row, string authorEmail)
+    {
+        if (row == null) return;
+
+        Label commentAuthor = row.Q<Label>(commentAuthorElementName);
+        if (commentAuthor == null) return;
+
+        ProfilePanelUtility.ShowAuthorName(authorEmail, name => commentAuthor.text = name, () => commentAuthor.panel != null);
+
+        if (profilePanel == null) return;
+
+        commentAuthor.AddToClassList("profile-link");
+        commentAuthor.RegisterCallback<ClickEvent>(evt => OpenProfileOf(authorEmail));
     }
 
     private void ShowDrawing(string json)
@@ -130,6 +178,7 @@ public class PostItDetailPanel : MonoBehaviour
 
             CommentEntry entry = new CommentEntry(commentEntryAsset, data);
             commentsContainer?.Add(entry.Root);
+            SetupCommentAuthor(entry.Root, data.authorId);
             comments.Add(data.id, entry);
         }
     }

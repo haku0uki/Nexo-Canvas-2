@@ -95,7 +95,7 @@ public class DrawingCanvasEntry : BaseCanvasEntry
             return;
 
         if (usernameLabel != null)
-            usernameLabel.SetText(Data.authorId);
+            ProfilePanelUtility.ShowAuthorName(Data.authorId, usernameLabel.SetText);
 
         if (contentLabel != null)
             contentLabel.SetText(string.Empty);

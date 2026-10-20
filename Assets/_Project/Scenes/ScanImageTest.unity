@@ -169,6 +169,7 @@ GameObject:
   - component: {fileID: 99561443}
   - component: {fileID: 99561442}
   - component: {fileID: 99561444}
+  - component: {fileID: 99561445}
   m_Layer: 0
   m_Name: Text Detail Panel
   m_TagString: Untagged
@@ -363,6 +364,9 @@ MonoBehaviour:
   commentInput: {fileID: 99561442}
   publishButton: {fileID: 99561443}
   backButton: {fileID: 99561438}
+  profilePanel: {fileID: 6290377932403944570}
+  authorProfileButton: {fileID: 99561445}
+  commentAuthorElementName: username-label
 --- !u!114 &99561442
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -435,6 +439,28 @@ MonoBehaviour:
   releaseDelay: 0.15
   simulateKeyboardInEditor: 0
   logDebug: 0
+--- !u!114 &99561445
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 99561434}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c21dfdd449275ba4fb48dcd83efe6cac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.ButtonBridge
+  overrideInteractable: 0
+  initialInteractable: 1
+  overrideDisplayed: 0
+  initialDisplayed: 1
+  overrideTooltip: 0
+  initialTooltip: 
+  targetElementName: autor-user-profile
+  onClick:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &335039838
 GameObject:
   m_ObjectHideFlags: 0
@@ -777,199 +803,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &489602844
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 489602845}
-  - component: {fileID: 489602847}
-  - component: {fileID: 489602846}
-  - component: {fileID: 489602850}
-  - component: {fileID: 489602849}
-  - component: {fileID: 489602848}
-  m_Layer: 0
-  m_Name: UserProfileView
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &489602845
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 489602844}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1845594305}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &489602846
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 489602844}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9dfb9f5942acaac4d91e8307ec2eecda, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.UIDocumentPanel
-  ownership: 0
-  explicitController: {fileID: 0}
-  controllerKey: 
-  panelOrder: 2147483647
-  panelPriorityName: 
-  useRelativeSorting: 0
-  sortingTarget: {fileID: 0}
-  sortingOffset: 1
-  panelInteractionMode: 0
-  startHidden: 1
-  persistence: 0
-  panelCloseMode: 0
-  panelName: UserProfileView
-  panelId: 
-  definition: {fileID: 0}
-  suppressEventsOnInitialVisualState: 0
-  transition: 0
-  transitionDuration: 0.2
-  blockingScope: 0
-  blockedPanels: []
-  allowedPanels: []
-  onEarlyPanelShowed:
-    m_PersistentCalls:
-      m_Calls: []
-  onPanelShowed:
-    m_PersistentCalls:
-      m_Calls: []
-  onEarlyPanelHidden:
-    m_PersistentCalls:
-      m_Calls: []
-  onPanelHidden:
-    m_PersistentCalls:
-      m_Calls: []
-  onPanelInitialized:
-    m_PersistentCalls:
-      m_Calls: []
-  targetDocument: {fileID: 489602847}
-  blocksRaycastsOnEmptyArea: 1
---- !u!114 &489602847
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 489602844}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.dll::UnityEngine.UIElements.UIDocument
-  m_PanelSettings: {fileID: 11400000, guid: fec9bf6fa4770294a919da19c7dfd501, type: 2}
-  m_ParentUI: {fileID: 0}
-  sourceAsset: {fileID: 9197481963319205126, guid: 9c541d855e7448e41919ed1a21d1403c, type: 3}
-  m_SortingOrder: 0
-  m_Position: 0
-  m_WorldSpaceSizeMode: 1
-  m_WorldSpaceWidth: 1920
-  m_WorldSpaceHeight: 1080
-  m_PivotReferenceSize: 0
-  m_Pivot: 0
-  m_WorldSpaceCollider: {fileID: 0}
---- !u!114 &489602848
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 489602844}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c21dfdd449275ba4fb48dcd83efe6cac, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.ButtonBridge
-  overrideInteractable: 0
-  initialInteractable: 1
-  overrideDisplayed: 0
-  initialDisplayed: 1
-  overrideTooltip: 0
-  initialTooltip: 
-  targetElementName: profile-editor
-  onClick:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1694106774}
-        m_TargetAssemblyTypeName: SheepyCreations.UIControl.Runtime.UIDocumentPanel,
-          SheepyCreations.UIControl.Runtime
-        m_MethodName: PushViaController
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
---- !u!114 &489602849
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 489602844}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c21dfdd449275ba4fb48dcd83efe6cac, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.ButtonBridge
-  overrideInteractable: 0
-  initialInteractable: 1
-  overrideDisplayed: 0
-  initialDisplayed: 1
-  overrideTooltip: 0
-  initialTooltip: 
-  targetElementName: back-button
-  onClick:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 2141101810}
-        m_TargetAssemblyTypeName: SheepyCreations.UIControl.Runtime.UIDocumentPanel,
-          SheepyCreations.UIControl.Runtime
-        m_MethodName: ShowIsolatedViaController
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
---- !u!114 &489602850
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 489602844}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fd7f095980f32cb49be0ea3bfad8047b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UserProfileViewPanelController
-  drawingUnitsWidth: 10
-  drawingPadding: 8
 --- !u!1 &796252390
 GameObject:
   m_ObjectHideFlags: 0
@@ -1589,7 +1422,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 22400762, guid: 67117722a812a2e46ab8cb8eafbf5f5e, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.0000038146973
+      value: -0.00032424927
       objectReference: {fileID: 0}
     - target: {fileID: 22426080, guid: 67117722a812a2e46ab8cb8eafbf5f5e, type: 3}
       propertyPath: m_AnchorMax.x
@@ -2316,6 +2149,7 @@ GameObject:
   - component: {fileID: 1470295773}
   - component: {fileID: 1470295772}
   - component: {fileID: 1470295775}
+  - component: {fileID: 1470295776}
   m_Layer: 0
   m_Name: Draw Detail Panel
   m_TagString: Untagged
@@ -2487,6 +2321,9 @@ MonoBehaviour:
   commentInput: {fileID: 1470295773}
   publishButton: {fileID: 1470295772}
   backButton: {fileID: 1470295770}
+  profilePanel: {fileID: 6290377932403944570}
+  authorProfileButton: {fileID: 1470295776}
+  commentAuthorElementName: username-label
 --- !u!114 &1470295772
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2580,6 +2417,28 @@ MonoBehaviour:
   releaseDelay: 0.15
   simulateKeyboardInEditor: 0
   logDebug: 0
+--- !u!114 &1470295776
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1470295765}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c21dfdd449275ba4fb48dcd83efe6cac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.ButtonBridge
+  overrideInteractable: 0
+  initialInteractable: 1
+  overrideDisplayed: 0
+  initialDisplayed: 1
+  overrideTooltip: 0
+  initialTooltip: 
+  targetElementName: autor-user-profile
+  onClick:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1477883012
 GameObject:
   m_ObjectHideFlags: 0
@@ -2693,206 +2552,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1694106772
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1694106773}
-  - component: {fileID: 1694106775}
-  - component: {fileID: 1694106774}
-  - component: {fileID: 1694106778}
-  - component: {fileID: 1694106777}
-  - component: {fileID: 1694106776}
-  m_Layer: 0
-  m_Name: UserProfileEditor
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1694106773
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1694106772}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1845594305}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1694106774
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1694106772}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9dfb9f5942acaac4d91e8307ec2eecda, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.UIDocumentPanel
-  ownership: 0
-  explicitController: {fileID: 0}
-  controllerKey: 
-  panelOrder: 2147483647
-  panelPriorityName: 
-  useRelativeSorting: 1
-  sortingTarget: {fileID: 489602846}
-  sortingOffset: 1
-  panelInteractionMode: 0
-  startHidden: 1
-  persistence: 0
-  panelCloseMode: 0
-  panelName: UserProfileEditor
-  panelId: 
-  definition: {fileID: 0}
-  suppressEventsOnInitialVisualState: 0
-  transition: 0
-  transitionDuration: 0.2
-  blockingScope: 0
-  blockedPanels: []
-  allowedPanels: []
-  onEarlyPanelShowed:
-    m_PersistentCalls:
-      m_Calls: []
-  onPanelShowed:
-    m_PersistentCalls:
-      m_Calls: []
-  onEarlyPanelHidden:
-    m_PersistentCalls:
-      m_Calls: []
-  onPanelHidden:
-    m_PersistentCalls:
-      m_Calls: []
-  onPanelInitialized:
-    m_PersistentCalls:
-      m_Calls: []
-  targetDocument: {fileID: 1694106775}
-  blocksRaycastsOnEmptyArea: 1
---- !u!114 &1694106775
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1694106772}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.dll::UnityEngine.UIElements.UIDocument
-  m_PanelSettings: {fileID: 11400000, guid: fec9bf6fa4770294a919da19c7dfd501, type: 2}
-  m_ParentUI: {fileID: 0}
-  sourceAsset: {fileID: 9197481963319205126, guid: 091767f2e75939e4288abad0586b0e58, type: 3}
-  m_SortingOrder: 1
-  m_Position: 0
-  m_WorldSpaceSizeMode: 1
-  m_WorldSpaceWidth: 1920
-  m_WorldSpaceHeight: 1080
-  m_PivotReferenceSize: 0
-  m_Pivot: 0
-  m_WorldSpaceCollider: {fileID: 0}
---- !u!114 &1694106776
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1694106772}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c21dfdd449275ba4fb48dcd83efe6cac, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.ButtonBridge
-  overrideInteractable: 0
-  initialInteractable: 1
-  overrideDisplayed: 0
-  initialDisplayed: 1
-  overrideTooltip: 0
-  initialTooltip: 
-  targetElementName: profile-change-drawing-button
-  onClick:
-    m_PersistentCalls:
-      m_Calls: []
---- !u!114 &1694106777
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1694106772}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c21dfdd449275ba4fb48dcd83efe6cac, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.ButtonBridge
-  overrideInteractable: 0
-  initialInteractable: 1
-  overrideDisplayed: 0
-  initialDisplayed: 1
-  overrideTooltip: 0
-  initialTooltip: 
-  targetElementName: profile-cancel-button
-  onClick:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1694106774}
-        m_TargetAssemblyTypeName: SheepyCreations.UIControl.Runtime.UIDocumentPanel,
-          SheepyCreations.UIControl.Runtime
-        m_MethodName: PopViaController
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
---- !u!114 &1694106778
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1694106772}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c21dfdd449275ba4fb48dcd83efe6cac, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.ButtonBridge
-  overrideInteractable: 0
-  initialInteractable: 1
-  overrideDisplayed: 0
-  initialDisplayed: 1
-  overrideTooltip: 0
-  initialTooltip: 
-  targetElementName: profile-save-button
-  onClick:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!1 &1730594298
 GameObject:
   m_ObjectHideFlags: 0
@@ -2903,6 +2562,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1730594300}
   - component: {fileID: 1730594299}
+  - component: {fileID: 1730594301}
   m_Layer: 0
   m_Name: AuthManager
   m_TagString: Untagged
@@ -2938,6 +2598,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1730594301
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1730594298}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f0362f63d4350b4ea1645d5cca632c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UserProfileService
 --- !u!1 &1750630449
 GameObject:
   m_ObjectHideFlags: 0
@@ -3103,8 +2775,8 @@ Transform:
   - {fileID: 1123912162}
   - {fileID: 2141101808}
   - {fileID: 1294188439}
-  - {fileID: 489602845}
-  - {fileID: 1694106773}
+  - {fileID: 7179873609351163254}
+  - {fileID: 6887024137518447049}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1845594306
@@ -3132,8 +2804,8 @@ MonoBehaviour:
   - {fileID: 1123912167}
   - {fileID: 2141101810}
   - {fileID: 1294188440}
-  - {fileID: 489602846}
-  - {fileID: 1694106774}
+  - {fileID: 5928026575550661539}
+  - {fileID: 6703705144301064795}
   inspectorReferences: []
   showInitialPanelOnInitialize: 1
   initialPanel: {fileID: 2141101810}
@@ -3595,7 +3267,7 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 489602846}
+      - m_Target: {fileID: 5928026575550661539}
         m_TargetAssemblyTypeName: SheepyCreations.UIControl.Runtime.UIDocumentPanel,
           SheepyCreations.UIControl.Runtime
         m_MethodName: ShowIsolatedViaController
@@ -3608,6 +3280,587 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 6290377932403944570}
+        m_TargetAssemblyTypeName: UserProfileViewPanelController, Assembly-CSharp
+        m_MethodName: ShowOwnProfile
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &307270856886757839
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7513320885695979380}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 111e034da0efe6f4f8247690407bf89d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.LabelTextBridge
+  overrideInteractable: 0
+  initialInteractable: 1
+  overrideDisplayed: 0
+  initialDisplayed: 1
+  overrideTooltip: 0
+  initialTooltip: 
+  targetElementName: profile-pronouns-label
+  overrideInitialValue: 0
+  initialValue: 
+--- !u!114 &937362854901504049
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7513320885695979380}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 111e034da0efe6f4f8247690407bf89d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.LabelTextBridge
+  overrideInteractable: 0
+  initialInteractable: 1
+  overrideDisplayed: 0
+  initialDisplayed: 1
+  overrideTooltip: 0
+  initialTooltip: 
+  targetElementName: profile-status-label
+  overrideInitialValue: 0
+  initialValue: 
+--- !u!114 &953170277617216909
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7513320885695979380}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c21dfdd449275ba4fb48dcd83efe6cac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.ButtonBridge
+  overrideInteractable: 0
+  initialInteractable: 1
+  overrideDisplayed: 0
+  initialDisplayed: 1
+  overrideTooltip: 0
+  initialTooltip: 
+  targetElementName: back-button
+  onClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2141101810}
+        m_TargetAssemblyTypeName: SheepyCreations.UIControl.Runtime.UIDocumentPanel,
+          SheepyCreations.UIControl.Runtime
+        m_MethodName: ShowIsolatedViaController
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &2240537313603091511
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7513320885695979380}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c21dfdd449275ba4fb48dcd83efe6cac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.ButtonBridge
+  overrideInteractable: 0
+  initialInteractable: 1
+  overrideDisplayed: 0
+  initialDisplayed: 1
+  overrideTooltip: 0
+  initialTooltip: 
+  targetElementName: profile-editor
+  onClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6703705144301064795}
+        m_TargetAssemblyTypeName: SheepyCreations.UIControl.Runtime.UIDocumentPanel,
+          SheepyCreations.UIControl.Runtime
+        m_MethodName: PushViaController
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &3189735781310178824
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7513320885695979380}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 111e034da0efe6f4f8247690407bf89d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.LabelTextBridge
+  overrideInteractable: 0
+  initialInteractable: 1
+  overrideDisplayed: 0
+  initialDisplayed: 1
+  overrideTooltip: 0
+  initialTooltip: 
+  targetElementName: profile-nickname-label
+  overrideInitialValue: 0
+  initialValue: 
+--- !u!114 &3764082607296475647
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7513320885695979380}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.dll::UnityEngine.UIElements.UIDocument
+  m_PanelSettings: {fileID: 11400000, guid: fec9bf6fa4770294a919da19c7dfd501, type: 2}
+  m_ParentUI: {fileID: 0}
+  sourceAsset: {fileID: 9197481963319205126, guid: 9c541d855e7448e41919ed1a21d1403c, type: 3}
+  m_SortingOrder: 0
+  m_Position: 0
+  m_WorldSpaceSizeMode: 1
+  m_WorldSpaceWidth: 1920
+  m_WorldSpaceHeight: 1080
+  m_PivotReferenceSize: 0
+  m_Pivot: 0
+  m_WorldSpaceCollider: {fileID: 0}
+--- !u!114 &4958305351737166775
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7225883650097988668}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c21dfdd449275ba4fb48dcd83efe6cac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.ButtonBridge
+  overrideInteractable: 0
+  initialInteractable: 1
+  overrideDisplayed: 0
+  initialDisplayed: 1
+  overrideTooltip: 0
+  initialTooltip: 
+  targetElementName: profile-cancel-button
+  onClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6703705144301064795}
+        m_TargetAssemblyTypeName: SheepyCreations.UIControl.Runtime.UIDocumentPanel,
+          SheepyCreations.UIControl.Runtime
+        m_MethodName: PopViaController
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 9035210907529018966}
+        m_TargetAssemblyTypeName: UserProfileEditPanelController, Assembly-CSharp
+        m_MethodName: Close
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 6290377932403944570}
+        m_TargetAssemblyTypeName: UserProfileViewPanelController, Assembly-CSharp
+        m_MethodName: ShowOwnProfile
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &5164994499276685625
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7513320885695979380}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 111e034da0efe6f4f8247690407bf89d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.LabelTextBridge
+  overrideInteractable: 0
+  initialInteractable: 1
+  overrideDisplayed: 0
+  initialDisplayed: 1
+  overrideTooltip: 0
+  initialTooltip: 
+  targetElementName: profile-email-label
+  overrideInitialValue: 0
+  initialValue: 
+--- !u!114 &5928026575550661539
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7513320885695979380}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9dfb9f5942acaac4d91e8307ec2eecda, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.UIDocumentPanel
+  ownership: 0
+  explicitController: {fileID: 0}
+  controllerKey: 
+  panelOrder: 2147483647
+  panelPriorityName: 
+  useRelativeSorting: 0
+  sortingTarget: {fileID: 0}
+  sortingOffset: 1
+  panelInteractionMode: 0
+  startHidden: 1
+  persistence: 0
+  panelCloseMode: 0
+  panelName: UserProfileView
+  panelId: 
+  definition: {fileID: 0}
+  suppressEventsOnInitialVisualState: 0
+  transition: 0
+  transitionDuration: 0.2
+  blockingScope: 0
+  blockedPanels: []
+  allowedPanels: []
+  onEarlyPanelShowed:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6290377932403944570}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: 
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  onPanelShowed:
+    m_PersistentCalls:
+      m_Calls: []
+  onEarlyPanelHidden:
+    m_PersistentCalls:
+      m_Calls: []
+  onPanelHidden:
+    m_PersistentCalls:
+      m_Calls: []
+  onPanelInitialized:
+    m_PersistentCalls:
+      m_Calls: []
+  targetDocument: {fileID: 3764082607296475647}
+  blocksRaycastsOnEmptyArea: 1
+--- !u!114 &6108479652499407174
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7225883650097988668}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c21dfdd449275ba4fb48dcd83efe6cac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.ButtonBridge
+  overrideInteractable: 0
+  initialInteractable: 1
+  overrideDisplayed: 0
+  initialDisplayed: 1
+  overrideTooltip: 0
+  initialTooltip: 
+  targetElementName: profile-save-button
+  onClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 9035210907529018966}
+        m_TargetAssemblyTypeName: UserProfileEditPanelController, Assembly-CSharp
+        m_MethodName: Save
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 6290377932403944570}
+        m_TargetAssemblyTypeName: UserProfileViewPanelController, Assembly-CSharp
+        m_MethodName: ShowOwnProfile
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &6290377932403944570
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7513320885695979380}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd7f095980f32cb49be0ea3bfad8047b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UserProfileViewPanelController
+  panel: {fileID: 5928026575550661539}
+  returnPanel: {fileID: 2141101810}
+  editPanel: {fileID: 9035210907529018966}
+  nicknameLabel: {fileID: 3189735781310178824}
+  pronounsLabel: {fileID: 307270856886757839}
+  emailLabel: {fileID: 5164994499276685625}
+  statusLabel: {fileID: 937362854901504049}
+  editButton: {fileID: 2240537313603091511}
+  backButton: {fileID: 953170277617216909}
+  avatarContainerName: profile-avatar-drawing
+  postsListName: profile-posts-list
+  emptyStateName: profile-empty-state
+  editButtonName: profile-editor
+  drawingUnitsWidth: 10
+  drawingPadding: 8
+--- !u!114 &6703705144301064795
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7225883650097988668}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9dfb9f5942acaac4d91e8307ec2eecda, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.UIDocumentPanel
+  ownership: 0
+  explicitController: {fileID: 0}
+  controllerKey: 
+  panelOrder: 2147483647
+  panelPriorityName: 
+  useRelativeSorting: 1
+  sortingTarget: {fileID: 5928026575550661539}
+  sortingOffset: 1
+  panelInteractionMode: 0
+  startHidden: 1
+  persistence: 0
+  panelCloseMode: 0
+  panelName: UserProfileEditor
+  panelId: 
+  definition: {fileID: 0}
+  suppressEventsOnInitialVisualState: 0
+  transition: 0
+  transitionDuration: 0.2
+  blockingScope: 0
+  blockedPanels: []
+  allowedPanels: []
+  onEarlyPanelShowed:
+    m_PersistentCalls:
+      m_Calls: []
+  onPanelShowed:
+    m_PersistentCalls:
+      m_Calls: []
+  onEarlyPanelHidden:
+    m_PersistentCalls:
+      m_Calls: []
+  onPanelHidden:
+    m_PersistentCalls:
+      m_Calls: []
+  onPanelInitialized:
+    m_PersistentCalls:
+      m_Calls: []
+  targetDocument: {fileID: 8415919520829429882}
+  blocksRaycastsOnEmptyArea: 1
+--- !u!4 &6887024137518447049
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7225883650097988668}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1845594305}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &7179873609351163254
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7513320885695979380}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1845594305}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &7225883650097988668
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6887024137518447049}
+  - component: {fileID: 8415919520829429882}
+  - component: {fileID: 6703705144301064795}
+  - component: {fileID: 6108479652499407174}
+  - component: {fileID: 4958305351737166775}
+  - component: {fileID: 7246880533717151899}
+  - component: {fileID: 9035210907529018966}
+  m_Layer: 0
+  m_Name: UserProfileEditor
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &7246880533717151899
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7225883650097988668}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c21dfdd449275ba4fb48dcd83efe6cac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.ButtonBridge
+  overrideInteractable: 0
+  initialInteractable: 1
+  overrideDisplayed: 0
+  initialDisplayed: 1
+  overrideTooltip: 0
+  initialTooltip: 
+  targetElementName: profile-change-drawing-button
+  onClick:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!1 &7513320885695979380
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7179873609351163254}
+  - component: {fileID: 3764082607296475647}
+  - component: {fileID: 5928026575550661539}
+  - component: {fileID: 6290377932403944570}
+  - component: {fileID: 953170277617216909}
+  - component: {fileID: 2240537313603091511}
+  - component: {fileID: 3189735781310178824}
+  - component: {fileID: 307270856886757839}
+  - component: {fileID: 5164994499276685625}
+  - component: {fileID: 937362854901504049}
+  m_Layer: 0
+  m_Name: UserProfileView
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &8415919520829429882
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7225883650097988668}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.dll::UnityEngine.UIElements.UIDocument
+  m_PanelSettings: {fileID: 11400000, guid: fec9bf6fa4770294a919da19c7dfd501, type: 2}
+  m_ParentUI: {fileID: 0}
+  sourceAsset: {fileID: 9197481963319205126, guid: 091767f2e75939e4288abad0586b0e58, type: 3}
+  m_SortingOrder: 1
+  m_Position: 0
+  m_WorldSpaceSizeMode: 1
+  m_WorldSpaceWidth: 1920
+  m_WorldSpaceHeight: 1080
+  m_PivotReferenceSize: 0
+  m_Pivot: 0
+  m_WorldSpaceCollider: {fileID: 0}
+--- !u!114 &9035210907529018966
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7225883650097988668}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be97f3b0eb4b99a4cba4ec313537015a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UserProfileEditPanelController
+  panel: {fileID: 6703705144301064795}
+  statusLabel: {fileID: 0}
+  saveButton: {fileID: 6108479652499407174}
+  cancelButton: {fileID: 4958305351737166775}
+  changeDrawingButton: {fileID: 7246880533717151899}
+  nicknameFieldName: profile-nickname-field
+  pronounsFieldName: profile-pronouns-field
+  avatarContainerName: profile-avatar-drawing
+  drawTest: {fileID: 0}
+  onEditDrawingRequested:
+    m_PersistentCalls:
+      m_Calls: []
+  drawingUnitsWidth: 10
+  drawingPadding: 8
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
