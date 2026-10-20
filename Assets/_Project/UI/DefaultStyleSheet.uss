@@ -605,3 +605,47 @@
     background-color: rgba(255, 255, 255, 0);
     border-color: rgba(255, 255, 255, 0);
 }
+
+/* Pega esto al final de DefaultStyleSheet.uss.
+   Reutiliza profile-edit-overlay, profile-edit-window, profile-cancel-button y profile-save-button.
+   Los tamaños son un punto de partida: ajustalos a tu Panel Settings. */
+
+.profile-drawing-window {
+    height: 78%;
+    padding-top: 170px;
+    padding-bottom: 130px;
+}
+
+/* Lienzo cuadrado y recortado en circulo: lo que se ve aqui es lo que se vera en el avatar. */
+.profile-drawing-area {
+    width: 100%;
+    aspect-ratio: 1;
+    flex-shrink: 1;
+    border-radius: 50%;
+    overflow: hidden;
+    background-color: rgb(255, 255, 255);
+    margin-bottom: 16px;
+}
+
+.profile-drawing-row {
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.profile-color-button {
+    width: 90px;
+    height: 90px;
+    margin: 0;
+    border-radius: 50%;
+    border-width: 4px;
+    border-color: rgb(19, 19, 18);
+}
+
+.profile-tool-button {
+    min-width: 170px;
+    height: 90px;
+    margin: 0;
+    font-size: 34px;
+}

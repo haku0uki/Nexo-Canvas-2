@@ -1,38 +1,17 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:Template name="draw-entry-controls" src="project://database/Assets/_Project/UI/Drawing/draw-entry-controls.uxml?fileID=9197481963319205126&amp;guid=04d9617f8e27f334c849437cc243b09a&amp;type=3#draw-entry-controls"/>
     <Style src="project://database/Assets/_Project/UI/DefaultStyleSheet.uss?fileID=7433441132597879392&amp;guid=92f105faae8cdfa41a5bffceba250712&amp;type=3#DefaultStyleSheet"/>
     <ui:VisualElement name="root" class="details-root">
         <ui:VisualElement name="background" class="details-background"/>
         <ui:VisualElement name="spacer" class="details-spacer"/>
         <ui:VisualElement name="postit-container" class="details-postit">
-            <ui:VisualElement name="post-it-amarillo" class="post-it-amarillo"/>
+            <ui:VisualElement name="post-it-amarillo" class="post-it-amarillo" style="background-image: url(&quot;project://database/Assets/_Project/2D/Panel%20de%20dibujo.png?fileID=2800000&amp;guid=c9b470fe72293cd478ba0ef219786f99&amp;type=3#Panel de dibujo&quot;);"/>
             <ui:VisualElement name="elements-container" class="postit-content">
-                <ui:Label text="Usuario" name="username-label-postit" class="user-label"/>
+                <ui:Label text="Usuario" name="username-label-postit" class="user-label" style="-unity-font-definition: url(&quot;project://database/Assets/_Project/UI/Fonts/NexoCanvasFuente-Regular.otf?fileID=12800000&amp;guid=c8d3790eab9c74a488ca8941f9eab3d5&amp;type=3#NexoCanvasFuente-Regular&quot;);"/>
                 <ui:VisualElement class="separator"/>
-                <ui:VisualElement name="drawing-area" class="draw-entry-drawing-area"/>
+                <ui:VisualElement name="drawing-area" class="draw-entry-drawing-area" style="margin-bottom: 0%;"/>
             </ui:VisualElement>
         </ui:VisualElement>
-        <ui:VisualElement name="draw-entry-controls" class="draw-entry-controls">
-            <ui:VisualElement name="brush-control" class="draw-control-row">
-                <ui:Label text="Grosor" class="draw-control-label"/>
-                <ui:Slider name="brush-size-slider" low-value="0.01" high-value="0.2" value="0.05" class="draw-slider"/>
-            </ui:VisualElement>
-            <ui:VisualElement name="eraser-size-control" class="draw-control-row">
-                <ui:Label text="Goma" class="draw-control-label"/>
-                <ui:Slider name="eraser-size-slider" low-value="0.02" high-value="0.5" value="0.15" class="draw-slider"/>
-            </ui:VisualElement>
-            <ui:VisualElement name="color-buttons" class="color-buttons">
-                <ui:Button name="black-color-button" text="Negro" class="draw-button"/>
-                <ui:Button name="red-color-button" text="Rojo" class="draw-button"/>
-                <ui:Button name="blue-color-button" text="Azul" class="draw-button"/>
-                <ui:Button name="green-color-button" text="Verde" class="draw-button"/>
-            </ui:VisualElement>
-            <ui:VisualElement name="draw-actions" class="draw-actions">
-                <ui:Button name="eraser-button" text="Goma" class="draw-button"/>
-                <ui:Button name="undo-button" text="Deshacer" class="draw-button"/>
-                <ui:Button name="redo-button" text="Rehacer" class="draw-button"/>
-            </ui:VisualElement>
-            <ui:Button name="publish-button" text="Publicar" class="publish-button"/>
-            <ui:Button name="cancel-button" text="Cancelar" class="cancel-button"/>
-        </ui:VisualElement>
+        <ui:Instance template="draw-entry-controls" name="draw-entry-controls" style="justify-content: flex-end; align-self: auto; align-items: auto; flex-direction: column; height: 21%;"/>
     </ui:VisualElement>
 </ui:UXML>
