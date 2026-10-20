@@ -1,0 +1,23 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/_Project/UI/DefaultStyleSheet.uss?fileID=7433441132597879392&amp;guid=92f105faae8cdfa41a5bffceba250712&amp;type=3#DefaultStyleSheet"/>
+    <ui:VisualElement name="profile-edit-overlay" class="profile-edit-overlay">
+        <ui:VisualElement name="profile-edit-window" class="profile-edit-window">
+            <ui:VisualElement name="profile-edit-header" class="profile-edit-header">
+                <ui:Label text="Editar mi perfil" class="profile-edit-title"/>
+            </ui:VisualElement>
+            <ui:VisualElement name="profile-edit-avatar-row" class="profile-edit-avatar-row">
+                <ui:VisualElement name="profile-avatar-drawing" class="profile-edit-avatar"/>
+                <ui:Button name="profile-change-drawing-button" text="" class="profile-pencil-button profile-change-drawing-button"/>
+            </ui:VisualElement>
+            <ui:Label text="Nombre de usuario" class="profile-field-label"/>
+            <ui:TextField name="profile-nickname-field" max-length="25" class="profile-edit-text-field"/>
+            <ui:Label text="Pronombres" class="profile-field-label"/>
+            <ui:TextField name="profile-pronouns-field" max-length="15" class="profile-edit-text-field"/>
+            <ui:Label name="profile-status-label" text="" class="profile-status"/>
+            <ui:VisualElement name="profile-edit-actions" class="profile-edit-actions">
+                <ui:Button name="profile-cancel-button" text="" class="profile-cancel-button"/>
+                <ui:Button name="profile-save-button" text="" class="profile-save-button"/>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

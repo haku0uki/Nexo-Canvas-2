@@ -75,7 +75,7 @@
     flex-grow: 1;
     padding-top: 10px;
     padding-left: 10px;
-    padding-bottom: 170px;
+    padding-bottom: 222px;
     font-size: 28px;
     color: rgb(0, 0, 0);
     -unity-text-align: upper-left;
@@ -96,6 +96,7 @@
 }
 
 .empty-background {
+    background-color: rgba(0, 0, 0, 0);
     -unity-background-image-tint-color: rgba(255, 255, 255, 0);
     border-width: 0;
     border-color: rgba(0, 0, 0, 0);
@@ -263,6 +264,326 @@
     margin-left: 5px;
     margin-right: 5px;
     font-size: 26px;
+}
+
+.profile-background {
+    background-color: rgb(241, 239, 232);
+}
+
+.profile-scroll {
+    flex-grow: 1;
+    -unity-font-definition: url("project://database/Assets/_Project/UI/Fonts/NexoCanvasFuente-Regular.otf?fileID=12800000&guid=c8d3790eab9c74a488ca8941f9eab3d5&type=3#NexoCanvasFuente-Regular");
+}
+
+.profile-root {
+    color: rgb(35, 48, 57);
+}
+
+.profile-spacer {
+    height: 150px;
+}
+
+.profile-back-button {
+    top: 50px;
+    right: 0;
+    min-width: 160px;
+    min-height: 160px;
+}
+
+.profile-header {
+    flex-direction: row;
+    align-items: center;
+    padding: 8% 4%;
+    background-color: rgb(255, 255, 255);
+    border-radius: 12px;
+    font-size: 42px;
+    -unity-text-outline-width: 1px;
+    color: rgba(35, 48, 57, 0.6);
+}
+
+.profile-avatar {
+    flex-shrink: 0;
+    width: 30%;
+    aspect-ratio: 1;
+    margin-right: 4%;
+    border-radius: 50%;
+    overflow: hidden;
+    background-color: rgb(222, 229, 230);
+}
+
+.profile-identity {
+    flex-grow: 1;
+    flex-shrink: 1;
+    letter-spacing: -4px;
+    word-spacing: -8px;
+}
+
+.profile-info-group {
+    margin-bottom: 14px;
+}
+
+.profile-info-group > .profile-field-label {
+    color: rgba(35, 48, 57, 0.31);
+}
+
+.profile-nickname {
+    font-size: 88px;
+    -unity-font-style: bold;
+    -unity-text-align: middle-left;
+    color: rgb(28, 53, 68);
+    white-space: normal;
+}
+
+.profile-pronouns {
+    margin-top: -6px;
+    font-size: 56px;
+    color: rgb(80, 99, 108);
+    -unity-text-align: middle-left;
+    white-space: normal;
+}
+
+.profile-email {
+    margin-top: -6px;
+    font-size: 46px;
+    color: rgb(103, 119, 126);
+    -unity-text-align: middle-left;
+    white-space: normal;
+}
+
+.profile-status {
+    color: rgb(73, 94, 104);
+    font-size: 36px;
+    white-space: normal;
+}
+
+.profile-root > .profile-status {
+    margin: 0 5%;
+}
+
+.profile-separator {
+    height: 2px;
+    margin-top: 30px;
+    margin-bottom: 10px;
+    background-color: rgb(205, 211, 210);
+}
+
+.profile-posts-section {
+    padding: 0 5% 80px 5%;
+}
+
+.profile-section-title {
+    padding-top: 24px;
+    padding-bottom: 24px;
+    font-size: 64px;
+    -unity-font-style: bold;
+    color: rgba(28, 53, 68, 0.6);
+}
+
+.profile-empty-state {
+    display: none;
+}
+
+.profile-post-card {
+    margin-bottom: 24px;
+    padding: 30px;
+    background-color: rgb(255, 255, 255);
+    border-radius: 24px;
+}
+
+.profile-post-type {
+    color: rgb(37, 74, 89);
+    font-size: 36px;
+    -unity-font-style: bold;
+}
+
+.profile-post-content {
+    color: rgb(39, 50, 57);
+    font-size: 40px;
+    white-space: normal;
+}
+
+.profile-post-drawing {
+    background-color: rgb(248, 247, 243);
+    border-radius: 16px;
+}
+
+.profile-empty-posts {
+    padding: 40px;
+    color: rgb(100, 116, 123);
+    background-color: rgb(255, 255, 255);
+    border-radius: 24px;
+    font-size: 40px;
+    white-space: normal;
+}
+
+.profile-field-label {
+    -unity-font-style: bold;
+}
+
+.profile-pencil-button {
+    background-image: url("project://database/Assets/_Project/2D/Boton%20de%20lapiz.png?fileID=219454448&guid=e030ae35b350ec743898ba6adbcfee83&type=3#Boton de lapiz_0");
+    -unity-background-scale-mode: scale-to-fit;
+    background-color: rgba(188, 188, 188, 0);
+    border-width: 0;
+}
+
+.profile-editor-button {
+    align-self: flex-start;
+    width: 12%;
+    aspect-ratio: 1;
+    margin-left: 2%;
+}
+
+.profile-edit-overlay {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 45, 77, 0.83);
+}
+
+.profile-edit-window {
+    align-items: stretch;
+    align-self: center;
+    justify-content: space-between;
+    width: 82%;
+    height: 56%;
+    padding: 70px 9% 70px 9%;
+    background-image: url("project://database/Assets/_Project/2D/Panel%20de%20dibujo.png?fileID=2800000&guid=c9b470fe72293cd478ba0ef219786f99&type=3#Panel de dibujo");
+    border-radius: 14px;
+    color: rgb(19, 19, 18);
+    -unity-font-definition: url("project://database/Assets/_Project/UI/Fonts/NexoCanvasFuente-Regular.otf?fileID=12800000&guid=c8d3790eab9c74a488ca8941f9eab3d5&type=3#NexoCanvasFuente-Regular");
+    padding-top: 200px;
+    padding-bottom: 150px;
+}
+
+.profile-edit-header {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.profile-edit-title {
+    flex-grow: 1;
+    font-size: 64px;
+    letter-spacing: -4px;
+    -unity-font-style: bold;
+    -unity-text-outline-width: 1px;
+}
+
+.profile-edit-avatar-row {
+    flex-grow: 1;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.profile-edit-avatar {
+    flex-shrink: 0;
+    width: 257px;
+    height: 272px;
+    border-radius: 58px;
+    overflow: hidden;
+    background-color: rgb(52, 56, 64);
+    border-top-left-radius: 100%;
+    border-top-right-radius: 100%;
+    border-bottom-right-radius: 100%;
+    border-bottom-left-radius: 100%;
+}
+
+.profile-change-drawing-button {
+    flex-shrink: 0;
+    width: 140px;
+    height: 140px;
+    margin: 0 0 0 30px;
+}
+
+.profile-edit-window .profile-field-label {
+    margin-top: 10px;
+    margin-bottom: 6px;
+    font-size: 44px;
+}
+
+.profile-edit-text-field {
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 44px;
+}
+
+.profile-edit-text-field .unity-text-field__input {
+    min-height: 100px;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.profile-edit-window .profile-status {
+    min-height: 40px;
+    margin-top: 4px;
+    margin-bottom: 4px;
+    font-size: 34px;
+}
+
+.profile-edit-actions {
+    flex-direction: row;
+    justify-content: flex-end;
+    height: 130px;
+    margin-top: 20px;
+}
+
+.profile-cancel-button,
+.profile-save-button {
+    width: 46%;
+    height: 100%;
+    margin: 0 0 0 12px;
+    background-color: rgba(188, 188, 188, 0);
+    -unity-background-scale-mode: scale-to-fit;
+    border-width: 0;
+}
+
+.profile-cancel-button {
+    background-image: url("project://database/Assets/_Project/2D/Boton%20Cancelar.png?fileID=-1312338684&guid=93f7ddbbfd19f5d498f08a4fa517e253&type=3#Boton Cancelar_0");
+}
+
+.profile-save-button {
+    background-image: url("project://database/Assets/_Project/2D/Boton%20Confirmar.png?fileID=-1941097173&guid=8ec51c05a90b11c419ed34ddb43ef508&type=3#Boton Confirmar_0");
+}
+
+.profile-eyebrow {
+    font-size: 10px;
+    -unity-font-style: bold;
+    color: rgb(91, 116, 127);
+}
+
+.profile-section-subtitle {
+    font-size: 12px;
+    color: rgb(100, 116, 123);
+    white-space: normal;
+}
+
+.profile-posts-icon {
+    background-color: rgb(220, 231, 233);
+    border-radius: 8px;
+}
+
+.profile-posts-icon Label {
+    font-size: 23px;
+    color: rgb(37, 74, 89);
+}
+
+.profile-button {
+    min-height: 40px;
+}
+
+.profile-close-button {
+    width: 34px;
+    min-width: 34px;
+    height: 34px;
+    margin: 0 0 0 8px;
+    font-size: 22px;
 }
 
 #PasswordField .unity-text-element {
