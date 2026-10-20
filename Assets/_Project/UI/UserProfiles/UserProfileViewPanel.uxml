@@ -13,11 +13,11 @@
                         </ui:VisualElement>
                         <ui:VisualElement name="profile-nickname-group" class="profile-info-group">
                             <ui:Label name="profile-nickname-title" text="Nombre de usuario" class="profile-field-label"/>
-                            <ui:Label name="profile-nickname-label" text="Owo" class="profile-nickname"/>
+                            <ui:Label name="profile-nickname-label" text="Usuarix" class="profile-nickname"/>
                         </ui:VisualElement>
                         <ui:VisualElement name="profile-pronouns-group" class="profile-info-group">
                             <ui:Label name="profile-pronouns-title" text="Pronombres" class="profile-field-label"/>
-                            <ui:Label name="profile-pronouns-label" text="que/teimporta" class="profile-pronouns"/>
+                            <ui:Label name="profile-pronouns-label" text="xxxx/xxxx" class="profile-pronouns"/>
                         </ui:VisualElement>
                     </ui:VisualElement>
                     <ui:Button text="" name="profile-editor" class="profile-pencil-button profile-editor-button"/>

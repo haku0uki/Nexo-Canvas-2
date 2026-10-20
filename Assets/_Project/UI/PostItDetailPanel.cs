@@ -91,7 +91,7 @@ public class PostItDetailPanel : MonoBehaviour
         currentPostItId = postIt.id;
         currentPostIt = postIt;
         bool isDrawingPanel = kind == DetailKind.Drawing;
-        if (authorLabel != null) authorLabel.SetText(postIt.authorId);
+        if (authorLabel != null) ProfilePanelUtility.ShowAuthorName(postIt.authorId, authorLabel.SetText, () => currentPostIt == postIt);
         if (contentLabel != null) contentLabel.SetText(isDrawingPanel ? string.Empty : postIt.contenido);
         ShowDrawing(isDrawingPanel ? postIt.contenido : null);
 
@@ -133,15 +133,20 @@ public class PostItDetailPanel : MonoBehaviour
         });
     }
 
-    private void RegisterCommentAuthorClick(VisualElement row, string authorEmail)
+    // Shows the author's nickname in the comment row and makes it open the profile when tapped.
+    private void SetupCommentAuthor(VisualElement row, string authorEmail)
     {
-        if (profilePanel == null || row == null) return;
+        if (row == null) return;
 
-        Label authorLabel = row.Q<Label>(commentAuthorElementName);
-        if (authorLabel == null) return;
+        Label commentAuthor = row.Q<Label>(commentAuthorElementName);
+        if (commentAuthor == null) return;
 
-        authorLabel.AddToClassList("profile-link");
-        authorLabel.RegisterCallback<ClickEvent>(evt => OpenProfileOf(authorEmail));
+        ProfilePanelUtility.ShowAuthorName(authorEmail, name => commentAuthor.text = name, () => commentAuthor.panel != null);
+
+        if (profilePanel == null) return;
+
+        commentAuthor.AddToClassList("profile-link");
+        commentAuthor.RegisterCallback<ClickEvent>(evt => OpenProfileOf(authorEmail));
     }
 
     private void ShowDrawing(string json)
@@ -173,7 +178,7 @@ public class PostItDetailPanel : MonoBehaviour
 
             CommentEntry entry = new CommentEntry(commentEntryAsset, data);
             commentsContainer?.Add(entry.Root);
-            RegisterCommentAuthorClick(entry.Root, data.authorId);
+            SetupCommentAuthor(entry.Root, data.authorId);
             comments.Add(data.id, entry);
         }
     }

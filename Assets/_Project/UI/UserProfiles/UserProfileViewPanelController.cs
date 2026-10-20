@@ -75,16 +75,16 @@ public class UserProfileViewPanelController : MonoBehaviour
 
     private void OnEnable()
     {
-        if (editButton != null) editButton.Clicked += OpenEditor;
-        if (backButton != null) backButton.Clicked += Close;
-        if (editPanel != null) editPanel.Saved += RefreshProfile;
+        //if (editButton != null) editButton.Clicked += OpenEditor;
+        //if (backButton != null) backButton.Clicked += Close;
+        //if (editPanel != null) editPanel.Saved += RefreshProfile;
     }
 
     private void OnDisable()
     {
-        if (editButton != null) editButton.Clicked -= OpenEditor;
-        if (backButton != null) backButton.Clicked -= Close;
-        if (editPanel != null) editPanel.Saved -= RefreshProfile;
+        //if (editButton != null) editButton.Clicked -= OpenEditor;
+        //if (backButton != null) backButton.Clicked -= Close;
+        //if (editPanel != null) editPanel.Saved -= RefreshProfile;
 
         avatarSurface?.RemoveFromHierarchy();
         avatarSurface = null;
@@ -248,11 +248,11 @@ public class UserProfileViewPanelController : MonoBehaviour
             UserProfileService.Instance.LoadProfileByEmail(currentEmail, OnProfileLoaded);
     }
 
-    private void OpenEditor()
-    {
-        if (editPanel != null)
-            editPanel.Open();
-    }
+    //private void OpenEditor()
+    //{
+    //    if (editPanel != null)
+    //        editPanel.Open();
+    //}
 
 
     // ============================================================

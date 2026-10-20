@@ -79,6 +79,36 @@ public static class ProfilePanelUtility
         return surface;
     }
 
+    // Muestra el nickname del autor en lugar de su correo. Primero pone el nombre en cache
+    // (o el de respaldo) y, si hace falta, lo reemplaza cuando Firestore responde.
+    // isStillCurrent evita escribir en un elemento que ya muestra otra cosa.
+    public static void ShowAuthorName(string email, Action<string> setText, Func<bool> isStillCurrent = null)
+    {
+        if (setText == null) return;
+
+        UserProfileService service = UserProfileService.Instance;
+
+        if (service == null)
+        {
+            setText(UserProfileService.FallbackName(email));
+            return;
+        }
+
+        if (service.TryGetDisplayName(email, out string cached))
+        {
+            setText(cached);
+            return;
+        }
+
+        setText(UserProfileService.FallbackName(email));
+
+        service.ResolveDisplayName(email, name =>
+        {
+            if (isStillCurrent == null || isStillCurrent())
+                setText(name);
+        });
+    }
+
     // Quien este conectado, solo si ya verifico su correo.
     public static bool TryGetSessionUser(out Firebase.Auth.FirebaseUser user)
     {

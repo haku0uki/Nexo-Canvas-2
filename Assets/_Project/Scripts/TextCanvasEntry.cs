@@ -31,7 +31,7 @@ public class TextCanvasEntry : BaseCanvasEntry
         if (usernameLabel != null && !usernameLabel.IsBound) return;
         if (contentLabel != null && !contentLabel.IsBound) return;
 
-        if (usernameLabel != null) usernameLabel.SetText(Data.authorId);
+        if (usernameLabel != null) ProfilePanelUtility.ShowAuthorName(Data.authorId, usernameLabel.SetText);
         if (contentLabel != null) contentLabel.SetText(Data.contenido);
         panel.Show();
 

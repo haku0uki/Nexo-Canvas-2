@@ -73,9 +73,9 @@ public class UserProfileEditPanelController : MonoBehaviour
 
     private void OnEnable()
     {
-        if (saveButton != null) saveButton.Clicked += Save;
-        if (cancelButton != null) cancelButton.Clicked += Close;
-        if (changeDrawingButton != null) changeDrawingButton.Clicked += RequestDrawingEdit;
+        //if (saveButton != null) saveButton.Clicked += Save;
+        //if (cancelButton != null) cancelButton.Clicked += Close;
+        //if (changeDrawingButton != null) changeDrawingButton.Clicked += RequestDrawingEdit;
 
         if (AuthManager.Instance != null)
             AuthManager.Instance.OnUserLoggedOut += HandleLoggedOut;
@@ -83,9 +83,9 @@ public class UserProfileEditPanelController : MonoBehaviour
 
     private void OnDisable()
     {
-        if (saveButton != null) saveButton.Clicked -= Save;
-        if (cancelButton != null) cancelButton.Clicked -= Close;
-        if (changeDrawingButton != null) changeDrawingButton.Clicked -= RequestDrawingEdit;
+        //if (saveButton != null) saveButton.Clicked -= Save;
+        //if (cancelButton != null) cancelButton.Clicked -= Close;
+        //if (changeDrawingButton != null) changeDrawingButton.Clicked -= RequestDrawingEdit;
 
         if (AuthManager.Instance != null)
             AuthManager.Instance.OnUserLoggedOut -= HandleLoggedOut;
@@ -251,7 +251,6 @@ public class UserProfileEditPanelController : MonoBehaviour
         currentDrawingJson = string.Empty;
         Close();
     }
-
 
     // ============================================================
     // UI
