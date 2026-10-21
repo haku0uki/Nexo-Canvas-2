@@ -27,6 +27,11 @@ public class BoardCanvas : MonoBehaviour
 
     public Vector2 CellSize => new Vector2(boardSize.x / Mathf.Max(1, gridSize.x), boardSize.y / Mathf.Max(1, gridSize.y));
 
+    private void Awake()
+    {
+        Debug.Log("[BoardCanvas] creado: " + GetInstanceID() + " / escena: " + gameObject.scene.name);
+    }
+
     public void StartListening()
     {
         if (isListening) return;
@@ -34,13 +39,40 @@ public class BoardCanvas : MonoBehaviour
         FirestoreService.Instance.EscucharPostIts(OnPostItsUpdated);
     }
 
+    private void OnDestroy()
+    {
+        if (FirestoreService.Instance != null)
+            FirestoreService.Instance.DejarDeEscucharPostIts(OnPostItsUpdated);
+    }
+
     private void OnPostItsUpdated(List<PostItData> updatedEntries)
     {
         foreach (PostItData data in updatedEntries)
         {
+            if (data == null || string.IsNullOrEmpty(data.id))
+            {
+                Debug.LogWarning("[BoardCanvas] Se ignoro un post-it sin ID.");
+                continue;
+            }
+
             if (entries.TryGetValue(data.id, out BaseCanvasEntry existingEntry))
             {
-                existingEntry.Populate(data); // Refresh position/content in place.
+                if (existingEntry == null)
+                {
+                    entries.Remove(data.id);
+                }
+                else
+                {
+                    existingEntry.Populate(data); // Refresh position/content in place.
+                    continue;
+                }
+            }
+
+            BaseCanvasEntry childEntry = FindAndRemoveDuplicateEntries(data.id);
+            if (childEntry != null)
+            {
+                childEntry.Populate(data);
+                entries[data.id] = childEntry;
                 continue;
             }
 
@@ -48,13 +80,45 @@ public class BoardCanvas : MonoBehaviour
         }
     }
 
+    private BaseCanvasEntry FindAndRemoveDuplicateEntries(string id)
+    {
+        BaseCanvasEntry firstMatch = null;
+
+        for (int i = transform.childCount - 1; i >= 0; i--)
+        {
+            BaseCanvasEntry childEntry = transform.GetChild(i).GetComponent<BaseCanvasEntry>();
+            if (childEntry == null || childEntry.Id != id)
+                continue;
+
+            if (firstMatch == null)
+            {
+                firstMatch = childEntry;
+                continue;
+            }
+
+            childEntry.Clicked -= OnEntryClicked;
+            Destroy(childEntry.gameObject);
+            Debug.LogWarning("[BoardCanvas] Se elimino una entry visual duplicada: " + id);
+        }
+
+        return firstMatch;
+    }
+
     private void CreateEntry(PostItData data)
     {
+        BaseCanvasEntry duplicateEntry = FindAndRemoveDuplicateEntries(data.id);
+        if (duplicateEntry != null)
+        {
+            duplicateEntry.Populate(data);
+            entries[data.id] = duplicateEntry;
+            return;
+        }
+
         BaseCanvasEntry prefab = data.tipo == "dibujo" ? (BaseCanvasEntry)drawingEntryPrefab : textEntryPrefab;
         BaseCanvasEntry newEntry = Instantiate(prefab, transform);
         newEntry.Populate(data);
         newEntry.Clicked += OnEntryClicked;
-        entries.Add(data.id, newEntry);
+        entries[data.id] = newEntry;
     }
 
     private void OnEntryClicked(PostItData data)

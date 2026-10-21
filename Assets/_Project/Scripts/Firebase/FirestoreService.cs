@@ -32,6 +32,8 @@ public class FirestoreService : MonoBehaviour
     // Si BoardCanvas pide escuchar antes de que Firestore esté listo, se guarda
     // el callback y se abre el listener apenas termine la inicialización.
     private Action<List<PostItData>> pendingPostItsCallback;
+    private Action<List<PostItData>> postItsCallback;
+    private List<PostItData> latestPostIts;
     private bool subscribedToAuth;
 
     // Un listener de comentarios por post-it abierto, para poder detenerlo al cambiar o cerrar el detalle.
@@ -40,8 +42,14 @@ public class FirestoreService : MonoBehaviour
     private void Awake()
     {
         Debug.Log("[FirestoreService] Awake");
-        if (Instance == null) { Instance = this; DontDestroyOnLoad(gameObject); }
-        else { Destroy(gameObject); }
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
     }
 
     void Start()
@@ -91,13 +99,23 @@ public class FirestoreService : MonoBehaviour
     // 1. Escuchar los post-its en tiempo real (Suscripcion)
     public void EscucharPostIts(Action<List<PostItData>> OnPostItsUpdated)
     {
-        if (realtimeListener != null) return; // Ya suscripto; BoardCanvas puede llamar esto mas de una vez.
-
         if (postitsCollection == null)
         {
             // Firestore aun no esta listo: se recuerda el pedido y se abre el listener al inicializar.
             Debug.LogWarning("FirestoreService: Firestore aun no esta listo; la escucha de post-its comenzara al inicializar.");
             pendingPostItsCallback = OnPostItsUpdated;
+            return;
+        }
+
+        // El tablero cambia al cambiar de escena. El listener es persistente, pero
+        // su destino debe apuntar siempre al tablero activo.
+        postItsCallback = OnPostItsUpdated;
+
+        if (realtimeListener != null)
+        {
+            if (latestPostIts != null)
+                postItsCallback.Invoke(new List<PostItData>(latestPostIts));
+
             return;
         }
 
@@ -114,9 +132,19 @@ public class FirestoreService : MonoBehaviour
                 catch (Exception e) { Debug.LogWarning("FirestoreService: post-it '" + doc.Id + "' ignorado: " + e.Message); }
             }
 
+            latestPostIts = listaPostIts;
             Debug.Log("FirestoreService: " + listaPostIts.Count + " post-its recibidos.");
-            OnPostItsUpdated?.Invoke(listaPostIts); // Enviar datos al renderizador
+            postItsCallback?.Invoke(new List<PostItData>(listaPostIts)); // Enviar datos al renderizador
         });
+    }
+
+    public void DejarDeEscucharPostIts(Action<List<PostItData>> callback)
+    {
+        if (postItsCallback == callback)
+            postItsCallback = null;
+
+        if (pendingPostItsCallback == callback)
+            pendingPostItsCallback = null;
     }
 
     // 2. Publicar un nuevo post-it (Texto o Dibujo) con su posicion local
@@ -333,8 +361,14 @@ public class FirestoreService : MonoBehaviour
 
         // Muy importante: detener la escucha al cerrar para ahorrar ancho de banda de tu plan Spark (sin costo)
         if (realtimeListener != null) realtimeListener.Stop();
+        realtimeListener = null;
+        postItsCallback = null;
+        pendingPostItsCallback = null;
 
         foreach (ListenerRegistration listener in comentarioListeners.Values) listener.Stop();
         comentarioListeners.Clear();
+
+        if (Instance == this)
+            Instance = null;
     }
 }
