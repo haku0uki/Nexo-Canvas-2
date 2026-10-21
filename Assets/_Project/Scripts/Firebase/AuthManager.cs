@@ -23,6 +23,8 @@ public class AuthManager : MonoBehaviour
     private NotificationBehaviour notification;
 
     public FirebaseUser CurrentUser => auth != null ? auth.CurrentUser : null;
+    public bool HasAuthenticatedUser =>
+        CurrentUser != null && CurrentUser.IsEmailVerified;
 
     // True una vez que Firebase quedó listo. Permite a quien nace después (FirestoreService
     // en otra escena) saber que el evento OnFirebaseInitialized ya se disparó.
@@ -68,7 +70,7 @@ public class AuthManager : MonoBehaviour
                 OnFirebaseInitialized?.Invoke();
                 Debug.Log("<color=green>Firebase Auth inicializado con exito!</color>");
 
-                //VerificarSesionPersistente();
+                VerificarSesionPersistente();
             }
             else
             {
@@ -151,6 +153,13 @@ public class AuthManager : MonoBehaviour
     // 2. INICIAR SESIN (Y verificar que ya haya confirmado su correo)
     public void IniciarSesion(string email, string password)
     {
+        if (HasAuthenticatedUser)
+        {
+            Debug.Log("Ya existe una sesion verificada. Usa Entrar o cierra la cuenta actual.");
+            EntrarConSesionActual();
+            return;
+        }
+
         if (!ValidarCorreoInstitucional(email))
         {
             Debug.LogError("Login rechazado: El correo no pertenece a la universidad.");
@@ -239,12 +248,26 @@ public class AuthManager : MonoBehaviour
         SceneManager.LoadScene(mainScene);
     }
 
+    public void EntrarConSesionActual()
+    {
+        if (!HasAuthenticatedUser)
+        {
+            Debug.LogWarning("No hay una sesion verificada disponible para entrar.");
+            return;
+        }
+
+        LoadMainScene();
+    }
+
 
     public void SignOut()
     {
         if (auth != null)
         {
             auth.SignOut();
+            PlayerPrefs.DeleteKey("Credencial_Email");
+            PlayerPrefs.DeleteKey("Credencial_Password");
+            PlayerPrefs.Save();
             OnUserLoggedOut?.Invoke();
         }
     }
