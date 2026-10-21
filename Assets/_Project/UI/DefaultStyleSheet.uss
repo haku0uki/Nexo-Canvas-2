@@ -703,3 +703,14 @@
     border-bottom-color: rgba(0, 0, 0, 0);
     -unity-background-image-tint-color: rgb(255, 199, 109);
 }
+
+
+
+.custom-scrollview .unity-scroller {
+    display: none;
+    opacity: 1;
+    visibility: hidden;
+    overflow: hidden;
+    width: 0;
+    height: 0;
+}

@@ -2,8 +2,6 @@ using System.Collections.Generic;
 using SheepyCreations.EventBus;
 using UnityEngine;
 
-// Renamed from "Canvas" to avoid shadowing UnityEngine.Canvas.
-// Owns every entry rendered on the board and keeps them in sync with Firestore.
 public class BoardCanvas : MonoBehaviour
 {
     [Header("Board area")]
