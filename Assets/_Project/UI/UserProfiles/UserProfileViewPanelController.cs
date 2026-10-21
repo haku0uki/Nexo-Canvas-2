@@ -42,6 +42,15 @@ public class UserProfileViewPanelController : MonoBehaviour
     [SerializeField] private string emptyStateName = "profile-empty-state";
     [SerializeField] private string editButtonName = "profile-editor";
 
+    [Header("POST-ITS DE LA LISTA")]
+    [Tooltip("UXML del post-it de texto (TextEntry.uxml).")]
+    [SerializeField] private VisualTreeAsset textPostItAsset;
+    [Tooltip("UXML del post-it de dibujo (DrawEntry.uxml, el que tiene el contenedor drawing-view).")]
+    [SerializeField] private VisualTreeAsset drawingPostItAsset;
+    [SerializeField] private string authorLabelName = "username-label-postit";
+    [SerializeField] private string contentLabelName = "content-label-postit";
+    [SerializeField] private string drawingViewName = "drawing-view";
+
     [Header("DIBUJO")]
     [SerializeField] private float drawingUnitsWidth = 10f;
     [SerializeField] private float drawingPadding = 8f;
@@ -350,38 +359,72 @@ public class UserProfileViewPanelController : MonoBehaviour
         if (!postsLoaded || posts == null) return;
 
         foreach (PostItData post in posts)
-            list.Add(BuildPostCard(post));
+            list.Add(BuildPostIt(post));
     }
 
-    private VisualElement BuildPostCard(PostItData post)
+    // Cada publicacion usa el mismo UXML que el tablero (TextEntry / DrawEntry). El tamano y la
+    // grilla los define el USS (clase profile-postit), no este script.
+    private VisualElement BuildPostIt(PostItData post)
     {
-        VisualElement card = new VisualElement();
-        card.AddToClassList("profile-post-card");
-
         bool isDrawing = string.Equals(post.tipo, "dibujo", System.StringComparison.OrdinalIgnoreCase);
+        VisualTreeAsset asset = isDrawing ? drawingPostItAsset : textPostItAsset;
 
-        Label type = new Label(isDrawing ? "Dibujo" : "Texto");
-        type.AddToClassList("profile-post-type");
-        card.Add(type);
+        VisualElement card = new VisualElement();
+        card.AddToClassList("profile-postit");
+
+        if (asset == null)
+        {
+            // Sin plantilla asignada: tarjeta simple para no perder la publicacion.
+            Label plain = new Label(isDrawing ? "Dibujo" : post.contenido ?? string.Empty);
+            plain.style.whiteSpace = WhiteSpace.Normal;
+            card.Add(plain);
+            return card;
+        }
+
+        TemplateContainer instance = asset.Instantiate();
+        instance.style.flexGrow = 1;
+
+        foreach (VisualElement child in instance.Children())
+            child.style.flexGrow = 1;
+
+        card.Add(instance);
+
+        // El autor vive dentro de un template anidado (autor-user-profile). Si no se encuentra
+        // por nombre, se usa la primera etiqueta que no sea la del contenido.
+        Label author = instance.Q<Label>(authorLabelName);
+
+        if (author == null)
+        {
+            foreach (Label candidate in instance.Query<Label>().ToList())
+            {
+                if (candidate.name == contentLabelName) continue;
+
+                author = candidate;
+                break;
+            }
+        }
+
+        if (author != null)
+            author.text = nickname;
+        else
+            Debug.LogWarning("UserProfileViewPanelController: no se encontro la etiqueta del autor en el post-it. " +
+                             "Revisa el campo Author Label Name y que el template autor-user-profile exista en el build.");
 
         if (isDrawing)
         {
-            VisualElement box = new VisualElement();
-            box.AddToClassList("profile-post-drawing");
-            box.style.position = Position.Relative;
-            box.style.height = 180;
-            card.Add(box);
+            VisualElement view = instance.Q<VisualElement>(drawingViewName);
 
-            DrawingSurface surface = ProfilePanelUtility.CreateReadOnlySurface(drawingUnitsWidth, drawingPadding);
-            box.Add(surface);
-            surface.SetDrawing(ProfilePanelUtility.ParseDrawing(post.contenido));
+            if (view != null)
+            {
+                DrawingSurface surface = ProfilePanelUtility.CreateReadOnlySurface(drawingUnitsWidth, drawingPadding);
+                view.Add(surface);
+                surface.SetDrawing(ProfilePanelUtility.ParseDrawing(post.contenido));
+            }
         }
         else
         {
-            Label content = new Label(post.contenido ?? string.Empty);
-            content.style.whiteSpace = WhiteSpace.Normal;
-            content.AddToClassList("profile-post-content");
-            card.Add(content);
+            Label content = instance.Q<Label>(contentLabelName);
+            if (content != null) content.text = post.contenido ?? string.Empty;
         }
 
         return card;
