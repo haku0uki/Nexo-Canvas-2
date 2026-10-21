@@ -24,11 +24,24 @@ public class BoardCanvas : MonoBehaviour
     private readonly List<PromptSuggestion> promptCanvases = new List<PromptSuggestion>();
 
     private bool isListening;
+    private static BoardCanvas activeInstance;
 
     public Vector2 CellSize => new Vector2(boardSize.x / Mathf.Max(1, gridSize.x), boardSize.y / Mathf.Max(1, gridSize.y));
 
     private void Awake()
     {
+        if (activeInstance != null && activeInstance != this)
+        {
+            Debug.LogWarning(
+                "[BoardCanvas] Se elimino una segunda instancia creada por AR Foundation: " +
+                GetInstanceID());
+
+            ARCanvasController controller = GetComponentInParent<ARCanvasController>();
+            Destroy(controller != null ? controller.gameObject : gameObject);
+            return;
+        }
+
+        activeInstance = this;
         Debug.Log("[BoardCanvas] creado: " + GetInstanceID() + " / escena: " + gameObject.scene.name);
     }
 
@@ -43,6 +56,9 @@ public class BoardCanvas : MonoBehaviour
     {
         if (FirestoreService.Instance != null)
             FirestoreService.Instance.DejarDeEscucharPostIts(OnPostItsUpdated);
+
+        if (activeInstance == this)
+            activeInstance = null;
     }
 
     private void OnPostItsUpdated(List<PostItData> updatedEntries)
