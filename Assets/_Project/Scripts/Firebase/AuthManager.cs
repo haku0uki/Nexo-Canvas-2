@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using Firebase;
 using Firebase.Auth;
 using Firebase.Extensions;
@@ -39,24 +39,25 @@ public class AuthManager : MonoBehaviour
         InicializarFirebase();
     }
 
-    // Muestra una notificaci�n en el panel de la escena actual.
+    // Muestra una notificacin en el panel de la escena actual.
     // La referencia se busca cuando hace falta: AuthManager persiste entre escenas,
-    // as� que el panel puede haber sido destruido o no existir todav�a.
+    // as que el panel puede haber sido destruido o no existir todava.
     private void Notificar(string mensaje)
     {
-        // "== null" tambi�n es true si el objeto fue destruido: en ese caso se vuelve a buscar.
+        // "== null" tambin es true si el objeto fue destruido: en ese caso se vuelve a buscar.
         if (notification == null)
             notification = FindFirstObjectByType<NotificationBehaviour>();
         if (notification == null) return;
 
-        notification.ClearQueue();   // descarta las que est�n esperando
-        notification.SkipCurrent();  // cierra la que se est� mostrando
+        notification.ClearQueue();   // descarta las que estn esperando
+        notification.SkipCurrent();  // cierra la que se est mostrando
         notification.Enqueue(mensaje);
     }
 
     private void InicializarFirebase()
     {
-        FirebaseApp.CheckAndFixDependenciesAsync().ContinueWithOnMainThread(task => {
+        FirebaseApp.CheckAndFixDependenciesAsync().ContinueWithOnMainThread(task =>
+        {
             var dependencyStatus = task.Result;
             if (dependencyStatus == DependencyStatus.Available)
             {
@@ -65,7 +66,7 @@ public class AuthManager : MonoBehaviour
 
                 IsFirebaseInitialized = true;
                 OnFirebaseInitialized?.Invoke();
-                Debug.Log("<color=green>�Firebase Auth inicializado con �xito!</color>");
+                Debug.Log("<color=green>Firebase Auth inicializado con exito!</color>");
 
                 //VerificarSesionPersistente();
             }
@@ -78,12 +79,12 @@ public class AuthManager : MonoBehaviour
 
     private void VerificarSesionPersistente()
     {
-        // Solo autologuear si el correo es de la universidad y ya est� confirmado
+        // Solo autologuear si el correo es de la universidad y ya est confirmado
         if (CurrentUser != null && ValidarCorreoInstitucional(CurrentUser.Email))
         {
             if (CurrentUser.IsEmailVerified)
             {
-                Debug.Log($"Sesi�n persistente recuperada: {CurrentUser.Email}");
+                Debug.Log($"Sesion persistente recuperada: {CurrentUser.Email}");
                 OnUserLoggedIn?.Invoke(CurrentUser);
             }
             else
@@ -103,41 +104,43 @@ public class AuthManager : MonoBehaviour
             return;
         }
 
-        auth.CreateUserWithEmailAndPasswordAsync(email, password).ContinueWithOnMainThread(task => {
+        auth.CreateUserWithEmailAndPasswordAsync(email, password).ContinueWithOnMainThread(task =>
+        {
             if (task.IsFaulted)
             {
-                // Interceptar el error espec�fico de Firebase para evitar la alerta roja en consola
+                // Interceptar el error especfico de Firebase para evitar la alerta roja en consola
                 var firebaseEx = task.Exception?.Flatten().InnerException as FirebaseException;
                 if (firebaseEx != null)
                 {
                     AuthError errorCode = (AuthError)firebaseEx.ErrorCode;
                     if (errorCode == AuthError.EmailAlreadyInUse)
                     {
-                        Debug.LogWarning("<b>[Aviso]</b> Este correo ya est� registrado. Por favor, selecciona la opci�n de iniciar sesi�n.");
-                        Notificar("Este correo ya est� registrado. Inicia sesi�n");
+                        Debug.LogWarning("<b>[Aviso]</b> Este correo ya esta registrado. Por favor, selecciona la opcion de iniciar sesion.");
+                        Notificar("Este correo ya esta registrado. Inicia sesion");
                         return;
                     }
                 }
 
-                // La excepci�n completa solo va a la consola, no a la pantalla del usuario.
+                // La excepcin completa solo va a la consola, no a la pantalla del usuario.
                 Debug.LogError("Error inesperado al registrar: " + task.Exception);
-                Notificar("No se pudo completar el registro. Int�ntalo de nuevo");
+                Notificar("No se pudo completar el registro. Intantalo de nuevo");
                 return;
             }
 
             FirebaseUser user = task.Result.User;
-            Debug.Log($"<color=green>�Cuenta creada! Enviando verificaci�n a {user.Email}</color>");
+            Debug.Log($"<color=green>Cuenta creada! Enviando verificacion a {user.Email}</color>");
 
-            user.SendEmailVerificationAsync().ContinueWithOnMainThread(verifyTask => {
+            user.SendEmailVerificationAsync().ContinueWithOnMainThread(verifyTask =>
+            {
                 if (verifyTask.IsFaulted || verifyTask.IsCanceled)
                 {
-                    Debug.LogError("Error al enviar el correo de verificaci�n: " + verifyTask.Exception);
-                    Notificar("Cuenta creada, pero no se pudo enviar el correo de verificaci�n. Usa la opci�n de reenviar");
+                    Debug.LogError("Error al enviar el correo de verificacion: " + verifyTask.Exception);
+                    Notificar("Cuenta creada, pero no se pudo enviar el correo de verificacion. Usa la opcion de reenviar");
                 }
                 else
                 {
-                    Debug.Log("Correo de verificaci�n enviado. Revisa tu bandeja de entrada de la universidad.");
-                    Notificar("Correo de verificaci�n enviado a " + user.Email + ". Revisa tu bandeja de entrada.");
+                    Debug.Log("Correo de verificacion enviado. Revisa tu bandeja de entrada de la universidad.");
+                    Notificar("Correo de verificacion enviado a " + user.Email + ". Revisa tu bandeja de entrada.");
                 }
 
                 SignOut();
@@ -145,7 +148,7 @@ public class AuthManager : MonoBehaviour
         });
     }
 
-    // 2. INICIAR SESI�N (Y verificar que ya haya confirmado su correo)
+    // 2. INICIAR SESIN (Y verificar que ya haya confirmado su correo)
     public void IniciarSesion(string email, string password)
     {
         if (!ValidarCorreoInstitucional(email))
@@ -155,11 +158,12 @@ public class AuthManager : MonoBehaviour
             return;
         }
 
-        auth.SignInWithEmailAndPasswordAsync(email, password).ContinueWithOnMainThread(task => {
+        auth.SignInWithEmailAndPasswordAsync(email, password).ContinueWithOnMainThread(task =>
+        {
             if (task.IsFaulted)
             {
-                Debug.LogError("Error al iniciar sesi�n: " + task.Exception);
-                Notificar("No se pudo iniciar sesi�n. Revisa tu correo y contrase�a");
+                Debug.LogError("Error al iniciar sesin: " + task.Exception);
+                Notificar("No se pudo iniciar sesin. Revisa tu correo y contrasea");
                 return;
             }
 
@@ -168,8 +172,8 @@ public class AuthManager : MonoBehaviour
             // Bloquear el paso si no ha verificado su cuenta desde su Outlook
             if (user.IsEmailVerified)
             {
-                Debug.Log($"<color=green>Sesi�n iniciada con �xito: {user.Email}</color>");
-                Notificar("�Sesi�n iniciada con �xito!");
+                Debug.Log($"<color=green>Sesin iniciada con xito: {user.Email}</color>");
+                Notificar("Sesin iniciada con xito!");
 
                 OnUserLoggedIn?.Invoke(user);
 
@@ -188,35 +192,37 @@ public class AuthManager : MonoBehaviour
     {
         if (!ValidarCorreoInstitucional(email))
         {
-            Debug.LogError("Operaci�n rechazada: El correo no pertenece a la universidad.");
+            Debug.LogError("Operacin rechazada: El correo no pertenece a la universidad.");
             Notificar("Usa tu correo @uandresbello.edu");
             return;
         }
 
-        Debug.Log("Iniciando sesi�n silenciosa para reenviar correo de verificaci�n...");
-        auth.SignInWithEmailAndPasswordAsync(email, password).ContinueWithOnMainThread(task => {
+        Debug.Log("Iniciando sesin silenciosa para reenviar correo de verificacin...");
+        auth.SignInWithEmailAndPasswordAsync(email, password).ContinueWithOnMainThread(task =>
+        {
             if (task.IsFaulted)
             {
-                Debug.LogError("No se pudo iniciar sesi�n para reenviar el correo: " + task.Exception);
-                Notificar("No se pudo reenviar el correo. Revisa tu correo y contrase�a");
+                Debug.LogError("No se pudo iniciar sesin para reenviar el correo: " + task.Exception);
+                Notificar("No se pudo reenviar el correo. Revisa tu correo y contrasea");
                 return;
             }
 
             FirebaseUser user = task.Result.User;
 
-            // Enviar el correo de verificaci�n nuevamente
-            user.SendEmailVerificationAsync().ContinueWithOnMainThread(verifyTask => {
+            // Enviar el correo de verificacin nuevamente
+            user.SendEmailVerificationAsync().ContinueWithOnMainThread(verifyTask =>
+            {
                 if (verifyTask.IsCompletedSuccessfully)
                 {
-                    Debug.Log("<color=yellow><b>[Auth]</b> Enlace de verificaci�n reenviado con �xito a tu Outlook.</color>");
-                    Notificar("Enlace de verificaci�n reenviado. Revisa tu bandeja de entrada.");
+                    Debug.Log("<color=yellow><b>[Auth]</b> Enlace de verificacin reenviado con xito a tu Outlook.</color>");
+                    Notificar("Enlace de verificacin reenviado. Revisa tu bandeja de entrada.");
                 }
                 else
                 {
-                    Debug.LogError("Error al reenviar el correo de verificaci�n: " + verifyTask.Exception);
-                    Notificar("No se pudo reenviar el correo de verificaci�n. Int�ntalo m�s tarde");
+                    Debug.LogError("Error al reenviar el correo de verificacin: " + verifyTask.Exception);
+                    Notificar("No se pudo reenviar el correo de verificacin. Intntalo ms tarde");
                 }
-                SignOut(); // Cerrar sesi�n inmediatamente por seguridad
+                SignOut(); // Cerrar sesin inmediatamente por seguridad
             });
         });
     }
@@ -225,7 +231,7 @@ public class AuthManager : MonoBehaviour
     {
         if (string.IsNullOrEmpty(mainScene))
         {
-            Debug.LogError("El nombre de la escena principal est� vac�o en el AuthManager.");
+            Debug.LogError("El nombre de la escena principal est vaco en el AuthManager.");
             return;
         }
 
