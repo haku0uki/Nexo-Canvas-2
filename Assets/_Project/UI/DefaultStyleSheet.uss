@@ -714,3 +714,67 @@
     width: 0;
     height: 0;
 }
+
+.menu-root {
+    flex-grow: 1;
+    background-image: url("project://database/Assets/_Project/2D/Fondo_nexo_canvas.png?fileID=2800000&guid=974d1778c201b884ea9a35525b90d664&type=3#Fondo_nexo_canvas");
+}
+
+.menu-title {
+    flex-shrink: 0;
+    align-self: center;
+    width: 95%;
+    height: 30%;
+}
+
+.menu-buttons {
+    flex-grow: 1;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.menu-button {
+    width: 640px;
+    height: 190px;
+    margin: 0;
+    padding: 0;
+    border-width: 0;
+    background-color: rgba(0, 0, 0, 0);
+    -unity-background-scale-mode: scale-to-fit;
+}
+
+.menu-text-button {
+    -unity-font-definition: url("project://database/Assets/_Project/UI/Fonts/NexoCanvasFuente-Regular.otf?fileID=12800000&guid=c8d3790eab9c74a488ca8941f9eab3d5&type=3#NexoCanvasFuente-Regular");
+    width: 520px;
+    height: 155px;
+    font-size: 40px;
+    color: rgb(0, 0, 0);
+    rotate: -6deg;
+}
+
+.menu-login-button {
+    background-image: url("project://database/Assets/_Project/UI/Sprites/Iniciar%20session%20botn.png?fileID=1499119131&guid=bfc0fdc0d2bdca84eb58bc23491fa743&type=3#Iniciar session botn_0");
+}
+
+.menu-enter-button {
+    font-size: 48px;
+    background-image: url("project://database/Assets/_Project/2D/Botones%20en%20blanco/Boton%20iniciar%20secion%20v2%20en%20blanco.png?fileID=-415930589&guid=db6f67834cd5def4497ba8eeafbf7e6d&type=3#Boton iniciar secion v2 en blanco_0");
+}
+
+.menu-logoff-button {
+    font-size: 36px;
+    background-image: url("project://database/Assets/_Project/2D/Botones%20en%20blanco/Boton%20crear%20cuenta%20en%20blanco.png?fileID=-672973945&guid=52f9e9d126928ec45990c809cb529a8f&type=3#Boton crear cuenta en blanco_0");
+}
+
+.menu-register-button {
+    background-image: url("project://database/Assets/_Project/UI/Sprites/Crear%20cuenta%20boton.png?fileID=-442962954&guid=238cebb27808c10408d2ce1320734ae5&type=3#Crear cuenta boton_0");
+}
+
+.menu-spectate-button {
+    background-image: url("project://database/Assets/_Project/UI/Sprites/Espectador%20boton.png?fileID=-1297308992&guid=45840fd90c21b384386b2589fd8f8754&type=3#Espectador boton_0");
+}
+
+.menu-settings-button {
+    width: 190px;
+    background-image: url("project://database/Assets/_Project/2D/Boton%20de%20Ajustes.png?fileID=-1004990005&guid=f41126dd175a18b4d84dcc45e8fe4fdd&type=3#Boton de Ajustes_0");
+}

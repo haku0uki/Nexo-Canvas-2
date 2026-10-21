@@ -13,15 +13,21 @@ public class QuickLoginBridgeConnector : MonoBehaviour
 
     void Start()
     {
-        // 1. Suscribirse al evento de login exitoso para guardar credenciales
+        // Firebase conserva la sesion; solo se recuerda el correo para facilitar el formulario.
         AuthManager.Instance.OnUserLoggedIn += GuardarCredencialesAlLoguear;
 
-        // 2. Intentar autocompletar los campos al arrancar la pantalla
+        // Intentar autocompletar el correo al arrancar la pantalla.
         AutocompletarCampos();
     }
 
     public void TriggerLoginFromBridges()
     {
+        if (AuthManager.Instance != null && AuthManager.Instance.HasAuthenticatedUser)
+        {
+            AuthManager.Instance.EntrarConSesionActual();
+            return;
+        }
+
         if (emailBridge == null || passwordBridge == null) return;
         string email = emailBridge.Value.Trim();
         string password = passwordBridge.Value;
@@ -51,13 +57,13 @@ public class QuickLoginBridgeConnector : MonoBehaviour
 
         if (password != confirmPassword)
         {
-            ShowNotification("Las contraseñas no coinciden.");
+            ShowNotification("Las contraseï¿½as no coinciden.");
             return;
         }
 
         if (password.Length < 6)
         {
-            ShowNotification("La contraseña debe tener al menos 6 caracteres.");
+            ShowNotification("La contraseï¿½a debe tener al menos 6 caracteres.");
             return;
         }
 
@@ -72,7 +78,7 @@ public class QuickLoginBridgeConnector : MonoBehaviour
 
         if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
         {
-            ShowNotification("Ingresa tu correo y contraseña para reenviar la verificación.");
+            ShowNotification("Ingresa tu correo y contraseï¿½a para reenviar la verificaciï¿½n.");
             return;
         }
 
@@ -87,48 +93,27 @@ public class QuickLoginBridgeConnector : MonoBehaviour
             emailBridge.SetValue(PlayerPrefs.GetString("Credencial_Email"), false);
         }
 
-        if (PlayerPrefs.HasKey("Credencial_Password") && passwordBridge != null)
-        {
-            passwordBridge.SetValue(PlayerPrefs.GetString("Credencial_Password"), false);
-        }
     }
 
-    // Se ejecuta de forma automática solo si el inicio de sesión fue exitoso y verificado
+    // Se ejecuta de forma automï¿½tica solo si el inicio de sesiï¿½n fue exitoso y verificado
     private void GuardarCredencialesAlLoguear(Firebase.Auth.FirebaseUser user)
     {
-        if (emailBridge == null || passwordBridge == null) return;
+        if (emailBridge == null) return;
 
         string email = emailBridge.Value.Trim();
-        string password = passwordBridge.Value;
 
         // Guardar localmente en el almacenamiento del celular
         PlayerPrefs.SetString("Credencial_Email", email);
-        PlayerPrefs.SetString("Credencial_Password", password);
+        PlayerPrefs.DeleteKey("Credencial_Password");
         PlayerPrefs.Save();
 
-        Debug.Log("Credenciales verificadas y guardadas localmente en el dispositivo.");
+        Debug.Log("Correo verificado guardado localmente. Firebase conserva la sesion.");
     }
 
-    // Método para llamar desde tu UIDocumentPanel al mostrar el panel de Login
+    // Mï¿½todo para llamar desde tu UIDocumentPanel al mostrar el panel de Login
     public void IntentarAutologueoSiHayCuenta()
     {
-        Debug.Log("Intentando autologueo si hay credenciales guardadas...");
-
-        // Verificar si existen credenciales guardadas en el almacenamiento del dispositivo
-        if (PlayerPrefs.HasKey("Credencial_Email") && PlayerPrefs.HasKey("Credencial_Password"))
-        {
-            string email = PlayerPrefs.GetString("Credencial_Email");
-            string password = PlayerPrefs.GetString("Credencial_Password");
-
-            Debug.Log("Credenciales locales encontradas. Iniciando sesión automática...");
-
-            // Ejecutar el login. Al tener éxito, AuthManager disparará el evento OnUserLoggedIn
-            AuthManager.Instance.IniciarSesion(email, password);
-        }
-        else
-        {
-            Debug.Log("No se encontraron credenciales locales para inicio automático.");
-        }
+        AuthManager.Instance.EntrarConSesionActual();
     }
 
     private void ShowNotification(string mensaje)
