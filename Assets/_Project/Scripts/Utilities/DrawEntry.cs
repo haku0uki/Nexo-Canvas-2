@@ -44,6 +44,7 @@ public class DrawEntry : MonoBehaviour
     private Button greenColorButton;
 
     private Button eraserButton;
+    private Button brushButton;
     private Button undoButton;
     private Button redoButton;
 
@@ -201,6 +202,13 @@ public class DrawEntry : MonoBehaviour
                 "eraser-button"
             );
 
+        // Opcional: si el UXML no tiene brush-button, la goma
+        // sigue funcionando como interruptor (comportamiento anterior).
+        brushButton =
+            root.Q<Button>(
+                "brush-button"
+            );
+
         undoButton =
             root.Q<Button>(
                 "undo-button"
@@ -284,7 +292,11 @@ public class DrawEntry : MonoBehaviour
         // ========================================================
 
         eraserButton.clicked +=
-            ToggleEraser;
+            SetEraser;
+
+        if (brushButton != null)
+            brushButton.clicked +=
+                SetBrush;
 
         undoButton.clicked +=
             Undo;
@@ -432,15 +444,44 @@ public class DrawEntry : MonoBehaviour
     // ERASER
     // ============================================================
 
-    private void ToggleEraser()
+    private void SetEraser()
     {
         if (drawTest == null)
             return;
 
-        drawTest.ToggleEraser();
+        // Sin boton de pincel, la goma alterna entre goma y pincel.
+        if (brushButton == null)
+        {
+            drawTest.ToggleEraser();
+
+            Debug.Log(
+                "DrawEntry: Se cambió el modo goma."
+            );
+
+            return;
+        }
+
+        drawTest.SetEraserMode(
+            true
+        );
 
         Debug.Log(
-            "DrawEntry: Se cambió el modo goma."
+            "DrawEntry: Modo goma."
+        );
+    }
+
+
+    private void SetBrush()
+    {
+        if (drawTest == null)
+            return;
+
+        drawTest.SetEraserMode(
+            false
+        );
+
+        Debug.Log(
+            "DrawEntry: Modo pincel."
         );
     }
 
@@ -632,7 +673,10 @@ public class DrawEntry : MonoBehaviour
             greenColorButton.clicked -= SetGreen;
 
         if (eraserButton != null)
-            eraserButton.clicked -= ToggleEraser;
+            eraserButton.clicked -= SetEraser;
+
+        if (brushButton != null)
+            brushButton.clicked -= SetBrush;
 
         if (undoButton != null)
             undoButton.clicked -= Undo;

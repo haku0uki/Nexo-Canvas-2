@@ -405,6 +405,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c21dfdd449275ba4fb48dcd83efe6cac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.ButtonBridge
+  overrideInteractable: 0
+  initialInteractable: 1
+  overrideDisplayed: 0
+  initialDisplayed: 1
+  overrideTooltip: 0
+  initialTooltip: 
   targetElementName: BackButton
   onClick:
     m_PersistentCalls:
@@ -584,6 +590,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8173f1ba0f2ffd34a8ffa8d0759d5229, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.TextFieldBridge
+  overrideInteractable: 0
+  initialInteractable: 1
+  overrideDisplayed: 0
+  initialDisplayed: 1
+  overrideTooltip: 0
+  initialTooltip: 
   targetElementName: EmailField
   overrideInitialValue: 0
   initialValue: 
@@ -805,6 +817,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c21dfdd449275ba4fb48dcd83efe6cac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.ButtonBridge
+  overrideInteractable: 0
+  initialInteractable: 1
+  overrideDisplayed: 0
+  initialDisplayed: 1
+  overrideTooltip: 0
+  initialTooltip: 
   targetElementName: RegisterButton
   onClick:
     m_PersistentCalls:
@@ -834,6 +852,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c21dfdd449275ba4fb48dcd83efe6cac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.ButtonBridge
+  overrideInteractable: 0
+  initialInteractable: 1
+  overrideDisplayed: 0
+  initialDisplayed: 1
+  overrideTooltip: 0
+  initialTooltip: 
   targetElementName: LoginButton
   onClick:
     m_PersistentCalls:
@@ -862,6 +886,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c21dfdd449275ba4fb48dcd83efe6cac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.ButtonBridge
+  overrideInteractable: 0
+  initialInteractable: 1
+  overrideDisplayed: 0
+  initialDisplayed: 1
+  overrideTooltip: 0
+  initialTooltip: 
   targetElementName: LoginButton
   onClick:
     m_PersistentCalls:
@@ -1004,6 +1034,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8173f1ba0f2ffd34a8ffa8d0759d5229, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.TextFieldBridge
+  overrideInteractable: 0
+  initialInteractable: 1
+  overrideDisplayed: 0
+  initialDisplayed: 1
+  overrideTooltip: 0
+  initialTooltip: 
   targetElementName: EmailField
   overrideInitialValue: 0
   initialValue: 
@@ -1028,6 +1064,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 111e034da0efe6f4f8247690407bf89d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.LabelTextBridge
+  overrideInteractable: 0
+  initialInteractable: 1
+  overrideDisplayed: 0
+  initialDisplayed: 1
+  overrideTooltip: 0
+  initialTooltip: 
   targetElementName: NotificationLabel
   overrideInitialValue: 0
   initialValue: 
@@ -1191,6 +1233,7 @@ GameObject:
   - component: {fileID: 6059193583276487379}
   - component: {fileID: 3926646488135488480}
   - component: {fileID: 7937729948748950263}
+  - component: {fileID: 7937729948748950264}
   m_Layer: 0
   m_Name: Login Panel
   m_TagString: Untagged
@@ -1230,6 +1273,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c21dfdd449275ba4fb48dcd83efe6cac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.ButtonBridge
+  overrideInteractable: 0
+  initialInteractable: 1
+  overrideDisplayed: 0
+  initialDisplayed: 1
+  overrideTooltip: 0
+  initialTooltip: 
   targetElementName: VerifyButton
   onClick:
     m_PersistentCalls:
@@ -1258,6 +1307,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8173f1ba0f2ffd34a8ffa8d0759d5229, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.TextFieldBridge
+  overrideInteractable: 0
+  initialInteractable: 1
+  overrideDisplayed: 0
+  initialDisplayed: 1
+  overrideTooltip: 0
+  initialTooltip: 
   targetElementName: PasswordField
   overrideInitialValue: 0
   initialValue: 
@@ -1282,6 +1337,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c21dfdd449275ba4fb48dcd83efe6cac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.ButtonBridge
+  overrideInteractable: 0
+  initialInteractable: 1
+  overrideDisplayed: 0
+  initialDisplayed: 1
+  overrideTooltip: 0
+  initialTooltip: 
   targetElementName: BackButton
   onClick:
     m_PersistentCalls:
@@ -1311,6 +1372,26 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &7937729948748950264
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7364415852018931910}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8707aba79f276ae45b1c54cd2e36aa1f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::KeyboardAvoider
+  keepVisibleElementNames: []
+  gap: 24
+  topMargin: 16
+  fallbackKeyboardRatio: 0.38
+  smoothing: 18
+  releaseDelay: 0.15
+  simulateKeyboardInEditor: 0
+  logDebug: 0
 --- !u!1 &8013663693453163808
 GameObject:
   m_ObjectHideFlags: 0
@@ -1329,6 +1410,7 @@ GameObject:
   - component: {fileID: 8265296369661951511}
   - component: {fileID: 7776546377166598524}
   - component: {fileID: 19384775857376030}
+  - component: {fileID: 8265296369661951512}
   m_Layer: 0
   m_Name: Register Panel
   m_TagString: Untagged
@@ -1348,6 +1430,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8173f1ba0f2ffd34a8ffa8d0759d5229, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.TextFieldBridge
+  overrideInteractable: 0
+  initialInteractable: 1
+  overrideDisplayed: 0
+  initialDisplayed: 1
+  overrideTooltip: 0
+  initialTooltip: 
   targetElementName: Password
   overrideInitialValue: 0
   initialValue: 
@@ -1372,6 +1460,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8173f1ba0f2ffd34a8ffa8d0759d5229, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.TextFieldBridge
+  overrideInteractable: 0
+  initialInteractable: 1
+  overrideDisplayed: 0
+  initialDisplayed: 1
+  overrideTooltip: 0
+  initialTooltip: 
   targetElementName: ConfirmPassword
   overrideInitialValue: 0
   initialValue: 
@@ -1396,6 +1490,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c21dfdd449275ba4fb48dcd83efe6cac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.ButtonBridge
+  overrideInteractable: 0
+  initialInteractable: 1
+  overrideDisplayed: 0
+  initialDisplayed: 1
+  overrideTooltip: 0
+  initialTooltip: 
   targetElementName: RegisterButton
   onClick:
     m_PersistentCalls:
@@ -1412,6 +1512,26 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &8265296369661951512
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8013663693453163808}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8707aba79f276ae45b1c54cd2e36aa1f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::KeyboardAvoider
+  keepVisibleElementNames: []
+  gap: 24
+  topMargin: 16
+  fallbackKeyboardRatio: 0.38
+  smoothing: 18
+  releaseDelay: 0.15
+  simulateKeyboardInEditor: 0
+  logDebug: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
