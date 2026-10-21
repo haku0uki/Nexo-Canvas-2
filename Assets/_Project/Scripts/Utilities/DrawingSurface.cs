@@ -159,6 +159,9 @@ public class DrawingSurface : VisualElement
 
     private void OnPointerDown(PointerDownEvent evt)
     {
+        Debug.Log("DrawingSurface PointerDown: readOnly=" + readOnly + ", activePointer=" + activePointer +
+          ", button=" + evt.button + ", tipo=" + evt.pointerType + ", rect=" + contentRect);
+
         if (readOnly)
             return;
 
