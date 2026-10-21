@@ -41,6 +41,10 @@ public class UserProfileEditPanelController : MonoBehaviour
     [SerializeField] private float drawingUnitsWidth = 10f;
     [SerializeField] private float drawingPadding = 8f;
 
+    [Header("EVENTOS")]
+    public UnityEvent onSaved;   // conecta: UserProfileViewPanelController.RefreshProfile()
+    public UnityEvent onClosed;
+
     /// <summary>Se dispara cuando el nickname, los pronombres o el dibujo se guardaron.</summary>
     public event Action Saved;
     /// <summary>Se dispara cuando la ventana se cierra.</summary>
@@ -165,6 +169,7 @@ public class UserProfileEditPanelController : MonoBehaviour
 
         ProfilePanelUtility.HideFlowPanel(panel);
         Closed?.Invoke();
+        onClosed?.Invoke();
     }
 
     /// <summary>Guarda nickname y pronombres.</summary>
@@ -189,6 +194,7 @@ public class UserProfileEditPanelController : MonoBehaviour
         {
             SetStatus(ok ? "Perfil guardado." : "No se pudo guardar el perfil.");
             if (ok) Saved?.Invoke();
+                    onSaved?.Invoke(); ;
         });
     }
 
@@ -229,6 +235,7 @@ public class UserProfileEditPanelController : MonoBehaviour
             avatarDirty = true;
             SetStatus("Dibujo de perfil guardado.");
             Saved?.Invoke();
+            onSaved?.Invoke(); ;
         });
     }
 
@@ -237,7 +244,7 @@ public class UserProfileEditPanelController : MonoBehaviour
     // BOTONES Y EVENTOS
     // ============================================================
 
-    private void RequestDrawingEdit()
+    public void RequestDrawingEdit()
     {
         if (drawTest != null)
             drawTest.LoadDrawingData(ProfilePanelUtility.ParseDrawing(currentDrawingJson) ?? new DrawingData());

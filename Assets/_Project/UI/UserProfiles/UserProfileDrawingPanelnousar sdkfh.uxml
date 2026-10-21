@@ -1,0 +1,19 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:Template name="draw-entry-controls" src="project://database/Assets/_Project/UI/Drawing/draw-entry-controls.uxml?fileID=9197481963319205126&amp;guid=04d9617f8e27f334c849437cc243b09a&amp;type=3#draw-entry-controls"/>
+    <Style src="project://database/Assets/_Project/UI/DefaultStyleSheet.uss?fileID=7433441132597879392&amp;guid=92f105faae8cdfa41a5bffceba250712&amp;type=3#DefaultStyleSheet"/>
+    <ui:VisualElement name="root" class="details-root">
+        <ui:VisualElement name="background" class="details-background"/>
+        <ui:VisualElement name="spacer" class="details-spacer"/>
+        <ui:VisualElement name="postit-container" class="details-postit">
+            <ui:VisualElement name="post-it-amarillo" class="post-it-amarillo"/>
+            <ui:VisualElement name="elements-container" class="postit-content">
+                <ui:Label text="Tu avatar" name="avatar-title-label" class="user-label"/>
+                <ui:VisualElement class="separator"/>
+                <ui:VisualElement name="drawing-area" class="draw-entry-drawing-area profile-drawing-circle"/>
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:Instance template="draw-entry-controls" name="draw-controls" picking-mode="Ignore" class="draw-controls-instance" style="height: 21%; margin-top: 15%;">
+            <AttributeOverrides element-name="publish-button" text="Listo"/>
+        </ui:Instance>
+    </ui:VisualElement>
+</ui:UXML>

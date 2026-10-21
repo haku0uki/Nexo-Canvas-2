@@ -798,6 +798,9 @@ public class DrawTest : MonoBehaviour
     public void SetEraserMode(bool enabled)
     {
         eraserMode = enabled;
+
+        Debug.Log("eraseMode = "+ eraserMode);
+
     }
 
 
