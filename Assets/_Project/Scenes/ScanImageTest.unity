@@ -3565,6 +3565,11 @@ MonoBehaviour:
   postsListName: profile-posts-list
   emptyStateName: profile-empty-state
   editButtonName: profile-editor
+  textPostItAsset: {fileID: 9197481963319205126, guid: b5e02bd02d12aa14fa37217220083dfb, type: 3}
+  drawingPostItAsset: {fileID: 9197481963319205126, guid: 4de3b23fc63e93746922396d9ad07a43, type: 3}
+  authorLabelName: username-label-postit
+  contentLabelName: content-label-postit
+  drawingViewName: drawing-view
   drawingUnitsWidth: 10
   drawingPadding: 8
 --- !u!114 &5825295194778675268
