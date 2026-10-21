@@ -2,7 +2,7 @@
     <Style src="project://database/Assets/_Project/UI/DefaultStyleSheet.uss?fileID=7433441132597879392&amp;guid=92f105faae8cdfa41a5bffceba250712&amp;type=3#DefaultStyleSheet"/>
     <ui:VisualElement name="root" class="details-root profile-background">
         <ui:VisualElement name="spacer" class="details-spacer profile-spacer"/>
-        <ui:ScrollView name="profile-scroll" mode="Vertical" class="profile-scroll">
+        <ui:ScrollView name="profile-scroll" mode="Vertical" class="profile-scroll custom-scrollview unity-scroller">
             <ui:VisualElement name="profile-view-root" class="profile-root">
                 <ui:VisualElement name="profile-header" class="profile-header">
                     <ui:VisualElement name="profile-avatar-drawing" class="profile-avatar"/>
