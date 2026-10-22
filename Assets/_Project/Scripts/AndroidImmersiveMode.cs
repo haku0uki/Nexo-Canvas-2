@@ -1,6 +1,7 @@
 
 using UnityEngine;
 using System;
+using System.Threading;
 
 public class AndroidImmersiveMode : MonoBehaviour
 {
@@ -10,22 +11,23 @@ public class AndroidImmersiveMode : MonoBehaviour
     private AndroidJavaObject decorView;
     private AndroidJavaProxy visibilityListener;
 
-    private bool applyingMode;
+    private int applyingMode;
+    private bool initialized;
 
-    private const int SYSTEM_UI_FLAG_HIDE_NAVIGATION = 0x00000002;
-    private const int SYSTEM_UI_FLAG_FULLSCREEN = 0x00000004;
-    private const int SYSTEM_UI_FLAG_LAYOUT_STABLE = 0x00000100;
-    private const int SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION = 0x00000200;
-    private const int SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN = 0x00000400;
-    private const int SYSTEM_UI_FLAG_IMMERSIVE_STICKY = 0x00001000;
+    private const int HIDE_NAVIGATION = 0x00000002;
+    private const int FULLSCREEN = 0x00000004;
+    private const int LAYOUT_STABLE = 0x00000100;
+    private const int LAYOUT_HIDE_NAVIGATION = 0x00000200;
+    private const int LAYOUT_FULLSCREEN = 0x00000400;
+    private const int IMMERSIVE_STICKY = 0x00001000;
 
     private const int IMMERSIVE_FLAGS =
-        SYSTEM_UI_FLAG_HIDE_NAVIGATION |
-        SYSTEM_UI_FLAG_FULLSCREEN |
-        SYSTEM_UI_FLAG_LAYOUT_STABLE |
-        SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION |
-        SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN |
-        SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+        HIDE_NAVIGATION |
+        FULLSCREEN |
+        LAYOUT_STABLE |
+        LAYOUT_HIDE_NAVIGATION |
+        LAYOUT_FULLSCREEN |
+        IMMERSIVE_STICKY;
 
 #endif
 
@@ -38,6 +40,9 @@ public class AndroidImmersiveMode : MonoBehaviour
     private void InitializeAndroid()
     {
 #if UNITY_ANDROID && !UNITY_EDITOR
+        if (initialized)
+            return;
+
         try
         {
             using (AndroidJavaClass unityPlayer =
@@ -54,16 +59,14 @@ public class AndroidImmersiveMode : MonoBehaviour
             decorView =
                 window.Call<AndroidJavaObject>("getDecorView");
 
-            visibilityListener = new SystemUiVisibilityListener(
-                this,
-                "android.view.View$OnSystemUiVisibilityChangeListener"
-            );
+            visibilityListener = new SystemUiVisibilityListener(this);
 
             decorView.Call(
                 "setOnSystemUiVisibilityChangeListener",
                 visibilityListener
             );
 
+            initialized = true;
             ApplyImmersiveMode();
         }
         catch (Exception e)
@@ -77,27 +80,47 @@ public class AndroidImmersiveMode : MonoBehaviour
     public void ApplyImmersiveMode()
     {
 #if UNITY_ANDROID && !UNITY_EDITOR
-        if (decorView == null || applyingMode)
+        if (!initialized || activity == null)
+            return;
+
+        // Evita solicitudes repetidas simultáneas.
+        if (Interlocked.Exchange(ref applyingMode, 1) == 1)
             return;
 
         try
         {
-            applyingMode = true;
-
-            decorView.Call(
-                "setSystemUiVisibility",
-                IMMERSIVE_FLAGS
+            activity.Call(
+                "runOnUiThread",
+                new AndroidJavaRunnable(() =>
+                {
+                    try
+                    {
+                        if (decorView != null)
+                        {
+                            decorView.Call(
+                                "setSystemUiVisibility",
+                                IMMERSIVE_FLAGS
+                            );
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.LogWarning(
+                            "AndroidImmersiveMode: " + e.Message);
+                    }
+                    finally
+                    {
+                        Interlocked.Exchange(ref applyingMode, 0);
+                    }
+                })
             );
         }
         catch (Exception e)
         {
+            Interlocked.Exchange(ref applyingMode, 0);
+
             Debug.LogWarning(
-                "No se pudo restaurar el modo inmersivo: "
-                + e.Message);
-        }
-        finally
-        {
-            applyingMode = false;
+                "AndroidImmersiveMode: " + e.Message);
         }
 #endif
     }
@@ -126,7 +149,7 @@ public class AndroidImmersiveMode : MonoBehaviour
                     new object[] { null }
                 );
             }
-            catch { }
+            catch (Exception) { }
 
             decorView.Dispose();
             decorView = null;
@@ -139,6 +162,7 @@ public class AndroidImmersiveMode : MonoBehaviour
         }
 
         visibilityListener = null;
+        initialized = false;
 #endif
     }
 
@@ -149,9 +173,9 @@ public class AndroidImmersiveMode : MonoBehaviour
         private readonly AndroidImmersiveMode owner;
 
         public SystemUiVisibilityListener(
-            AndroidImmersiveMode owner,
-            string interfaceName
-        ) : base(interfaceName)
+            AndroidImmersiveMode owner
+        ) : base(
+            "android.view.View$OnSystemUiVisibilityChangeListener")
         {
             this.owner = owner;
         }
@@ -159,10 +183,10 @@ public class AndroidImmersiveMode : MonoBehaviour
         public void onSystemUiVisibilityChange(int visibility)
         {
             bool navigationVisible =
-                (visibility & SYSTEM_UI_FLAG_HIDE_NAVIGATION) == 0;
+                (visibility & HIDE_NAVIGATION) == 0;
 
             bool fullscreenDisabled =
-                (visibility & SYSTEM_UI_FLAG_FULLSCREEN) == 0;
+                (visibility & FULLSCREEN) == 0;
 
             if (navigationVisible || fullscreenDisabled)
             {
