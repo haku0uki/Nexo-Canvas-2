@@ -57,13 +57,13 @@ public class QuickLoginBridgeConnector : MonoBehaviour
 
         if (password != confirmPassword)
         {
-            ShowNotification("Las contrase�as no coinciden.");
+            ShowNotification("Las contraseñas no coinciden.");
             return;
         }
 
         if (password.Length < 6)
         {
-            ShowNotification("La contrase�a debe tener al menos 6 caracteres.");
+            ShowNotification("La contraseña debe tener al menos 6 caracteres.");
             return;
         }
 
@@ -78,7 +78,7 @@ public class QuickLoginBridgeConnector : MonoBehaviour
 
         if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
         {
-            ShowNotification("Ingresa tu correo y contrase�a para reenviar la verificaci�n.");
+            ShowNotification("Ingresa tu correo y contraseña para reenviar la verificación.");
             return;
         }
 
