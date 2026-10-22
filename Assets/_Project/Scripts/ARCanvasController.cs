@@ -19,9 +19,8 @@ public class ARCanvasController : MonoBehaviour
 
     private void Awake()
     {
-        // Intentionally not fetched here: when this object is the ARTrackedImageManager's
-        // Tracked Image Prefab, AR Foundation attaches ARTrackedImage right after Instantiate --
-        // i.e. after this Awake already ran. See the lazy fetch in Update().
+        // Keep the lazy lookup so the controller also tolerates prefabs instantiated before
+        // AR Foundation has finished attaching their trackable component.
     }
 
     private void Update()

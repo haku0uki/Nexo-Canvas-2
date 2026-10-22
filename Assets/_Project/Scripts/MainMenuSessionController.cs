@@ -7,12 +7,14 @@ public class MainMenuSessionController : MonoBehaviour
     [SerializeField] private string loginButtonName = "LoginButton";
     [SerializeField] private string registerButtonName = "RegisterButton";
     [SerializeField] private string logoffButtonName = "LogoffButton";
+    [SerializeField] private string userButtonName = "UserButton";
 
     private UIDocument document;
     private Button enterButton;
     private Button loginButton;
     private Button registerButton;
     private Button logoffButton;
+    private Button userButton;
 
     private void Awake()
     {
@@ -44,6 +46,7 @@ public class MainMenuSessionController : MonoBehaviour
         loginButton = document.rootVisualElement.Q<Button>(loginButtonName);
         registerButton = document.rootVisualElement.Q<Button>(registerButtonName);
         logoffButton = document.rootVisualElement.Q<Button>(logoffButtonName);
+        userButton = document.rootVisualElement.Q<Button>(userButtonName);
         if (registerButton == null || logoffButton == null)
         {
             Debug.LogError("MainMenuSessionController: faltan botones del menu de sesion.");
@@ -71,6 +74,8 @@ public class MainMenuSessionController : MonoBehaviour
             loginButton.style.display = authenticated ? DisplayStyle.None : DisplayStyle.Flex;
         if (registerButton != null)
             registerButton.style.display = authenticated ? DisplayStyle.None : DisplayStyle.Flex;
+        if (userButton != null)
+            userButton.style.display = authenticated ? DisplayStyle.Flex : DisplayStyle.None;
     }
 
     private void HandleUserLoggedIn(Firebase.Auth.FirebaseUser user)
