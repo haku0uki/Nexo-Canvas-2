@@ -2905,12 +2905,12 @@ MonoBehaviour:
       - m_Target: {fileID: 5999396194758528015}
         m_TargetAssemblyTypeName: DrawTest, Assembly-CSharp
         m_MethodName: SetBrushWidth
-        m_Mode: 4
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
-          m_FloatArgument: 0.5
+          m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
@@ -3242,12 +3242,12 @@ MonoBehaviour:
       - m_Target: {fileID: 5999396194758528015}
         m_TargetAssemblyTypeName: DrawTest, Assembly-CSharp
         m_MethodName: SetEraserRadius
-        m_Mode: 4
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
-          m_FloatArgument: 0.5
+          m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2

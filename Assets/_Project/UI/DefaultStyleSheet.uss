@@ -61,6 +61,7 @@
     bottom: 0;
     left: 0;
     background-image: url("project://database/Assets/_Project/2D/post_it_amarillo.png?fileID=2800000&guid=ae5465568c0e1594a9a7133281d5598b&type=3#post_it_amarillo");
+    -unity-background-image-tint-color: rgb(255, 255, 255);
 }
 
 .postit-content {
@@ -84,16 +85,19 @@
 
 .user-label {
     font-size: 300%;
+    -unity-text-outline-width: 1px;
+    letter-spacing: -9px;
 }
 
 .text-label {
-    font-size: 210%;
+    font-size: 249%;
     white-space: normal;
 }
 
 .separator {
     height: 4px;
     background-color: rgb(0, 0, 0);
+    margin-right: 55%;
 }
 
 .empty-background {
@@ -800,4 +804,20 @@
 .menu-settings-button {
     width: 190px;
     background-image: url("project://database/Assets/_Project/2D/Boton%20de%20Ajustes.png?fileID=-1004990005&guid=f41126dd175a18b4d84dcc45e8fe4fdd&type=3#Boton de Ajustes_0");
+}
+
+.author-row {
+    flex-direction: row;
+    align-items: center;
+}
+
+.author-avatar {
+    flex-shrink: 0;
+    width: 96px;
+    height: 96px;
+    margin-right: 16px;
+}
+
+.author-row > .user-label {
+    flex-shrink: 1;
 }

@@ -23,6 +23,13 @@ public class UserProfileService : MonoBehaviour
     private readonly Dictionary<string, string> displayNames =
         new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 
+    // Dibujo de perfil (JSON) por correo, para mostrarlo junto al autor. Cadena vacia = sin dibujo.
+    private readonly Dictionary<string, string> avatarDrawings =
+        new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+
+    private readonly Dictionary<string, List<Action<string>>> pendingAvatars =
+        new Dictionary<string, List<Action<string>>>(StringComparer.OrdinalIgnoreCase);
+
     private readonly Dictionary<string, List<Action<string>>> pendingDisplayNames =
         new Dictionary<string, List<Action<string>>>(StringComparer.OrdinalIgnoreCase);
 
@@ -298,12 +305,69 @@ public class UserProfileService : MonoBehaviour
                 : FallbackName(email);
 
             displayNames[email] = name;
+            avatarDrawings[email] = profile?.drawingJson ?? string.Empty;
 
             List<Action<string>> callbacks = pendingDisplayNames[email];
             pendingDisplayNames.Remove(email);
 
             foreach (Action<string> callback in callbacks)
                 callback(name);
+        });
+    }
+
+    /// <summary>Devuelve el dibujo de perfil si ya esta en cache (cadena vacia = sin dibujo).</summary>
+    public bool TryGetAvatarDrawing(string email, out string drawingJson)
+    {
+        drawingJson = null;
+        return !string.IsNullOrWhiteSpace(email) && avatarDrawings.TryGetValue(email, out drawingJson);
+    }
+
+    /// <summary>
+    /// Entrega el JSON del dibujo de perfil del usuario con ese correo. Mismo esquema que
+    /// ResolveDisplayName: cache, y una sola consulta aunque muchos lo pidan a la vez.
+    /// </summary>
+    public void ResolveAvatarDrawing(string email, Action<string> onResolved)
+    {
+        if (onResolved == null) return;
+
+        if (string.IsNullOrWhiteSpace(email))
+        {
+            onResolved(string.Empty);
+            return;
+        }
+
+        if (avatarDrawings.TryGetValue(email, out string cached))
+        {
+            onResolved(cached);
+            return;
+        }
+
+        if (pendingAvatars.TryGetValue(email, out List<Action<string>> waiting))
+        {
+            waiting.Add(onResolved);
+            return;
+        }
+
+        pendingAvatars[email] = new List<Action<string>> { onResolved };
+
+        LoadProfileByEmail(email, profile =>
+        {
+            string json = profile?.drawingJson ?? string.Empty;
+
+            avatarDrawings[email] = json;
+
+            if (profile != null && !displayNames.ContainsKey(email))
+            {
+                displayNames[email] = !string.IsNullOrWhiteSpace(profile.nickname)
+                    ? profile.nickname.Trim()
+                    : FallbackName(email);
+            }
+
+            List<Action<string>> callbacks = pendingAvatars[email];
+            pendingAvatars.Remove(email);
+
+            foreach (Action<string> callback in callbacks)
+                callback(json);
         });
     }
 
@@ -433,7 +497,10 @@ public class UserProfileService : MonoBehaviour
             });
     }
 
-    /// <summary>Guarda nickname y pronombres del usuario autenticado.</summary>
+    /// <summary>
+    /// Guarda nickname y pronombres del usuario autenticado.
+    /// Un valor null significa "no cambiar ese campo": no se escribe en Firestore.
+    /// </summary>
     public void SaveProfile(
         Firebase.Auth.FirebaseUser user,
         string nickname,
@@ -458,10 +525,14 @@ public class UserProfileService : MonoBehaviour
         var fields = new Dictionary<string, object>
         {
             { "email", user.Email ?? string.Empty },
-            { "nickname", (nickname ?? string.Empty).Trim() },
-            { "pronouns", (pronouns ?? string.Empty).Trim() },
             { "updatedAt", FieldValue.ServerTimestamp }
         };
+
+        if (nickname != null)
+            fields["nickname"] = nickname.Trim();
+
+        if (pronouns != null)
+            fields["pronouns"] = pronouns.Trim();
 
         users.Document(user.UserId)
             .SetAsync(fields, SetOptions.MergeAll)
@@ -477,10 +548,10 @@ public class UserProfileService : MonoBehaviour
                         + task.Exception
                     );
                 }
-                else
+                else if (nickname != null)
                 {
                     // Los post-its nuevos ya muestran el nickname recien guardado.
-                    string trimmed = (nickname ?? string.Empty).Trim();
+                    string trimmed = nickname.Trim();
                     displayNames[user.Email ?? string.Empty] =
                         trimmed.Length > 0 ? trimmed : FallbackName(user.Email);
                 }
@@ -533,6 +604,9 @@ public class UserProfileService : MonoBehaviour
                         + task.Exception
                     );
                 }
+
+                if (success && !string.IsNullOrEmpty(user.Email))
+                    avatarDrawings[user.Email] = drawingJson ?? string.Empty;
 
                 onComplete?.Invoke(success);
             });

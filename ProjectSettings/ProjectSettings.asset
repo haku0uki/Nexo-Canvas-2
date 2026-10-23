@@ -13,17 +13,17 @@ PlayerSettings:
   useOnDemandResources: 0
   accelerometerFrequency: 60
   companyName: Imp Devs
-  productName: Nexo Canvas 2.0
+  productName: Nexo Canvas
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
-  m_SplashScreenBackgroundColor: {r: 0.13725491, g: 0.12156863, b: 0.1254902, a: 1}
+  m_SplashScreenBackgroundColor: {r: 0.21698111, g: 0.11974901, b: 0.20182629, a: 1}
   m_ShowUnitySplashScreen: 1
   m_ShowUnitySplashLogo: 0
-  m_SplashScreenOverlayOpacity: 1
-  m_SplashScreenAnimation: 1
+  m_SplashScreenOverlayOpacity: 0.882
+  m_SplashScreenAnimation: 2
   m_SplashScreenLogoStyle: 1
   m_SplashScreenDrawMode: 1
-  m_SplashScreenBackgroundAnimationZoom: 1
+  m_SplashScreenBackgroundAnimationZoom: 0
   m_SplashScreenLogoAnimationZoom: 1
   m_SplashScreenBackgroundLandscapeAspect: 1
   m_SplashScreenBackgroundPortraitAspect: 1
@@ -42,7 +42,7 @@ PlayerSettings:
   m_SplashScreenLogos:
   - logo: {fileID: 21300000, guid: 64f77579053481b4e9c623cc7f092dc6, type: 3}
     duration: 2
-  - logo: {fileID: 21300000, guid: 07f7f831484263b4bba50564e9d76d26, type: 3}
+  - logo: {fileID: -835408325, guid: 07f7f831484263b4bba50564e9d76d26, type: 3}
     duration: 2
   m_VirtualRealitySplashScreen: {fileID: 2800000, guid: ab46e4dde689d0242b06e197a795a711, type: 3}
   m_HolographicTrackingLossScreen: {fileID: 0}
@@ -820,9 +820,9 @@ PlayerSettings:
   ps4IncludedModules: []
   ps4attribVROutputEnabled: 0
   monoEnv: 
-  splashScreenBackgroundSourceLandscape: {fileID: 0}
+  splashScreenBackgroundSourceLandscape: {fileID: 21300000, guid: 974d1778c201b884ea9a35525b90d664, type: 3}
   splashScreenBackgroundSourcePortrait: {fileID: 0}
-  blurSplashScreenBackground: 1
+  blurSplashScreenBackground: 0
   spritePackerPolicy: 
   webGLMemorySize: 32
   webGLExceptionSupport: 1
@@ -853,6 +853,7 @@ PlayerSettings:
   webWasm2023: 0
   webEnableSubmoduleStrippingCompatibility: 0
   scriptingDefineSymbols:
+    Standalone: 
     iPhone: UNITY_XR_ARKIT_LOADER_ENABLED
   additionalCompilerArguments: {}
   platformArchitecture: {}

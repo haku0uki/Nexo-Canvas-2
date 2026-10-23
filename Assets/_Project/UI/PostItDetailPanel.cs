@@ -39,6 +39,8 @@ public class PostItDetailPanel : MonoBehaviour
     [SerializeField] private ButtonBridge authorProfileButton;
     [Tooltip("Name of the author Label inside each comment row (comment-entry.uxml). Tapping it opens that user's profile.")]
     [SerializeField] private string commentAuthorElementName = "username-label";
+    [Tooltip("Etiqueta del autor del post-it en este panel (para poner su dibujo de perfil al lado).")]
+    [SerializeField] private string authorLabelElementName = "username-label-postit";
 
     private VisualElement commentsContainer;
     private readonly Dictionary<string, CommentEntry> comments = new Dictionary<string, CommentEntry>();
@@ -91,7 +93,16 @@ public class PostItDetailPanel : MonoBehaviour
         currentPostItId = postIt.id;
         currentPostIt = postIt;
         bool isDrawingPanel = kind == DetailKind.Drawing;
-        if (authorLabel != null) ProfilePanelUtility.ShowAuthorName(postIt.authorId, authorLabel.SetText, () => currentPostIt == postIt);
+        if (authorLabel != null)
+        {
+            ProfilePanelUtility.ShowAuthorName(postIt.authorId, authorLabel.SetText, () => currentPostIt == postIt);
+
+            if (panel != null && panel.TryGetElement(authorLabelElementName, out Label authorElement))
+            {
+                ProfilePanelUtility.ShowAuthorAvatar(postIt.authorId, authorElement, isStillCurrent: () => currentPostIt == postIt);
+                ProfilePanelUtility.BindAuthorButton(panel.RootVisualElement, postIt.authorId, OpenProfileOf);
+            }
+        }
         if (contentLabel != null) contentLabel.SetText(isDrawingPanel ? string.Empty : postIt.contenido);
         ShowDrawing(isDrawingPanel ? postIt.contenido : null);
 
@@ -142,6 +153,7 @@ public class PostItDetailPanel : MonoBehaviour
         if (commentAuthor == null) return;
 
         ProfilePanelUtility.ShowAuthorName(authorEmail, name => commentAuthor.text = name, () => commentAuthor.panel != null);
+        ProfilePanelUtility.ShowAuthorAvatar(authorEmail, commentAuthor);
 
         if (profilePanel == null) return;
 

@@ -7,7 +7,7 @@
             <ui:VisualElement name="post-it-amarillo" picking-mode="Ignore" class="post-it-amarillo" style="background-image: url(&quot;project://database/Assets/_Project/2D/Panel%20de%20dibujo.png?fileID=2800000&amp;guid=c9b470fe72293cd478ba0ef219786f99&amp;type=3#Panel de dibujo&quot;);"/>
             <ui:VisualElement name="elements-container" class="postit-content">
                 <ui:Label text="Usuario" name="username-label-postit" class="user-label" style="-unity-font-definition: url(&quot;project://database/Assets/_Project/UI/Fonts/NexoCanvasFuente-Regular.otf?fileID=12800000&amp;guid=c8d3790eab9c74a488ca8941f9eab3d5&amp;type=3#NexoCanvasFuente-Regular&quot;); font-size: 118%; margin-top: 4%;"/>
-                <ui:VisualElement class="separator" style="width: 95%; height: 1%; top: 2%;"/>
+                <ui:VisualElement class="separator" style="width: 47%; height: 1%; top: 2%;"/>
                 <ui:VisualElement name="drawing-area" class="draw-entry-drawing-area" style="margin-bottom: 0%; top: 2%;"/>
             </ui:VisualElement>
         </ui:VisualElement>
