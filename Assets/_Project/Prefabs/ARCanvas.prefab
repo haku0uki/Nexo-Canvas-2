@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6731772083478555578}
   - component: {fileID: 5131534752832327772}
-  - component: {fileID: 1058301019283746501}
+  - component: {fileID: 5876270689111124457}
   m_Layer: 0
   m_Name: ARCanvas
   m_TagString: Untagged
@@ -47,7 +47,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ARCanvasController
   boardCanvas: {fileID: 9172438229383770118}
---- !u!114 &1058301019283746501
+--- !u!114 &5876270689111124457
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -56,10 +56,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 5780063104596774396}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4dea56a9eaadd1c439095de4f9a371cb, type: 3}
-  m_Name:
-  m_EditorClassIdentifier: Unity.XR.ARFoundation::UnityEngine.XR.ARFoundation.ARTrackedImage
-  m_DestroyOnRemoval: 1
+  m_Script: {fileID: 11500000, guid: e0cb9aa70a22847b5925ee5f067c10a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.XR.CoreUtils::Unity.XR.CoreUtils.XROrigin
+  m_Camera: {fileID: 0}
+  m_OriginBaseGameObject: {fileID: 5780063104596774396}
+  m_CameraFloorOffsetObject: {fileID: 0}
+  m_RequestedTrackingOriginMode: 0
+  m_CameraYOffset: 1.1176
 --- !u!1 &5912626958685606820
 GameObject:
   m_ObjectHideFlags: 0
