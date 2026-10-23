@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.XR.ARSubsystems;
@@ -10,6 +11,18 @@ public class ARCanvasController : MonoBehaviour
         Tracking,
         Limited,
         Lost,
+    }
+
+    // Estado del tablero para quien lo necesite (el HUD, por ejemplo) sin referencias de escena:
+    // este componente vive en un prefab que crea AR Foundation, que no puede apuntar a objetos de la escena.
+    public static event Action<BoardState> StateChanged;
+    public static BoardState LastState { get; private set; } = BoardState.None;
+
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    private static void ResetStatics()
+    {
+        StateChanged = null;
+        LastState = BoardState.None;
     }
 
     [Header("Referencias")]
@@ -81,6 +94,9 @@ public class ARCanvasController : MonoBehaviour
                 OnEnterLost();
                 break;
         }
+
+        LastState = newState;
+        StateChanged?.Invoke(newState);
     }
 
     private void OnEnterTracking()
