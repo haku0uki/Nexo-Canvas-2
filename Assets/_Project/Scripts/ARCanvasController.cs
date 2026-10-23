@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.XR.ARSubsystems;
@@ -10,6 +11,18 @@ public class ARCanvasController : MonoBehaviour
         Tracking,
         Limited,
         Lost,
+    }
+
+    // Estado del tablero para quien lo necesite (el HUD, por ejemplo) sin referencias de escena:
+    // este componente vive en un prefab que crea AR Foundation, que no puede apuntar a objetos de la escena.
+    public static event Action<BoardState> StateChanged;
+    public static BoardState LastState { get; private set; } = BoardState.None;
+
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    private static void ResetStatics()
+    {
+        StateChanged = null;
+        LastState = BoardState.None;
     }
 
     [Header("Referencias")]
@@ -31,6 +44,14 @@ public class ARCanvasController : MonoBehaviour
             if (trackedImage == null) return; // Not attached yet; retry next frame.
         }
 
+        // Con BoardWorldAnchor en la escena, el tablero queda fijo en el espacio y la imagen solo
+        // sirve para colocarlo y realinearlo; el estado lo decide el ancla.
+        if (BoardWorldAnchor.Instance != null)
+        {
+            BoardWorldAnchor.Instance.ReportImage(boardCanvas, transform, trackedImage.trackingState);
+            return;
+        }
+
         BoardState desiredState = EvaluateDesiredState();
 
         if (desiredState != currentState)
@@ -39,8 +60,18 @@ public class ARCanvasController : MonoBehaviour
         }
     }
 
+    // Llamado por BoardWorldAnchor cuando el estado del tablero cambia.
+    public static void PublishState(BoardState newState)
+    {
+        LastState = newState;
+        StateChanged?.Invoke(newState);
+    }
+
     private void OnDisable()
     {
+        // Con el tablero anclado al espacio, perder o destruir la imagen no lo oculta.
+        if (BoardWorldAnchor.Instance != null) return;
+
         TransitionTo(BoardState.Lost);
     }
 
@@ -81,6 +112,8 @@ public class ARCanvasController : MonoBehaviour
                 OnEnterLost();
                 break;
         }
+
+        PublishState(newState);
     }
 
     private void OnEnterTracking()
@@ -119,8 +152,8 @@ public class ARCanvasController : MonoBehaviour
         }
     }
 
-    public BoardState GetCurrentState() => currentState;
+    public BoardState GetCurrentState() => BoardWorldAnchor.Instance != null ? LastState : currentState;
 
     public bool IsBoardVisible()
-        => currentState == BoardState.Tracking || currentState == BoardState.Limited;
+        => GetCurrentState() == BoardState.Tracking || GetCurrentState() == BoardState.Limited;
 }

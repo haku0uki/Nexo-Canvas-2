@@ -7,6 +7,8 @@ public class TextCanvasEntry : BaseCanvasEntry
     [SerializeField] private UIDocumentPanel panel;
     [SerializeField] private LabelTextBridge usernameLabel;
     [SerializeField] private LabelTextBridge contentLabel;
+    [Tooltip("Nombre de la etiqueta del autor, para poner el dibujo de perfil a su lado.")]
+    [SerializeField] private string authorLabelName = "username-label-postit";
 
     private VisualElement clickRoot;
     private bool pendingPresentation;
@@ -31,7 +33,12 @@ public class TextCanvasEntry : BaseCanvasEntry
         if (usernameLabel != null && !usernameLabel.IsBound) return;
         if (contentLabel != null && !contentLabel.IsBound) return;
 
-        if (usernameLabel != null) ProfilePanelUtility.ShowAuthorName(Data.authorId, usernameLabel.SetText);
+        if (usernameLabel != null)
+        {
+            ProfilePanelUtility.ShowAuthorName(Data.authorId, usernameLabel.SetText);
+            ProfilePanelUtility.ShowAuthorAvatar(Data.authorId, root.Q<Label>(authorLabelName));
+            ProfilePanelUtility.BindAuthorButton(root, Data.authorId, ProfilePanelUtility.OpenProfileFromBoard);
+        }
         if (contentLabel != null) contentLabel.SetText(Data.contenido);
         panel.Show();
 

@@ -12,6 +12,8 @@ public class DrawingCanvasEntry : BaseCanvasEntry
     [SerializeField] private UIDocumentPanel panel;
     [Tooltip("Etiqueta del autor (username-label-postit). Si queda vac�a se usa el primer LabelTextBridge del prefab.")]
     [SerializeField] private LabelTextBridge usernameLabel;
+    [Tooltip("Nombre de la etiqueta del autor, para poner el dibujo de perfil a su lado.")]
+    [SerializeField] private string authorLabelName = "username-label-postit";
     [Tooltip("Opcional. Si se asigna, se vac�a: el JSON del dibujo no debe verse como texto.")]
     [SerializeField] private LabelTextBridge contentLabel;
 
@@ -95,7 +97,11 @@ public class DrawingCanvasEntry : BaseCanvasEntry
             return;
 
         if (usernameLabel != null)
+        {
             ProfilePanelUtility.ShowAuthorName(Data.authorId, usernameLabel.SetText);
+            ProfilePanelUtility.ShowAuthorAvatar(Data.authorId, root.Q<Label>(authorLabelName));
+            ProfilePanelUtility.BindAuthorButton(root, Data.authorId, ProfilePanelUtility.OpenProfileFromBoard);
+        }
 
         if (contentLabel != null)
             contentLabel.SetText(string.Empty);

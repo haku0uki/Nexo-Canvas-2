@@ -174,7 +174,6 @@ GameObject:
   - component: {fileID: 913721836}
   - component: {fileID: 913721835}
   - component: {fileID: 913721837}
-  - component: {fileID: 913721838}
   m_Layer: 0
   m_Name: AuthManager
   m_TagString: Untagged
@@ -222,18 +221,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f0362f63d4350b4ea1645d5cca632c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UserProfileService
---- !u!114 &913721838
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 913721834}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3e6035c752ac0484184cef012175f121, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::AndroidImmersiveMode
 --- !u!1 &1124287048
 GameObject:
   m_ObjectHideFlags: 0
@@ -417,7 +404,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 22400762, guid: 67117722a812a2e46ab8cb8eafbf5f5e, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.000030517578
+      value: -0.00020980835
       objectReference: {fileID: 0}
     - target: {fileID: 22426080, guid: 67117722a812a2e46ab8cb8eafbf5f5e, type: 3}
       propertyPath: m_AnchorMax.x
@@ -2335,12 +2322,12 @@ MonoBehaviour:
       - m_Target: {fileID: 9000000000000000029}
         m_TargetAssemblyTypeName: DrawTest, Assembly-CSharp
         m_MethodName: SetBrushWidth
-        m_Mode: 4
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
-          m_FloatArgument: 0.5
+          m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
@@ -2555,12 +2542,12 @@ MonoBehaviour:
       - m_Target: {fileID: 9000000000000000029}
         m_TargetAssemblyTypeName: DrawTest, Assembly-CSharp
         m_MethodName: SetEraserRadius
-        m_Mode: 4
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
-          m_FloatArgument: 0.5
+          m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
