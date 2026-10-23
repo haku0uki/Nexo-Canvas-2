@@ -3,9 +3,13 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using SheepyCreations.UIControl.Runtime;
 
+// Real "add a post-it" flow:
+//   Idle -> SelectingPosition (tap the board) -> Writing (type text)  -> publish   [text]
+//   Idle -> SelectingPosition (tap the board) -> Drawing (draw panel) -> publish   [drawing]
+// Do NOT run this at the same time as PostItPlacementTester; see that file's header.
 public class PostItCreationFlow : MonoBehaviour
 {
-    private enum FlowState { Idle, SelectingType, SelectingPosition, Writing, Drawing }
+    private enum FlowState { Idle, SelectingPosition, Writing, Drawing }
 
     private enum PostItKind { Text, Drawing }
 
@@ -20,12 +24,8 @@ public class PostItCreationFlow : MonoBehaviour
     [Header("HUD -- shown only while the board is tracked and nothing else is in progress")]
     [SerializeField] private UIDocumentPanel hudPanel;
     [SerializeField] private HUD hud;
-    [Tooltip("ButtonBridge on the type selection panel targeting the 'dibuja' element.")]
+    [Tooltip("ButtonBridge on the HUD panel targeting the 'add-drawing-button' element of the HUD UXML.")]
     [SerializeField] private ButtonBridge addDrawingButton;
-    [Tooltip("Panel shown after pressing Add on the HUD.")]
-    [SerializeField] private UIDocumentPanel typeSelectionPanel;
-    [Tooltip("ButtonBridge on the type selection panel targeting the 'escribe' element.")]
-    [SerializeField] private ButtonBridge addTextButton;
 
     [Header("Composer -- shown while writing the post-it text")]
     [SerializeField] private UIDocumentPanel composerPanel;
@@ -40,9 +40,9 @@ public class PostItCreationFlow : MonoBehaviour
     [Tooltip("Publishes the drawing itself; this flow only gives it the board position and listens for Published / Cancelled.")]
     [SerializeField] private DrawEntry drawEntry;
 
-    [Header("Detail panels")]
-    [Tooltip("The text and the drawing detail panels. All of them are blocked from opening during the whole flow, so tapping an existing post-it while placing a new one doesn't open its detail.")]
-    [SerializeField] private PostItDetailPanel[] detailPanels;
+    [Header("Detail panel")]
+    [Tooltip("Blocked from opening during the whole flow, so tapping an existing post-it while placing a new one doesn't open its detail.")]
+    [SerializeField] private PostItDetailPanel detailPanel;
 
     [Header("Behaviour")]
     [SerializeField] private float surfaceOffset = 0.01f;
@@ -51,8 +51,6 @@ public class PostItCreationFlow : MonoBehaviour
     private FlowState state = FlowState.Idle;
     private PostItKind pendingKind = PostItKind.Text;
     private Vector3 selectedLocalPoint;
-    private Vector2Int selectedCell;
-    private bool isPublishing;
     private bool hudCurrentlyShown;
 
     private void Awake()
@@ -62,9 +60,7 @@ public class PostItCreationFlow : MonoBehaviour
 
     private void OnEnable()
     {
-        if (hud != null) hud.AddPostItRequested += ShowTypeSelection;
-        if (hud != null) hud.PanelShown += ResetWhenHudIsShown;
-        if (addTextButton != null) addTextButton.Clicked += BeginTextPlacement;
+        if (hud != null) hud.AddPostItRequested += BeginTextPlacement;
         if (addDrawingButton != null) addDrawingButton.Clicked += BeginDrawingPlacement;
         if (confirmButton != null) confirmButton.Clicked += ConfirmPlacement;
         if (cancelButton != null) cancelButton.Clicked += CancelPlacement;
@@ -73,15 +69,12 @@ public class PostItCreationFlow : MonoBehaviour
         {
             drawEntry.onPublished.AddListener(OnDrawingFinished);
             drawEntry.onCancelled.AddListener(OnDrawingFinished);
-            drawEntry.onCellOccupied.AddListener(OnDrawingCellOccupied);
         }
     }
 
     private void OnDisable()
     {
-        if (hud != null) hud.AddPostItRequested -= ShowTypeSelection;
-        if (hud != null) hud.PanelShown -= ResetWhenHudIsShown;
-        if (addTextButton != null) addTextButton.Clicked -= BeginTextPlacement;
+        if (hud != null) hud.AddPostItRequested -= BeginTextPlacement;
         if (addDrawingButton != null) addDrawingButton.Clicked -= BeginDrawingPlacement;
         if (confirmButton != null) confirmButton.Clicked -= ConfirmPlacement;
         if (cancelButton != null) cancelButton.Clicked -= CancelPlacement;
@@ -90,7 +83,6 @@ public class PostItCreationFlow : MonoBehaviour
         {
             drawEntry.onPublished.RemoveListener(OnDrawingFinished);
             drawEntry.onCancelled.RemoveListener(OnDrawingFinished);
-            drawEntry.onCellOccupied.RemoveListener(OnDrawingCellOccupied);
         }
 
         SetDetailPanelBlocked(false); // Never leave the detail panel blocked if this component is disabled mid-flow.
@@ -111,42 +103,29 @@ public class PostItCreationFlow : MonoBehaviour
         }
     }
 
+    // The HUD is shown once the board has been detected (even if it is now hidden because tracking was
+    // lost, so the HUD can show its notice) and nothing else is in progress.
     private void UpdateHudVisibility()
     {
         if (hudPanel == null || !hudPanel.IsInitialized) return;
 
-        bool shouldShow = boardCanvas != null && boardCanvas.gameObject.activeInHierarchy && state == FlowState.Idle;
+        bool shouldShow = boardCanvas != null && state == FlowState.Idle;
         if (shouldShow == hudCurrentlyShown) return;
 
         hudCurrentlyShown = shouldShow;
         if (shouldShow) ShowFlowPanel(hudPanel); else HideFlowPanel(hudPanel);
     }
 
-    private void ShowTypeSelection()
-    {
-        if (state != FlowState.Idle || boardCanvas == null || typeSelectionPanel == null) return;
-
-        state = FlowState.SelectingType;
-        ShowFlowPanel(typeSelectionPanel);
-    }
-
-    private void ResetWhenHudIsShown()
-    {
-        if (state == FlowState.Idle) return;
-
-        ReturnToIdle();
-    }
-
+    // Both HUD buttons start the same placement step; only what happens after the tap differs.
     private void BeginTextPlacement() => BeginPlacement(PostItKind.Text);
 
     private void BeginDrawingPlacement() => BeginPlacement(PostItKind.Drawing);
 
     private void BeginPlacement(PostItKind kind)
     {
-        if (state != FlowState.SelectingType || boardCanvas == null) return;
+        if (state != FlowState.Idle || boardCanvas == null) return;
         pendingKind = kind;
         state = FlowState.SelectingPosition;
-        HideFlowPanel(typeSelectionPanel);
         SetDetailPanelBlocked(true);
         if (placementPreview != null) placementPreview.gameObject.SetActive(true);
     }
@@ -156,19 +135,11 @@ public class PostItCreationFlow : MonoBehaviour
         if (!PointerInput.TryGetPointerDown(out Vector2 screenPosition)) return;
         if (IsPointerOverUI(screenPosition)) return; // A tap on UI controls must never count as a board tap.
         if (!BoardRaycaster.TryGetLocalPoint(boardCanvas, arCamera, screenPosition, surfaceOffset, out Vector3 localPoint)) return;
-        if (!boardCanvas.TryGetCell(localPoint, out Vector2Int cell)) return; // Ignore taps outside the paper; keep selecting.
+        if (!boardCanvas.IsInsideBoard(localPoint)) return; // Ignore taps outside the paper; keep selecting.
 
-        if (boardCanvas.IsCellOccupied(cell))
-        {
-            Debug.Log($"PostItCreationFlow: la celda {cell} ya está ocupada.");
-            return; // Keep selecting; add visual feedback here if desired.
-        }
-
-        selectedCell = cell;
-        selectedLocalPoint = boardCanvas.CellToLocalPoint(cell, surfaceOffset); // Cell center, not the raw tap.
-
+        selectedLocalPoint = localPoint;
         if (placementPreview != null)
-            placementPreview.position = boardCanvas.transform.TransformPoint(selectedLocalPoint);
+            placementPreview.position = boardCanvas.transform.TransformPoint(localPoint);
 
         if (pendingKind == PostItKind.Drawing) BeginDrawing(); else BeginWriting();
     }
@@ -195,77 +166,43 @@ public class PostItCreationFlow : MonoBehaviour
         }
 
         state = FlowState.Drawing;
-        // DrawEntry publishes the post-it at this board position, in this cell.
-        drawEntry.Configure(selectedLocalPoint, boardCanvas.GetCellId(selectedCell));
+        drawEntry.Configure(selectedLocalPoint); // DrawEntry publishes the post-it at this board position.
         ShowFlowPanel(drawPanel);
     }
 
+    // DrawEntry already published (or cancelled) by itself; the flow only has to close the panel.
     private void OnDrawingFinished()
     {
         if (state != FlowState.Drawing) return;
         ReturnToIdle();
     }
 
-    // Another user took the cell while this one was drawing. The drawing is kept
-    // (DrawEntry does not clear it), so the user only has to pick another cell.
-    private void OnDrawingCellOccupied()
-    {
-        if (state != FlowState.Drawing) return;
-
-        HideFlowPanel(drawPanel);
-        state = FlowState.SelectingPosition;
-    }
-
     private void ConfirmPlacement()
     {
-        if (isPublishing) return; // Ignore double taps while the transaction is in flight.
-
         string texto = textInput != null ? textInput.value?.Trim() : null;
         if (string.IsNullOrEmpty(texto)) return; // Nothing to publish; stay in Writing.
 
-        // Quick local check: someone else may have taken the cell while this user was writing.
-        if (boardCanvas.IsCellOccupied(selectedCell))
-        {
-            BackToPositionSelection();
-            return;
-        }
-
-        string autorId = AuthManager.Instance.CurrentUser != null
+        // Solo se publica con una sesion iniciada (AuthManager puede no existir si la escena se abrio sin login).
+        string autorId = AuthManager.Instance != null && AuthManager.Instance.CurrentUser != null
             ? AuthManager.Instance.CurrentUser.Email
-            : "anonimo";
+            : null;
 
-        isPublishing = true;
-        bool sent = FirestoreService.Instance.PublicarPostIt(
-            autorId, "texto", texto, selectedLocalPoint,
-            boardCanvas.GetCellId(selectedCell), OnPublishResult);
-
-        if (!sent) isPublishing = false; // Firestore not ready; stay in Writing without losing the text.
-    }
-
-    private void OnPublishResult(ResultadoPublicacion resultado)
-    {
-        isPublishing = false;
-        if (state != FlowState.Writing) return; // The user cancelled in the meantime.
-
-        switch (resultado)
+        if (string.IsNullOrEmpty(autorId))
         {
-            case ResultadoPublicacion.Ok:
-                ReturnToIdle();
-                break;
-
-            case ResultadoPublicacion.CeldaOcupada:
-                BackToPositionSelection(); // Another user won the cell: pick a different one.
-                break;
-
-            case ResultadoPublicacion.Error:
-                break; // Stay in Writing so the user can retry without losing the text.
+            Debug.LogWarning("PostItCreationFlow: hay que iniciar sesion para publicar. El texto se conserva.");
+            return; // Stay in Writing so the typed text isn't lost.
         }
-    }
 
-    private void BackToPositionSelection()
-    {
-        HideFlowPanel(composerPanel);
-        state = FlowState.SelectingPosition;
+        if (FirestoreService.Instance == null)
+        {
+            Debug.LogError("PostItCreationFlow: no hay FirestoreService en la escena; el post-it no se publico.");
+            return; // Stay in Writing so the typed text isn't lost.
+        }
+
+        if (!FirestoreService.Instance.PublicarPostIt(autorId, "texto", texto, selectedLocalPoint))
+            return; // Firestore aun no esta listo (ya se registro un warning); se conserva el texto.
+
+        ReturnToIdle();
     }
 
     private void CancelPlacement()
@@ -276,23 +213,16 @@ public class PostItCreationFlow : MonoBehaviour
     private void ReturnToIdle()
     {
         state = FlowState.Idle;
-        isPublishing = false;
         SetDetailPanelBlocked(false);
         if (placementPreview != null) placementPreview.gameObject.SetActive(false);
-        HideFlowPanel(composerPanel);
+        HideFlowPanel(composerPanel); // The HUD comes back on its own via UpdateHudVisibility.
         HideFlowPanel(drawPanel);
-        HideFlowPanel(typeSelectionPanel);
         hudPanel.ShowIsolatedViaController();
     }
 
     private void SetDetailPanelBlocked(bool blocked)
     {
-        if (detailPanels == null) return;
-
-        foreach (PostItDetailPanel detailPanel in detailPanels)
-        {
-            if (detailPanel != null) detailPanel.IsOpeningBlocked = blocked;
-        }
+        if (detailPanel != null) detailPanel.IsOpeningBlocked = blocked;
     }
 
     private void ResolveTextInput()
@@ -301,6 +231,8 @@ public class PostItCreationFlow : MonoBehaviour
         composerPanel.TryGetElement(textInputName, out textInput);
     }
 
+    // Route visibility through the owner so controller rules and events stay consistent.
+    // Standalone panels still work without an extra Inspector reference.
     private static void ShowFlowPanel(UIPanel panel, Action onComplete = null)
     {
         if (panel == null) return;
@@ -324,7 +256,6 @@ public class PostItCreationFlow : MonoBehaviour
     private bool IsPointerOverUI(Vector2 screenPosition)
     {
         return PanelContainsPoint(hudPanel, screenPosition)
-            || PanelContainsPoint(typeSelectionPanel, screenPosition)
             || PanelContainsPoint(composerPanel, screenPosition)
             || PanelContainsPoint(drawPanel, screenPosition);
     }
@@ -336,10 +267,13 @@ public class PostItCreationFlow : MonoBehaviour
         VisualElement root = uiPanel.RootVisualElement;
         if (root.panel == null || root.resolvedStyle.display == DisplayStyle.None) return false;
 
+        // PointerInput uses bottom-left screen coordinates; UI Toolkit uses top-left.
         Vector2 uiScreenPosition = new Vector2(screenPosition.x, Screen.height - screenPosition.y);
         Vector2 panelPosition = RuntimePanelUtils.ScreenToPanel(root.panel, uiScreenPosition);
         VisualElement picked = root.panel.Pick(panelPosition);
 
+        // Documents can share a panel, and a visible UIDocumentPanel root can pick the whole screen,
+        // so only actual controls block placement; empty areas must let the tap reach the AR board.
         if (picked == null || (picked != root && !root.Contains(picked))) return false;
 
         for (VisualElement element = picked; element != null; element = element.parent)

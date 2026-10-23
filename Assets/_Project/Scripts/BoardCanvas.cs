@@ -32,6 +32,14 @@ public class BoardCanvas : MonoBehaviour
     {
         if (activeInstance != null && activeInstance != this)
         {
+            // Con el tablero anclado al espacio, la nueva imagen detectada conserva su
+            // ARCanvasController (sigue sirviendo para realinear); solo sobra este tablero duplicado.
+            if (BoardWorldAnchor.Instance != null)
+            {
+                Destroy(gameObject);
+                return;
+            }
+
             Debug.LogWarning(
                 "[BoardCanvas] Se elimino una segunda instancia creada por AR Foundation: " +
                 GetInstanceID());

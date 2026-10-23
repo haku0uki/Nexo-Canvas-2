@@ -54,11 +54,12 @@ public class HUD : PanelBehaviour
         ARCanvasController.StateChanged -= OnBoardStateChanged;
     }
 
-    // Solo Tracking muestra el boton de anadir; solo Lost muestra el aviso.
+    // Solo Tracking muestra el boton de anadir; Limited y Lost muestran el aviso.
     private void OnBoardStateChanged(ARCanvasController.BoardState state)
     {
         SetBoardState(state == ARCanvasController.BoardState.Tracking,
-                      state == ARCanvasController.BoardState.Lost);
+                      state == ARCanvasController.BoardState.Limited
+                      || state == ARCanvasController.BoardState.Lost);
     }
 
     private void Update()
@@ -76,7 +77,7 @@ public class HUD : PanelBehaviour
 
     /// <summary>
     /// Llamado cuando cambia el estado del tablero. isTracking = en seguimiento (muestra el boton
-    /// de anadir); isLost = perdido (muestra el aviso). Cualquier otro estado oculta ambos.
+    /// de anadir); isLost = perdido o limitado (muestra el aviso). Cualquier otro estado oculta ambos.
     /// </summary>
     public void SetBoardState(bool tracking, bool lost)
     {
