@@ -367,7 +367,6 @@ MonoBehaviour:
   profilePanel: {fileID: 5670623207503721705}
   authorProfileButton: {fileID: 99561445}
   commentAuthorElementName: username-label
-  authorLabelElementName: username-label-postit
 --- !u!114 &99561442
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1261,8 +1260,6 @@ GameObject:
   - component: {fileID: 1321535695}
   - component: {fileID: 1321535699}
   - component: {fileID: 1321535698}
-  - component: {fileID: 1321535701}
-  - component: {fileID: 1321535700}
   m_Layer: 0
   m_Name: Text Entry Composer
   m_TagString: Untagged
@@ -1402,43 +1399,6 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &1321535700
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1321535694}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 111e034da0efe6f4f8247690407bf89d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.LabelTextBridge
-  overrideInteractable: 0
-  initialInteractable: 1
-  overrideDisplayed: 0
-  initialDisplayed: 1
-  overrideTooltip: 0
-  initialTooltip: 
-  targetElementName: username-label-postit
-  overrideInitialValue: 0
-  initialValue: 
---- !u!114 &1321535701
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1321535694}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b9246a91a2b7db541a8737f03a405a89, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ComposerAuthorLabel
-  panel: {fileID: 1321535695}
-  authorLabel: {fileID: 1321535700}
-  prefix: 
-  signedOutText: "Sin sesi\xF3n"
 --- !u!1 &1446477258
 GameObject:
   m_ObjectHideFlags: 0
@@ -1664,7 +1624,6 @@ MonoBehaviour:
   profilePanel: {fileID: 5670623207503721705}
   authorProfileButton: {fileID: 1470295776}
   commentAuthorElementName: username-label
-  authorLabelElementName: username-label-postit
 --- !u!114 &1470295772
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3542,8 +3501,6 @@ GameObject:
   - component: {fileID: 8898863072583803483}
   - component: {fileID: 2834607058133500037}
   - component: {fileID: 4232400031070889337}
-  - component: {fileID: 8898863072583803485}
-  - component: {fileID: 8898863072583803484}
   m_Layer: 0
   m_Name: Draw Entry Composer
   m_TagString: Untagged
@@ -4140,43 +4097,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &8898863072583803484
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5121983183659419996}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 111e034da0efe6f4f8247690407bf89d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.LabelTextBridge
-  overrideInteractable: 0
-  initialInteractable: 1
-  overrideDisplayed: 0
-  initialDisplayed: 1
-  overrideTooltip: 0
-  initialTooltip: 
-  targetElementName: username-label-postit
-  overrideInitialValue: 0
-  initialValue: 
---- !u!114 &8898863072583803485
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5121983183659419996}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b9246a91a2b7db541a8737f03a405a89, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ComposerAuthorLabel
-  panel: {fileID: 6762839260709930455}
-  authorLabel: {fileID: 8898863072583803484}
-  prefix: 
-  signedOutText: "Sin ses\xF3n"
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
