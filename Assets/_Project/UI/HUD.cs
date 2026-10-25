@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using SheepyCreations.UIControl.Runtime;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -16,6 +16,11 @@ public class HUD : PanelBehaviour
     [SerializeField] private string addPostItElementName = "add-postit-button";
     [Tooltip("Contenedor del aviso de tablero perdido (imagen translucida + texto).")]
     [SerializeField] private string lostOverlayName = "lost-overlay";
+    [Header("Espectador")]
+    [Tooltip("Nombre del bot�n de ver perfil en el UXML del HUD.")]
+    [SerializeField] private string profileButtonName = "profile-button";
+
+    private VisualElement profileButtonElement;
 
     public event Action AddPostItRequested;
     public event Action PanelShown;
@@ -27,7 +32,8 @@ public class HUD : PanelBehaviour
     // Estado pedido por ARCanvasController. Se guarda hasta que el UXML esta listo y se
     // vuelve a aplicar cada vez que el panel se muestra (el arbol puede reconstruirse).
     private bool isTracking;
-    private bool isLost;
+    // Antes del primer escaneo (estado None) el aviso ya debe verse: arranca visible.
+    private bool isLost = true;
     private bool stateDirty = true;
 
     private UIDocumentPanel Doc
@@ -44,7 +50,7 @@ public class HUD : PanelBehaviour
         if (addPostItButton != null) addPostItButton.Clicked += RaiseAddPostItRequested;
 
         ARCanvasController.StateChanged += OnBoardStateChanged;
-        OnBoardStateChanged(ARCanvasController.LastState); // Estado actual si el tablero ya se detecto.
+        OnBoardStateChanged(CurrentBoardState()); // Estado actual (None si todavia no se escanea el tablero).
         stateDirty = true;
     }
 
@@ -54,12 +60,22 @@ public class HUD : PanelBehaviour
         ARCanvasController.StateChanged -= OnBoardStateChanged;
     }
 
-    // Solo Tracking muestra el boton de anadir; Limited y Lost muestran el aviso.
+    // Tracking: tablero fijo y en seguimiento -> boton de anadir visible (si hay sesion) y aviso oculto.
+    // None (aun no se escanea), Limited y Lost -> aviso visible y boton de anadir oculto.
     private void OnBoardStateChanged(ARCanvasController.BoardState state)
     {
-        SetBoardState(state == ARCanvasController.BoardState.Tracking,
-                      state == ARCanvasController.BoardState.Limited
-                      || state == ARCanvasController.BoardState.Lost);
+        bool tracking = state == ARCanvasController.BoardState.Tracking;
+        SetBoardState(tracking, !tracking);
+    }
+
+    // LastState es estatico y sobrevive a la recarga de la escena: si en esta escena el tablero aun
+    // no se coloco, el estado real es None aunque LastState conserve el de la sesion anterior.
+    private static ARCanvasController.BoardState CurrentBoardState()
+    {
+        if (BoardWorldAnchor.Instance != null && !BoardWorldAnchor.Instance.IsPlaced)
+            return ARCanvasController.BoardState.None;
+
+        return ARCanvasController.LastState;
     }
 
     private void Update()
@@ -77,7 +93,7 @@ public class HUD : PanelBehaviour
 
     /// <summary>
     /// Llamado cuando cambia el estado del tablero. isTracking = en seguimiento (muestra el boton
-    /// de anadir); isLost = perdido o limitado (muestra el aviso). Cualquier otro estado oculta ambos.
+    /// de anadir); isLost = muestra el aviso de escanear/recuperar el tablero (None, Limited o Lost).
     /// </summary>
     public void SetBoardState(bool tracking, bool lost)
     {
@@ -94,16 +110,30 @@ public class HUD : PanelBehaviour
         UIDocumentPanel doc = Doc;
         if (!ProfilePanelUtility.IsPanelReady(doc)) return;
 
-        // Se vuelve a resolver si el arbol cambio (el elemento viejo ya no esta en el panel).
+        // Resolver referencias del UXML si cambiaron
         if (addPostItElement == null || addPostItElement.panel == null)
             doc.TryGetElement(addPostItElementName, out addPostItElement);
 
         if (lostOverlay == null || lostOverlay.panel == null)
             doc.TryGetElement(lostOverlayName, out lostOverlay);
 
-        // display:none (no solo invisible) para que el boton oculto tampoco reciba toques.
+        if (profileButtonElement == null || profileButtonElement.panel == null)
+            doc.TryGetElement(profileButtonName, out profileButtonElement);
+
+        // DETERMINAR SI ES ESPECTADOR (No tiene sesi�n verificada)
+        bool esEspectador = AuthManager.Instance == null || !AuthManager.Instance.HasAuthenticatedUser;
+
+        // El bot�n de a�adir solo se muestra si el tablero est� en Tracking Y el usuario NO es espectador
         if (addPostItElement != null)
-            addPostItElement.style.display = isTracking ? DisplayStyle.Flex : DisplayStyle.None;
+        {
+            addPostItElement.style.display = (isTracking && !esEspectador) ? DisplayStyle.Flex : DisplayStyle.None;
+        }
+
+        // El bot�n de ver perfil se oculta por completo si es espectador
+        if (profileButtonElement != null)
+        {
+            profileButtonElement.style.display = esEspectador ? DisplayStyle.None : DisplayStyle.Flex;
+        }
 
         if (lostOverlay != null)
             lostOverlay.style.display = isLost ? DisplayStyle.Flex : DisplayStyle.None;
@@ -111,8 +141,17 @@ public class HUD : PanelBehaviour
         stateDirty = false;
     }
 
+
     private void RaiseAddPostItRequested()
     {
+        // Escudo de seguridad: si es espectador, no disparar el flujo de creaci�n
+        if (AuthManager.Instance == null || !AuthManager.Instance.HasAuthenticatedUser)
+        {
+            Debug.LogWarning("[HUD] Intento de publicaci�n bloqueado para un usuario Espectador.");
+            return;
+        }
+
         AddPostItRequested?.Invoke();
     }
+
 }

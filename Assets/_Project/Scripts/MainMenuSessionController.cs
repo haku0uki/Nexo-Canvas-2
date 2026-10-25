@@ -8,6 +8,10 @@ public class MainMenuSessionController : MonoBehaviour
     [SerializeField] private string registerButtonName = "RegisterButton";
     [SerializeField] private string logoffButtonName = "LogoffButton";
     [SerializeField] private string userButtonName = "UserButton";
+    [SerializeField] private string spectateButtonName = "SpectateButton";
+
+
+
 
     private UIDocument document;
     private Button enterButton;
@@ -15,6 +19,8 @@ public class MainMenuSessionController : MonoBehaviour
     private Button registerButton;
     private Button logoffButton;
     private Button userButton;
+    private Button spectateButton;
+
 
     private void Awake()
     {
@@ -43,6 +49,13 @@ public class MainMenuSessionController : MonoBehaviour
             return;
         }
 
+        spectateButton = document.rootVisualElement.Q<Button>(spectateButtonName);
+        if (spectateButton == null)
+        {
+            Debug.LogError("MainMenuSessionController: no existe el boton '" + spectateButtonName + "'.");
+            return;
+        }
+
         loginButton = document.rootVisualElement.Q<Button>(loginButtonName);
         registerButton = document.rootVisualElement.Q<Button>(registerButtonName);
         logoffButton = document.rootVisualElement.Q<Button>(logoffButtonName);
@@ -55,6 +68,7 @@ public class MainMenuSessionController : MonoBehaviour
 
         enterButton.clicked += EnterWithCurrentSession;
         logoffButton.clicked += SignOut;
+            spectateButton.clicked += EnterAsSpectator;
         auth.OnFirebaseInitialized += RefreshButton;
         auth.OnUserLoggedIn += HandleUserLoggedIn;
         auth.OnUserLoggedOut += HandleUserLoggedOut;
@@ -93,6 +107,12 @@ public class MainMenuSessionController : MonoBehaviour
         AuthManager.Instance?.EntrarConSesionActual();
     }
 
+    private void EnterAsSpectator()
+    {
+        AuthManager.Instance?.EntrarComoEspectador();
+    }
+
+
     private void SignOut()
     {
         AuthManager.Instance?.SignOut();
@@ -104,6 +124,10 @@ public class MainMenuSessionController : MonoBehaviour
             enterButton.clicked -= EnterWithCurrentSession;
         if (logoffButton != null)
             logoffButton.clicked -= SignOut;
+        if (spectateButton != null)
+        {
+            spectateButton.clicked -= EnterAsSpectator;
+        }
 
         AuthManager auth = AuthManager.Instance;
         if (auth == null) return;
