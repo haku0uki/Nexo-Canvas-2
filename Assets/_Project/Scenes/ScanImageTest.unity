@@ -540,13 +540,17 @@ MonoBehaviour:
   hudPanel: {fileID: 2141101810}
   hud: {fileID: 2141101812}
   addDrawingButton: {fileID: 1294188442}
+  typeSelectionPanel: {fileID: 1294188440}
+  addTextButton: {fileID: 1294188443}
   composerPanel: {fileID: 1321535695}
   textInputName: postit-text-input
   confirmButton: {fileID: 1321535699}
   cancelButton: {fileID: 1321535698}
   drawPanel: {fileID: 6762839260709930455}
   drawEntry: {fileID: 5825295194778675268}
-  detailPanel: {fileID: 0}
+  detailPanels:
+  - {fileID: 99561441}
+  - {fileID: 1470295771}
   surfaceOffset: 0.01
 --- !u!1 &1294188438
 GameObject:
@@ -4006,7 +4010,7 @@ MonoBehaviour:
   initialDisplayed: 1
   overrideTooltip: 0
   initialTooltip: 
-  targetElementName: clean-canvas-button
+  targetElementName: clear-drawing-button
   onClick:
     m_PersistentCalls:
       m_Calls:
