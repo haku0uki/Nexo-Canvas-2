@@ -1991,6 +1991,7 @@ MonoBehaviour:
   addPostItButton: {fileID: 2141101811}
   addPostItElementName: add-postit-button
   lostOverlayName: lost-overlay
+  profileButtonName: profile-button
 --- !u!114 &2141101813
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3321,6 +3322,7 @@ GameObject:
   - component: {fileID: 7051465597107005417}
   - component: {fileID: 5062731474939298883}
   - component: {fileID: 104257076836965114}
+  - component: {fileID: 7933630875573537861}
   m_Layer: 0
   m_Name: UserProfileDrawing
   m_TagString: Untagged
@@ -3977,6 +3979,40 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: SheepyCreations.UIControl.Runtime.UIDocumentPanel,
           SheepyCreations.UIControl.Runtime
         m_MethodName: Hide
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &7933630875573537861
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5061550844691738970}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c21dfdd449275ba4fb48dcd83efe6cac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.ButtonBridge
+  overrideInteractable: 0
+  initialInteractable: 1
+  overrideDisplayed: 0
+  initialDisplayed: 1
+  overrideTooltip: 0
+  initialTooltip: 
+  targetElementName: clean-canvas-button
+  onClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5999396194758528015}
+        m_TargetAssemblyTypeName: DrawTest, Assembly-CSharp
+        m_MethodName: ClearDrawing
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
