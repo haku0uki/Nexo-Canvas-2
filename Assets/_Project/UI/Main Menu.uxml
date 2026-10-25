@@ -7,7 +7,7 @@
             <ui:Button text="" name="EnterButton" icon-image="project://database/Assets/_Project/2D/Boton_entrar.png?fileID=-1340431315&amp;guid=8b3134863183bdd4da5b7b14b430f6fd&amp;type=3#Boton_entrar_0" class="menu-button menu-text-button menu-enter-button" style="display: none; -unity-background-image-tint-color: rgba(255, 255, 255, 0); background-color: rgba(0, 0, 0, 0);"/>
             <ui:Button text="" name="LogoffButton" icon-image="project://database/Assets/_Project/2D/Boton_Cerrar_Sesion.png?fileID=-1682330433&amp;guid=226505ef7be57944d8ace0d00fb5dc3f&amp;type=3#Boton_Cerrar_Sesion_0" class="menu-button menu-text-button menu-logoff-button" style="display: none; -unity-background-image-tint-color: rgba(255, 255, 255, 0); background-color: rgba(0, 0, 0, 0);"/>
             <ui:Button name="RegisterButton" class="menu-button menu-register-button"/>
-            <ui:Button name="SpectateButton" class="menu-button menu-spectate-button" style="visibility: hidden; overflow: hidden; display: none;"/>
+            <ui:Button name="SpectateButton" class="menu-button menu-spectate-button" style="visibility: visible; overflow: visible; display: flex;"/>
             <ui:Button name="UserButton" class="menu-button menu-settings-button" style="background-image: url(&quot;project://database/Assets/_Project/2D/Boton%20de%20ir%20a%20cuenta.png?fileID=1058914380&amp;guid=112d5267f15dfed42a6ecb8eafbdd315&amp;type=3#Boton de ir a cuenta_0&quot;);"/>
         </ui:VisualElement>
     </ui:VisualElement>

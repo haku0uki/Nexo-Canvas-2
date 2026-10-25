@@ -236,6 +236,17 @@ public class AuthManager : MonoBehaviour
         });
     }
 
+    public void EntrarComoEspectador()
+    {
+        if (auth != null && auth.CurrentUser != null)
+        {
+            auth.SignOut(); // Garantiza que no haya sesión persistente activa
+        }
+        LoadMainScene();
+    }
+
+
+
     private void LoadMainScene()
     {
         if (string.IsNullOrEmpty(mainScene))
