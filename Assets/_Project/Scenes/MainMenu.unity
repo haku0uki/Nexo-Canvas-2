@@ -404,7 +404,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 22400762, guid: 67117722a812a2e46ab8cb8eafbf5f5e, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.00020980835
+      value: -0.00010681152
       objectReference: {fileID: 0}
     - target: {fileID: 22426080, guid: 67117722a812a2e46ab8cb8eafbf5f5e, type: 3}
       propertyPath: m_AnchorMax.x
@@ -985,6 +985,7 @@ MonoBehaviour:
   registerButtonName: RegisterButton
   logoffButtonName: LogoffButton
   userButtonName: UserButton
+  spectateButtonName: SpectateButton
 --- !u!114 &1062201879962224626
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2688,6 +2689,7 @@ GameObject:
   - component: {fileID: 9000000000000000033}
   - component: {fileID: 9000000000000000024}
   - component: {fileID: 9000000000000000001}
+  - component: {fileID: 9000000000000000040}
   m_Layer: 0
   m_Name: UserProfileDrawing
   m_TagString: Untagged
@@ -3255,6 +3257,40 @@ MonoBehaviour:
       - m_Target: {fileID: 9000000000000000027}
         m_TargetAssemblyTypeName: UserProfileViewPanelController, Assembly-CSharp
         m_MethodName: ShowOwnProfile
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &9000000000000000040
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9000000000000000023}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c21dfdd449275ba4fb48dcd83efe6cac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.ButtonBridge
+  overrideInteractable: 0
+  initialInteractable: 1
+  overrideDisplayed: 0
+  initialDisplayed: 1
+  overrideTooltip: 0
+  initialTooltip: 
+  targetElementName: clean-canvas-button
+  onClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 9000000000000000029}
+        m_TargetAssemblyTypeName: DrawTest, Assembly-CSharp
+        m_MethodName: ClearDrawing
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
