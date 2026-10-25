@@ -540,18 +540,122 @@ MonoBehaviour:
   hudPanel: {fileID: 2141101810}
   hud: {fileID: 2141101812}
   addDrawingButton: {fileID: 1294188442}
-  typeSelectionPanel: {fileID: 1294188440}
-  addTextButton: {fileID: 1294188443}
+  typeSelectionPanel: {fileID: 0}
+  addTextButton: {fileID: 0}
   composerPanel: {fileID: 1321535695}
   textInputName: postit-text-input
   confirmButton: {fileID: 1321535699}
   cancelButton: {fileID: 1321535698}
   drawPanel: {fileID: 6762839260709930455}
   drawEntry: {fileID: 5825295194778675268}
-  detailPanels:
-  - {fileID: 99561441}
-  - {fileID: 1470295771}
+  detailPanels: []
   surfaceOffset: 0.01
+--- !u!1 &887966718
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 887966719}
+  - component: {fileID: 887966721}
+  - component: {fileID: 887966720}
+  m_Layer: 0
+  m_Name: Positioning Panel
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &887966719
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 887966718}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1845594305}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &887966720
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 887966718}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9dfb9f5942acaac4d91e8307ec2eecda, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.UIDocumentPanel
+  ownership: 0
+  explicitController: {fileID: 0}
+  controllerKey: 
+  panelOrder: 2147483647
+  panelPriorityName: 
+  useRelativeSorting: 0
+  sortingTarget: {fileID: 0}
+  sortingOffset: 1
+  panelInteractionMode: 0
+  startHidden: 1
+  persistence: 0
+  panelCloseMode: 0
+  panelName: Positioning Panel
+  panelId: 
+  definition: {fileID: 0}
+  suppressEventsOnInitialVisualState: 0
+  transition: 0
+  transitionDuration: 0.2
+  blockingScope: 0
+  blockedPanels: []
+  allowedPanels: []
+  onEarlyPanelShowed:
+    m_PersistentCalls:
+      m_Calls: []
+  onPanelShowed:
+    m_PersistentCalls:
+      m_Calls: []
+  onEarlyPanelHidden:
+    m_PersistentCalls:
+      m_Calls: []
+  onPanelHidden:
+    m_PersistentCalls:
+      m_Calls: []
+  onPanelInitialized:
+    m_PersistentCalls:
+      m_Calls: []
+  targetDocument: {fileID: 887966721}
+  blocksRaycastsOnEmptyArea: 1
+--- !u!114 &887966721
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 887966718}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.dll::UnityEngine.UIElements.UIDocument
+  m_PanelSettings: {fileID: 11400000, guid: fec9bf6fa4770294a919da19c7dfd501, type: 2}
+  m_ParentUI: {fileID: 0}
+  sourceAsset: {fileID: 0}
+  m_SortingOrder: 0
+  m_Position: 0
+  m_WorldSpaceSizeMode: 1
+  m_WorldSpaceWidth: 1920
+  m_WorldSpaceHeight: 1080
+  m_PivotReferenceSize: 0
+  m_Pivot: 0
+  m_WorldSpaceCollider: {fileID: 0}
 --- !u!1 &1294188438
 GameObject:
   m_ObjectHideFlags: 0
@@ -1540,6 +1644,7 @@ Transform:
   - {fileID: 475328608086417427}
   - {fileID: 4271070498003691353}
   - {fileID: 4953324689746672200}
+  - {fileID: 887966719}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1845594306
@@ -1570,6 +1675,7 @@ MonoBehaviour:
   - {fileID: 7220198329840102996}
   - {fileID: 4898772100164737088}
   - {fileID: 4305297711634111456}
+  - {fileID: 887966720}
   inspectorReferences: []
   showInitialPanelOnInitialize: 1
   initialPanel: {fileID: 2141101810}
@@ -2840,6 +2946,18 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 4778298985945641431}
+        m_TargetAssemblyTypeName: DrawTest, Assembly-CSharp
+        m_MethodName: PublicarDibujoTest
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 2141101810}
         m_TargetAssemblyTypeName: SheepyCreations.UIControl.Runtime.UIDocumentPanel,
           SheepyCreations.UIControl.Runtime
@@ -3998,7 +4116,7 @@ MonoBehaviour:
   initialDisplayed: 1
   overrideTooltip: 0
   initialTooltip: 
-  targetElementName: clear-drawing-button
+  targetElementName: clean-canvas-button
   onClick:
     m_PersistentCalls:
       m_Calls:
