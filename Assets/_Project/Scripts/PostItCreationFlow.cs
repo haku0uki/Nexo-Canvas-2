@@ -27,6 +27,9 @@ public class PostItCreationFlow : MonoBehaviour
     [Tooltip("ButtonBridge on the type selection panel targeting the 'escribe' element.")]
     [SerializeField] private ButtonBridge addTextButton;
 
+    [Header("Positioning Guidance -- shown while selecting where to place the post-it")]
+    [SerializeField] private UIDocumentPanel positioningPanel;
+
     [Header("Composer -- shown while writing the post-it text")]
     [SerializeField] private UIDocumentPanel composerPanel;
     [Tooltip("Resolved by name instead of through a TextFieldBridge so the field can be focused (opens the on-screen keyboard).")]
@@ -149,6 +152,9 @@ public class PostItCreationFlow : MonoBehaviour
         HideFlowPanel(typeSelectionPanel);
         SetDetailPanelBlocked(true);
         if (placementPreview != null) placementPreview.gameObject.SetActive(true);
+
+        // Muestra el panel con el mensaje de instrucción para elegir dónde posicionar
+        ShowFlowPanel(positioningPanel);
     }
 
     private void HandlePositionSelection()
@@ -176,6 +182,7 @@ public class PostItCreationFlow : MonoBehaviour
     private void BeginWriting()
     {
         state = FlowState.Writing;
+        HideFlowPanel(positioningPanel); // Oculta el panel de guía al pasar a escribir
         ResolveTextInput();
         if (textInput != null) textInput.value = string.Empty;
 
@@ -195,6 +202,7 @@ public class PostItCreationFlow : MonoBehaviour
         }
 
         state = FlowState.Drawing;
+        HideFlowPanel(positioningPanel); // Oculta el panel de guía al pasar a dibujar
         // DrawEntry publishes the post-it at this board position, in this cell.
         drawEntry.Configure(selectedLocalPoint, boardCanvas.GetCellId(selectedCell));
         ShowFlowPanel(drawPanel);
@@ -214,6 +222,7 @@ public class PostItCreationFlow : MonoBehaviour
 
         HideFlowPanel(drawPanel);
         state = FlowState.SelectingPosition;
+        ShowFlowPanel(positioningPanel); // Vuelve a mostrar la guía si la celda fue ocupada
     }
 
     private void ConfirmPlacement()
@@ -266,6 +275,7 @@ public class PostItCreationFlow : MonoBehaviour
     {
         HideFlowPanel(composerPanel);
         state = FlowState.SelectingPosition;
+        ShowFlowPanel(positioningPanel); // Vuelve a mostrar el panel al regresar a seleccionar celda
     }
 
     private void CancelPlacement()
@@ -282,6 +292,7 @@ public class PostItCreationFlow : MonoBehaviour
         HideFlowPanel(composerPanel);
         HideFlowPanel(drawPanel);
         HideFlowPanel(typeSelectionPanel);
+        HideFlowPanel(positioningPanel); // Asegura ocultar el panel de posicionamiento al volver a Idle
         hudPanel.ShowIsolatedViaController();
     }
 
@@ -325,6 +336,7 @@ public class PostItCreationFlow : MonoBehaviour
     {
         return PanelContainsPoint(hudPanel, screenPosition)
             || PanelContainsPoint(typeSelectionPanel, screenPosition)
+            || PanelContainsPoint(positioningPanel, screenPosition)
             || PanelContainsPoint(composerPanel, screenPosition)
             || PanelContainsPoint(drawPanel, screenPosition);
     }

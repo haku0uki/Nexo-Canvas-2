@@ -542,6 +542,7 @@ MonoBehaviour:
   addDrawingButton: {fileID: 1294188442}
   typeSelectionPanel: {fileID: 1294188440}
   addTextButton: {fileID: 1294188443}
+  positioningPanel: {fileID: 887966720}
   composerPanel: {fileID: 1321535695}
   textInputName: postit-text-input
   confirmButton: {fileID: 1321535699}
@@ -634,7 +635,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   targetDocument: {fileID: 887966721}
-  blocksRaycastsOnEmptyArea: 1
+  blocksRaycastsOnEmptyArea: 0
 --- !u!114 &887966721
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -649,7 +650,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.dll::UnityEngine.UIElements.UIDocument
   m_PanelSettings: {fileID: 11400000, guid: fec9bf6fa4770294a919da19c7dfd501, type: 2}
   m_ParentUI: {fileID: 0}
-  sourceAsset: {fileID: 0}
+  sourceAsset: {fileID: 9197481963319205126, guid: 5313537649a4760458591c2f613b8932, type: 3}
   m_SortingOrder: 0
   m_Position: 0
   m_WorldSpaceSizeMode: 1
