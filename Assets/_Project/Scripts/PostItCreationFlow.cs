@@ -103,13 +103,13 @@ public class PostItCreationFlow : MonoBehaviour
         }
     }
 
-    // The HUD is shown once the board has been detected (even if it is now hidden because tracking was
-    // lost, so the HUD can show its notice) and nothing else is in progress.
+    // The HUD is shown whenever nothing else is in progress, even before the board is scanned: it holds
+    // the "scan the target" notice. The HUD itself hides the add button unless the board is tracking.
     private void UpdateHudVisibility()
     {
         if (hudPanel == null || !hudPanel.IsInitialized) return;
 
-        bool shouldShow = boardCanvas != null && state == FlowState.Idle;
+        bool shouldShow = state == FlowState.Idle;
         if (shouldShow == hudCurrentlyShown) return;
 
         hudCurrentlyShown = shouldShow;

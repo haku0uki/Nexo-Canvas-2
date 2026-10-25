@@ -101,6 +101,9 @@ public class BoardWorldAnchor : MonoBehaviour
 
         Instance = this;
 
+        // El estado publicado es estatico y sobrevive a la recarga de la escena: se reinicia aqui.
+        ARCanvasController.PublishState(ARCanvasController.BoardState.None);
+
         if (anchorManager == null) anchorManager = FindFirstObjectByType<ARAnchorManager>();
         if (planeManager == null) planeManager = FindFirstObjectByType<ARPlaneManager>();
 
