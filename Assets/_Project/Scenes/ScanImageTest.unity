@@ -2946,18 +2946,6 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4778298985945641431}
-        m_TargetAssemblyTypeName: DrawTest, Assembly-CSharp
-        m_MethodName: PublicarDibujoTest
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 2141101810}
         m_TargetAssemblyTypeName: SheepyCreations.UIControl.Runtime.UIDocumentPanel,
           SheepyCreations.UIControl.Runtime
@@ -3524,6 +3512,7 @@ GameObject:
   - component: {fileID: 8898863072583803483}
   - component: {fileID: 2834607058133500037}
   - component: {fileID: 4232400031070889337}
+  - component: {fileID: 8898863072583803484}
   m_Layer: 0
   m_Name: Draw Entry Composer
   m_TagString: Untagged
@@ -4308,6 +4297,40 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: SheepyCreations.UIControl.Runtime.UIDocumentPanel,
           SheepyCreations.UIControl.Runtime
         m_MethodName: ShowIsolatedViaController
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &8898863072583803484
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5121983183659419996}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c21dfdd449275ba4fb48dcd83efe6cac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.ButtonBridge
+  overrideInteractable: 0
+  initialInteractable: 1
+  overrideDisplayed: 0
+  initialDisplayed: 1
+  overrideTooltip: 0
+  initialTooltip: 
+  targetElementName: 
+  onClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4778298985945641431}
+        m_TargetAssemblyTypeName: DrawTest, Assembly-CSharp
+        m_MethodName: ClearDrawing
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
