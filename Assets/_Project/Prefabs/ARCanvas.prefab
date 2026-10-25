@@ -108,8 +108,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 194f5c4160c3d2d48b1c213aaeba96cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BoardCanvas
-  boardSize: {x: 4, y: 3}
-  gridSize: {x: 7, y: 5}
+  boardSize: {x: 4, y: 5}
+  gridSize: {x: 6, y: 8}
   textEntryPrefab: {fileID: 4207078919818142271, guid: 213b27148fd8699419a739ca5d9560c4, type: 3}
   drawingEntryPrefab: {fileID: 7799454695240137590, guid: 644d408463c48b34090bead306f70e0d, type: 3}
   promptCanvasTemplate: {fileID: 671575496755714750, guid: 490a33ba443fcd74282110e8c26760f4, type: 3}

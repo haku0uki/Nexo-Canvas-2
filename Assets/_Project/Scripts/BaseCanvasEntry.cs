@@ -18,6 +18,10 @@ public abstract class BaseCanvasEntry : MonoBehaviour
         transform.localPosition = new Vector3(data.posX, data.posY, data.posZ);
     }
 
+    public virtual void RefreshAuthorProfile(string authorId)
+    {
+    }
+
     protected void RaiseClicked()
     {
         if (Data != null) Clicked?.Invoke(Data);

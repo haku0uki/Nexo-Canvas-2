@@ -58,6 +58,9 @@ public class BoardCanvas : MonoBehaviour
         if (isListening) return;
         isListening = true;
         FirestoreService.Instance.EscucharPostIts(OnPostItsUpdated);
+
+        if (UserProfileService.Instance != null)
+            UserProfileService.Instance.ProfileUpdated += OnProfileUpdated;
     }
 
     private void OnDestroy()
@@ -65,8 +68,20 @@ public class BoardCanvas : MonoBehaviour
         if (FirestoreService.Instance != null)
             FirestoreService.Instance.DejarDeEscucharPostIts(OnPostItsUpdated);
 
+        if (UserProfileService.Instance != null)
+            UserProfileService.Instance.ProfileUpdated -= OnProfileUpdated;
+
         if (activeInstance == this)
             activeInstance = null;
+    }
+
+    private void OnProfileUpdated(string authorId)
+    {
+        foreach (BaseCanvasEntry entry in entries.Values)
+        {
+            if (entry != null)
+                entry.RefreshAuthorProfile(authorId);
+        }
     }
 
     private void OnPostItsUpdated(List<PostItData> updatedEntries)
