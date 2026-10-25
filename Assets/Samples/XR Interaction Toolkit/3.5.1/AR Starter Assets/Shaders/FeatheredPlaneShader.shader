@@ -12,6 +12,7 @@ Shader "Unlit/FeatheredPlaneShader"
         LOD 100
         Blend SrcAlpha OneMinusSrcAlpha
         ZWrite Off
+        ZTest LEqual
 
         Pass
         {

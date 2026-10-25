@@ -16,6 +16,11 @@ public class HUD : PanelBehaviour
     [SerializeField] private string addPostItElementName = "add-postit-button";
     [Tooltip("Contenedor del aviso de tablero perdido (imagen translucida + texto).")]
     [SerializeField] private string lostOverlayName = "lost-overlay";
+    [Header("Espectador")]
+    [Tooltip("Nombre del botón de ver perfil en el UXML del HUD.")]
+    [SerializeField] private string profileButtonName = "profile-button";
+
+    private VisualElement profileButtonElement;
 
     public event Action AddPostItRequested;
     public event Action PanelShown;
@@ -54,7 +59,7 @@ public class HUD : PanelBehaviour
         ARCanvasController.StateChanged -= OnBoardStateChanged;
     }
 
-    // Solo Tracking muestra el boton de anadir; Limited y Lost muestran el aviso.
+    // Solo Tracking muestra el boton de anadir; Limited y Lost muestran el aviso. //creo que este comentario quedo mal
     private void OnBoardStateChanged(ARCanvasController.BoardState state)
     {
         SetBoardState(state == ARCanvasController.BoardState.Tracking,
@@ -94,16 +99,30 @@ public class HUD : PanelBehaviour
         UIDocumentPanel doc = Doc;
         if (!ProfilePanelUtility.IsPanelReady(doc)) return;
 
-        // Se vuelve a resolver si el arbol cambio (el elemento viejo ya no esta en el panel).
+        // Resolver referencias del UXML si cambiaron
         if (addPostItElement == null || addPostItElement.panel == null)
             doc.TryGetElement(addPostItElementName, out addPostItElement);
 
         if (lostOverlay == null || lostOverlay.panel == null)
             doc.TryGetElement(lostOverlayName, out lostOverlay);
 
-        // display:none (no solo invisible) para que el boton oculto tampoco reciba toques.
+        if (profileButtonElement == null || profileButtonElement.panel == null)
+            doc.TryGetElement(profileButtonName, out profileButtonElement);
+
+        // DETERMINAR SI ES ESPECTADOR (No tiene sesión verificada)
+        bool esEspectador = AuthManager.Instance == null || !AuthManager.Instance.HasAuthenticatedUser;
+
+        // El botón de añadir solo se muestra si el tablero está en Tracking Y el usuario NO es espectador
         if (addPostItElement != null)
-            addPostItElement.style.display = isTracking ? DisplayStyle.Flex : DisplayStyle.None;
+        {
+            addPostItElement.style.display = (isTracking && !esEspectador) ? DisplayStyle.Flex : DisplayStyle.None;
+        }
+
+        // El botón de ver perfil se oculta por completo si es espectador
+        if (profileButtonElement != null)
+        {
+            profileButtonElement.style.display = esEspectador ? DisplayStyle.None : DisplayStyle.Flex;
+        }
 
         if (lostOverlay != null)
             lostOverlay.style.display = isLost ? DisplayStyle.Flex : DisplayStyle.None;
@@ -111,8 +130,17 @@ public class HUD : PanelBehaviour
         stateDirty = false;
     }
 
+
     private void RaiseAddPostItRequested()
     {
+        // Escudo de seguridad: si es espectador, no disparar el flujo de creación
+        if (AuthManager.Instance == null || !AuthManager.Instance.HasAuthenticatedUser)
+        {
+            Debug.LogWarning("[HUD] Intento de publicación bloqueado para un usuario Espectador.");
+            return;
+        }
+
         AddPostItRequested?.Invoke();
     }
+
 }
