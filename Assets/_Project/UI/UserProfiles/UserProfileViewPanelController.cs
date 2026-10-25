@@ -327,7 +327,11 @@ public class UserProfileViewPanelController : MonoBehaviour
             (!string.IsNullOrEmpty(currentUid) && me.UserId == currentUid) ||
             string.Equals(me.Email, currentEmail, System.StringComparison.OrdinalIgnoreCase));
 
-        element.style.display = isOwn ? DisplayStyle.Flex : DisplayStyle.None;
+        // Se oculta sin quitarlo del layout: el espacio se conserva y los demas elementos no cambian de tamano.
+        element.style.display = DisplayStyle.Flex;
+        element.style.visibility = isOwn ? Visibility.Visible : Visibility.Hidden;
+        element.pickingMode = isOwn ? PickingMode.Position : PickingMode.Ignore;
+        element.SetEnabled(isOwn);
     }
 
     private void RenderAvatar()

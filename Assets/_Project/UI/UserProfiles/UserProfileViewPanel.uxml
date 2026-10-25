@@ -9,7 +9,7 @@
                     <ui:VisualElement name="profile-identity" class="profile-identity">
                         <ui:VisualElement name="profile-email-group" class="profile-info-group">
                             <ui:Label name="profile-email-title" text="Correo institucional" class="profile-field-label" style="margin-left: -4%; margin-bottom: 2%; color: rgba(35, 48, 57, 0.62);"/>
-                            <ui:Label name="profile-email-label" text="s.usercorreo@uandresbello.edu" class="profile-email" style="margin-right: -37%; margin-top: -2%; color: rgba(6, 31, 46, 0.79); padding-bottom: 4%; font-size: 42px;"/>
+                            <ui:Label name="profile-email-label" text="s.usercorreo@uandresbello.edu" class="profile-email" style="margin-right: -32%; margin-top: -2%; color: rgba(6, 31, 46, 0.79); padding-bottom: 4%; font-size: 42px;"/>
                         </ui:VisualElement>
                         <ui:VisualElement name="profile-nickname-group" class="profile-info-group">
                             <ui:Label name="profile-nickname-title" text="Nombre de usuario" class="profile-field-label" style="margin-bottom: -1%; margin-left: -2%; color: rgba(5, 31, 46, 0.62);"/>
@@ -17,10 +17,10 @@
                         </ui:VisualElement>
                         <ui:VisualElement name="profile-pronouns-group" class="profile-info-group">
                             <ui:Label name="profile-pronouns-title" text="Pronombres" class="profile-field-label" style="margin-top: -2%; margin-bottom: 1%; margin-left: -2%; color: rgba(35, 48, 57, 0.62);"/>
-                            <ui:Label name="profile-pronouns-label" text="xxxx/xxxx" class="profile-pronouns" style="background-image: url(&quot;project://database/Assets/_Project/2D/Elementos%20Ui%20perfil/Slider%204.png?fileID=21300000&amp;guid=db75fbb0ffb6696439d5ffaabcc6ebe6&amp;type=3#Slider 4&quot;); -unity-background-image-tint-color: rgb(254, 245, 195); margin-right: -33%; margin-left: -26%; padding-left: 26%; padding-bottom: 15%; letter-spacing: -13px; padding-right: 17%; font-size: 56%; color: rgba(5, 31, 46, 0.84); padding-top: 6%;"/>
+                            <ui:Label name="profile-pronouns-label" text="xxxx/xxxx" class="profile-pronouns" style="background-image: url(&quot;project://database/Assets/_Project/2D/Elementos%20Ui%20perfil/Slider%204.png?fileID=21300000&amp;guid=db75fbb0ffb6696439d5ffaabcc6ebe6&amp;type=3#Slider 4&quot;); -unity-background-image-tint-color: rgb(254, 245, 195); margin-right: -32%; margin-left: -26%; padding-left: 26%; padding-bottom: 15%; letter-spacing: -13px; padding-right: 17%; font-size: 56%; color: rgba(5, 31, 46, 0.84); padding-top: 6%;"/>
                         </ui:VisualElement>
                     </ui:VisualElement>
-                    <ui:Button text="" name="profile-editor" class="profile-pencil-button profile-editor-button" style="width: 18%; left: -5%; top: 78%;"/>
+                    <ui:Button text="" name="profile-editor" class="profile-pencil-button profile-editor-button" style="width: 18%; left: -5%; top: 78%; display: flex; visibility: visible; overflow: visible;"/>
                 </ui:VisualElement>
                 <ui:Label name="profile-status-label" class="profile-status"/>
                 <ui:VisualElement name="profile-posts-section" class="profile-posts-section" style="margin-bottom: 4%;">
