@@ -11,6 +11,7 @@ using UnityEngine;
 public class UserProfileService : MonoBehaviour
 {
     public static UserProfileService Instance { get; private set; }
+    public event Action<string> ProfileUpdated;
 
     private FirebaseFirestore db;
     private CollectionReference users;
@@ -556,6 +557,9 @@ public class UserProfileService : MonoBehaviour
                         trimmed.Length > 0 ? trimmed : FallbackName(user.Email);
                 }
 
+                if (success && !string.IsNullOrWhiteSpace(user.Email))
+                    ProfileUpdated?.Invoke(user.Email);
+
                 onComplete?.Invoke(success);
             });
     }
@@ -606,7 +610,10 @@ public class UserProfileService : MonoBehaviour
                 }
 
                 if (success && !string.IsNullOrEmpty(user.Email))
+                {
                     avatarDrawings[user.Email] = drawingJson ?? string.Empty;
+                    ProfileUpdated?.Invoke(user.Email);
+                }
 
                 onComplete?.Invoke(success);
             });

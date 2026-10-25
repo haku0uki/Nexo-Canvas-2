@@ -20,6 +20,15 @@ public class TextCanvasEntry : BaseCanvasEntry
         TryPresentData();
     }
 
+    public override void RefreshAuthorProfile(string authorId)
+    {
+        if (Data == null || !string.Equals(Data.authorId, authorId, System.StringComparison.OrdinalIgnoreCase))
+            return;
+
+        pendingPresentation = true;
+        TryPresentData();
+    }
+
     private void Update()
     {
         if (pendingPresentation) TryPresentData();
