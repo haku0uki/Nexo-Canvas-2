@@ -1959,6 +1959,7 @@ GameObject:
   - component: {fileID: 2141101814}
   - component: {fileID: 2141101815}
   - component: {fileID: 2141101813}
+  - component: {fileID: 2141101816}
   m_Layer: 0
   m_Name: HUD panel
   m_TagString: Untagged
@@ -2198,6 +2199,57 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &2141101816
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2141101807}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bab245c55bc3e754aa9d6f45a9345baf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SheepyCreations.UIControl.Runtime::SheepyCreations.UIControl.Runtime.TransitionAnimationBehaviour
+  animatePosition: 1
+  positionOffset: {x: 0, y: 200}
+  animateScale: 1
+  scaleOffsetMultiplier: 0.5
+  animateRotation: 0
+  rotationOffsetDegrees: 15
+  useSeparateExitOffset: 1
+  exitPositionOffset: {x: 0, y: 0}
+  exitScaleOffsetMultiplier: 0.9
+  exitRotationOffsetDegrees: 0
+  enterDurationSeconds: 0.3
+  exitDurationSeconds: 0.3
+  animationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: -0.9042923
+      outSlope: -0.9042923
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.23460412
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  targetTransform: {fileID: 0}
+  targetElementName: add-postit-button
+  positionOffsetInPercent: 0
 --- !u!114 &104257076836965114
 MonoBehaviour:
   m_ObjectHideFlags: 0
