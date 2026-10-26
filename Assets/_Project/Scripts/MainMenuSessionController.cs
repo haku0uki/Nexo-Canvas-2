@@ -90,6 +90,9 @@ public class MainMenuSessionController : MonoBehaviour
             registerButton.style.display = authenticated ? DisplayStyle.None : DisplayStyle.Flex;
         if (userButton != null)
             userButton.style.display = authenticated ? DisplayStyle.Flex : DisplayStyle.None;
+        if (spectateButton != null)
+            spectateButton.style.display = authenticated ? DisplayStyle.None : DisplayStyle.Flex;
+
     }
 
     private void HandleUserLoggedIn(Firebase.Auth.FirebaseUser user)
