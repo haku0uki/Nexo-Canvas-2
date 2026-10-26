@@ -102,7 +102,7 @@ public class AuthManager : MonoBehaviour
         if (!ValidarCorreoInstitucional(email))
         {
             Debug.LogError("Registro rechazado: Debe usar su correo institucional @uandresbello.edu");
-            Notificar("Debes usar tu correo @uandresbello.edu");
+            Notificar("Debes usar tu correo institucional (@uandresbello.edu).");
             return;
         }
 
@@ -118,14 +118,14 @@ public class AuthManager : MonoBehaviour
                     if (errorCode == AuthError.EmailAlreadyInUse)
                     {
                         Debug.LogWarning("<b>[Aviso]</b> Este correo ya esta registrado. Por favor, selecciona la opcion de iniciar sesion.");
-                        Notificar("Este correo ya esta registrado. Inicia sesion");
+                        Notificar("Este correo ya est\u00e1 registrado. Inicia sesi\u00f3n.");
                         return;
                     }
                 }
 
                 // La excepcin completa solo va a la consola, no a la pantalla del usuario.
                 Debug.LogError("Error inesperado al registrar: " + task.Exception);
-                Notificar("No se pudo completar el registro. Intantalo de nuevo");
+                Notificar("No se pudo completar el registro. Int\u00e9ntalo de nuevo.");
                 return;
             }
 
@@ -137,12 +137,12 @@ public class AuthManager : MonoBehaviour
                 if (verifyTask.IsFaulted || verifyTask.IsCanceled)
                 {
                     Debug.LogError("Error al enviar el correo de verificacion: " + verifyTask.Exception);
-                    Notificar("Cuenta creada, pero no se pudo enviar el correo de verificacion. Usa la opcion de reenviar");
+                    Notificar("Tu cuenta fue creada, pero no se pudo enviar el correo de verificaci\u00f3n. Usa la opci\u00f3n para reenviarlo.");
                 }
                 else
                 {
                     Debug.Log("Correo de verificacion enviado. Revisa tu bandeja de entrada de la universidad.");
-                    Notificar("Correo de verificacion enviado a " + user.Email + ". Revisa tu bandeja de entrada.");
+                    Notificar("Correo de verificaci\u00f3n enviado a " + user.Email + ". Revisa tu bandeja de entrada.");
                 }
 
                 SignOut();
@@ -163,7 +163,7 @@ public class AuthManager : MonoBehaviour
         if (!ValidarCorreoInstitucional(email))
         {
             Debug.LogError("Login rechazado: El correo no pertenece a la universidad.");
-            Notificar("Usa tu correo @uandresbello.edu");
+            Notificar("Usa tu correo institucional (@uandresbello.edu).");
             return;
         }
 
@@ -172,7 +172,7 @@ public class AuthManager : MonoBehaviour
             if (task.IsFaulted)
             {
                 Debug.LogError("Error al iniciar sesin: " + task.Exception);
-                Notificar("No se pudo iniciar sesin. Revisa tu correo y contrasea");
+                Notificar("No se pudo iniciar sesi\u00f3n. Revisa tu correo y contrase\u00f1a.");
                 return;
             }
 
@@ -182,7 +182,7 @@ public class AuthManager : MonoBehaviour
             if (user.IsEmailVerified)
             {
                 Debug.Log($"<color=green>Sesin iniciada con xito: {user.Email}</color>");
-                Notificar("Sesin iniciada con xito!");
+                Notificar("\u00a1Sesi\u00f3n iniciada correctamente!");
 
                 OnUserLoggedIn?.Invoke(user);
 
@@ -191,7 +191,7 @@ public class AuthManager : MonoBehaviour
             else
             {
                 Debug.LogWarning("Por favor, verifica tu correo en tu Outlook antes de ingresar.");
-                Notificar("Por favor, verifica tu correo antes de ingresar.");
+                Notificar("Por favor, verifica tu correo antes de iniciar sesi\u00f3n.");
                 SignOut();
             }
         });
@@ -202,7 +202,7 @@ public class AuthManager : MonoBehaviour
         if (!ValidarCorreoInstitucional(email))
         {
             Debug.LogError("Operacin rechazada: El correo no pertenece a la universidad.");
-            Notificar("Usa tu correo @uandresbello.edu");
+            Notificar("Usa tu correo institucional (@uandresbello.edu).");
             return;
         }
 
@@ -212,7 +212,7 @@ public class AuthManager : MonoBehaviour
             if (task.IsFaulted)
             {
                 Debug.LogError("No se pudo iniciar sesin para reenviar el correo: " + task.Exception);
-                Notificar("No se pudo reenviar el correo. Revisa tu correo y contrasea");
+                Notificar("No se pudo reenviar el correo de verificaci\u00f3n. Revisa tu correo y contrase\u00f1a.");
                 return;
             }
 
@@ -224,12 +224,12 @@ public class AuthManager : MonoBehaviour
                 if (verifyTask.IsCompletedSuccessfully)
                 {
                     Debug.Log("<color=yellow><b>[Auth]</b> Enlace de verificacin reenviado con xito a tu Outlook.</color>");
-                    Notificar("Enlace de verificacin reenviado. Revisa tu bandeja de entrada.");
+                    Notificar("Enlace de verificaci\u00f3n reenviado correctamente. Revisa tu bandeja de entrada.");
                 }
                 else
                 {
-                    Debug.LogError("Error al reenviar el correo de verificacin: " + verifyTask.Exception);
-                    Notificar("No se pudo reenviar el correo de verificacin. Intntalo ms tarde");
+                    Debug.LogError("Error al reenviar el correo de verificacion: " + verifyTask.Exception);
+                    Notificar("No se pudo reenviar el correo de verificaci\u00f3n. Int\u00e9ntalo m\u00e1s tarde.");
                 }
                 SignOut(); // Cerrar sesin inmediatamente por seguridad
             });

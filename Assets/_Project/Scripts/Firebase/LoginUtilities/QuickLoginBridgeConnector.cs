@@ -34,7 +34,7 @@ public class QuickLoginBridgeConnector : MonoBehaviour
 
         if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
         {
-            ShowNotification("Por favor completa todos los campos.");
+            ShowNotification("Por favor, completa todos los campos.");
             return;
         }
 
@@ -51,19 +51,19 @@ public class QuickLoginBridgeConnector : MonoBehaviour
 
         if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password) || string.IsNullOrEmpty(confirmPassword))
         {
-            ShowNotification("Por favor completa todos los campos.");
+            ShowNotification("Por favor, completa todos los campos.");
             return;
         }
 
         if (password != confirmPassword)
         {
-            ShowNotification("Las contraseñas no coinciden.");
+            ShowNotification("Las contrase\u00f1as no coinciden.");
             return;
         }
 
         if (password.Length < 6)
         {
-            ShowNotification("La contraseña debe tener al menos 6 caracteres.");
+            ShowNotification("La contrase\u00f1a debe tener al menos 6 caracteres.");
             return;
         }
 
@@ -78,7 +78,7 @@ public class QuickLoginBridgeConnector : MonoBehaviour
 
         if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
         {
-            ShowNotification("Ingresa tu correo y contraseña para reenviar la verificación.");
+            ShowNotification("Ingresa tu correo y contrase\u00f1a para reenviar la verificaci\u00f3n.");
             return;
         }
 
