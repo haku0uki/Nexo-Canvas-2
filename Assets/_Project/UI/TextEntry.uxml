@@ -6,7 +6,7 @@
         <ui:VisualElement name="elements-container" class="postit-content">
             <ui:Instance template="autor-user-profile" name="TemplateContainer"/>
             <ui:VisualElement class="separator" style="margin-top: 4px;"/>
-            <ui:Label text="Label" name="content-label-postit" class="text-label" style="margin-top: 4%; margin-bottom: 2%; margin-right: 4%; margin-left: 2%;"/>
+            <ui:Label text="Label" name="content-label-postit" selectable="true" focusable="true" class="text-label" style="margin-top: 4%; margin-bottom: 2%; margin-right: 4%; margin-left: 2%; text-overflow: ellipsis;"/>
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

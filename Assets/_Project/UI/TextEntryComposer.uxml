@@ -8,7 +8,7 @@
             <ui:VisualElement name="elements-container" class="postit-content">
                 <ui:Label text="Usuario" name="username-label-postit" class="user-label"/>
                 <ui:VisualElement class="separator"/>
-                <ui:TextField name="postit-text-input" placeholder-text="Escribe tus pensamientos..." multiline="true" class="empty-background postit-text-input"/>
+                <ui:TextField name="postit-text-input" placeholder-text="Escribe tus pensamientos..." multiline="true" max-length="1400" class="empty-background postit-text-input" style="text-overflow: ellipsis;"/>
             </ui:VisualElement>
         </ui:VisualElement>
         <ui:VisualElement name="buttons-container" class="actions-container">
